@@ -1,0 +1,296 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>PvP Combat - MineWars</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../foss.html"><strong aria-hidden="true">2.</strong> Open-Source Builds</a></li><li class="chapter-item expanded "><a href="../game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="../gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gameplay/map.html"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="../gameplay/territory.html"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="../gameplay/economy.html"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="../gameplay/pvp.html" class="active"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="../gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="../gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="../gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="../ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="../gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li><li class="chapter-item expanded "><a href="../achievements.html"><strong aria-hidden="true">3.5.</strong> Achievement Ideas</a></li></ol></li><li class="chapter-item expanded "><a href="../mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li></ol></li><li class="chapter-item expanded "><a href="../tech.html"><strong aria-hidden="true">5.</strong> Technical Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech/dataformat-player.html"><strong aria-hidden="true">5.1.</strong> Player Stream Format</a></li><li class="chapter-item expanded "><a href="../tech/dataformat-spectator.html"><strong aria-hidden="true">5.2.</strong> Spectator/Replay Stream Format</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MineWars</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="pvp-combat"><a class="header" href="#pvp-combat">PvP Combat</a></h1>
+<p>Player encounters happen on &quot;front lines&quot;; that is, when your territory reaches
+that of another player.</p>
+<p>You can try to capture another player's territory, just like you do neutral land
+at the start of the game.</p>
+<p>Everyone is incentivised to set up defenses by deploying items and building
+structures on their territory, to protect themselves from other players
+advancing into it.</p>
+<p>Similarly, everyone is incentivised to attack and advance into other
+territories, in their attempt to play towards the game's overall objective:
+eliminating the other players.</p>
+<h2 id="digits"><a class="header" href="#digits">Digits</a></h2>
+<p>Every player-owned tile will show a Minesweeper-like <strong>Digit</strong>, to indicate the
+total number of <strong>Items</strong> on adjacent tiles not owned by the player.</p>
+<p>Further, an <strong>Asterisk</strong> (*) will be displayed with the digit, if there are any
+<strong>Decoys</strong>. The player can use this hint/information to figure out where decoys
+might be and decide if they want to try and risk stepping on those tiles.</p>
+<p>The game client can provide a feature to switch digits to &quot;enemy preview&quot; mode,
+where the other players' digits are displayed instead, to allow the player
+to visualize how their defensive item formations would be seen by others.</p>
+<h2 id="defensive-play-overview"><a class="header" href="#defensive-play-overview">Defensive Play Overview</a></h2>
+<p>When you own territory, you do not want to leave it undefended and easy to capture.
+Also, remember, if a player clicks on a &quot;known safe&quot; tile (with no digit), they
+can capture large swaths of territory in a single click!</p>
+<p>Therefore, as you gain new territory, you want to set up formations of defensive
+<strong>Items</strong> to protect it. The presence of items will stop an invader's expansion
+and force them to solve a Minesweeper digit puzzle.</p>
+<p>It is very important to use creative and clever formations of defensive items
+(mines, flashbangs), decoys, and empty tiles, in order to create a challenging
+Minesweeper puzzle for the other player. The more variety, the better. For
+example, using too many items without leaving empty tiles will make the digits
+very easy to figure out. Ditto for not using decoys.</p>
+<p>At the front line itself, you need to be especially careful. Deploying some
+additional items in real-time can be helpful to confuse the opponent, if they
+are actively trying to invade.</p>
+<p>You can use <strong>Smokes</strong> to conceal specific digits for the enemy. This gives you
+an opportunity to deploy your items without immediately giving away information
+about what you are doing.</p>
+<p>If you have a large territory, you might have multiple fronts, possibly with
+multiple other players. You need to keep an eye on all of them.</p>
+<p>Further, you can build <strong>Structures</strong> within your territory. Barricades allow you
+to make use of geography (mountain clusters) to limit mobility and make it
+difficult for a future invader to advance into key locations. Watch Towers
+will give you visibility in case you lose the surrounding territory, and reveal
+nearby enemy items.</p>
+<h2 id="offensive-play-overview"><a class="header" href="#offensive-play-overview">Offensive Play Overview</a></h2>
+<p>At the front line, you might decide to attack and advance into enemy territory.</p>
+<p>To do this, you need to solve the Minesweeper puzzle. Use the digits to figure
+out where enemy items are, and determine what tiles are safe to step on.</p>
+<p>Logically, there are three possibilities for any given enemy tile:</p>
+<ul>
+<li>Empty (no item): does not count towards digits</li>
+<li>Safe Item (decoy): counts towards digits, but makes them display an asterisk (*)</li>
+<li>Dangerous Item (mine, flashbang): counts towards digits</li>
+</ul>
+<p>You want to avoid dangerous items, and step on tiles that are safe (empty or
+decoy). Decoys make the puzzle more challenging: you need to account for them
+when you mentally parse the digits + asterisks.</p>
+<p>If you need information quickly, you can use the <strong>Reveal</strong> action (which costs a
+lot of money), to immediately learn what is on an enemy tile.</p>
+<p>If you think you know where dangerous items is located, you have options for dealing with them:</p>
+<ul>
+<li><strong>Strike</strong> the tiles (offensive action), causing explosions that destroy the item and the land it stands on. Costs money.</li>
+<li>Carefully surround the items by stepping on adjacent safe tiles, <strong>capturing</strong> them. Rewards you with money.</li>
+<li>Just step on the tile anyway and suffer the consequences. ;) Probably best reserved for dire situations.</li>
+</ul>
+<p>This presents an interesting tradeoff:</p>
+<p>If you value your time and have money, you can play quickly and recklessly,
+striking enemy tiles to destroy items. You can be even more reckless and just
+strike enemy tiles, regardless of whether you think there is an item there, and
+not even bothering with the Minesweeper puzzle. This costs even more money and
+will destroy a lot of land, removing valuable natural resources.</p>
+<p>On the other hand, if you want to take your time to play carefully and methodically,
+solving the Minesweeper puzzle can allow you to capture the enemy items. This way,
+you don't spend any money on your invasion. In fact, you gain money as a reward
+for the items you find. You also do no damage to the natural resources on the map.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../gameplay/economy.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../gameplay/actions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../gameplay/economy.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../gameplay/actions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

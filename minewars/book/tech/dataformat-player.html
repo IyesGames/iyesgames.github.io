@@ -1,0 +1,693 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Player Stream Format - MineWars</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../foss.html"><strong aria-hidden="true">2.</strong> Open-Source Builds</a></li><li class="chapter-item expanded "><a href="../game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="../gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gameplay/map.html"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="../gameplay/territory.html"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="../gameplay/economy.html"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="../gameplay/pvp.html"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="../gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="../gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="../gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="../ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="../gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li><li class="chapter-item expanded "><a href="../achievements.html"><strong aria-hidden="true">3.5.</strong> Achievement Ideas</a></li></ol></li><li class="chapter-item expanded "><a href="../mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li></ol></li><li class="chapter-item expanded "><a href="../tech.html"><strong aria-hidden="true">5.</strong> Technical Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech/dataformat-player.html" class="active"><strong aria-hidden="true">5.1.</strong> Player Stream Format</a></li><li class="chapter-item expanded "><a href="../tech/dataformat-spectator.html"><strong aria-hidden="true">5.2.</strong> Spectator/Replay Stream Format</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MineWars</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="player-stream-format"><a class="header" href="#player-stream-format">Player Stream Format</a></h1>
+<p>This page describes all the encodings used for data sent from the server to
+the client.</p>
+<p>This message format is also used inside of the <a href="./dataformat-spectator.html">spectator/replay
+message</a> format (which encapsulates multiple streams of
+this player message format).</p>
+<hr />
+<h2 id="prerequisites-for-implementation"><a class="header" href="#prerequisites-for-implementation">Prerequisites for Implementation</a></h2>
+<p>This is a custom purpose-built compact binary format.</p>
+<p>All multi-byte values are encoded as <strong>big endian</strong> and unaligned.</p>
+<p>All <strong>coordinates</strong> are encoded as <code>(row: u8, col: u8)</code> (note (Y,X) order).
+In places where a sequence of multiple coordinates is listed, it is recommended
+to encode them in sorted order. This helps compression.</p>
+<p>All <strong>time durations</strong> are encoded as:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0xxxxxxx</code></td><td><code>x</code> milliseconds</td></tr>
+<tr><td><code>10xxxxxx</code></td><td>(<code>x</code> + 12) centiseconds</td></tr>
+<tr><td><code>11xxxxxx</code></td><td>(<code>x</code> + 7) deciseconds</td></tr>
+</tbody></table>
+</div>
+<p><strong>PlayerId</strong>: a value between 1-6 inclusive.</p>
+<p>You will also need to bring a LZ4 implementation supporting <strong>raw blocks</strong>
+and dictionary data. The <code>lz4_flex</code> Rust crate is perfect. :)</p>
+<h2 id="initialization-sequence"><a class="header" href="#initialization-sequence">Initialization Sequence</a></h2>
+<p>When a connected player is successfully authenticated and ready to begin
+the game, it will receive in <strong>initialization sequence</strong>, which includes
+metadata about the game session, and the map data.</p>
+<h3 id="header"><a class="header" href="#header">Header</a></h3>
+<p>It begins with a header:</p>
+<ul>
+<li><code>u8</code>: protocol version (must be <code>0x01</code>)</li>
+<li><code>u8</code>: flags</li>
+<li><code>u8</code>: map size (radius)</li>
+<li><code>u8</code>: number of players and cities/regions</li>
+<li><code>u16</code>: length of player names data (0 for an anonymized stream)</li>
+<li><code>u16</code>: length of compressed map data in bytes</li>
+<li><code>u16</code>: length of uncompressed map data in bytes</li>
+</ul>
+<p>The <code>flags</code> field is encoded as follows:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>----0---</code></td><td>Game uses a hexagonal grid</td></tr>
+<tr><td><code>----1---</code></td><td>Game uses a square grid</td></tr>
+<tr><td><code>xxx--xxx</code></td><td>(reserved bits)</td></tr>
+</tbody></table>
+</div>
+<p>The player/city counts are encoded as follows:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>----xxxx</code></td><td>Number of cities/regions - 1</td></tr>
+<tr><td><code>xxxx----</code></td><td>Number of Players</td></tr>
+</tbody></table>
+</div>
+<h4 id="game-parameters"><a class="header" href="#game-parameters">Game Parameters</a></h4>
+<p>Then follow the parameters used for the game rules, in this game.</p>
+<p>// TODO</p>
+<h3 id="data-payload"><a class="header" href="#data-payload">Data Payload</a></h3>
+<h4 id="player-names"><a class="header" href="#player-names">Player Names</a></h4>
+<p>If the file is not anonymized, then follow the display names of each player,
+encoded as: <code>u8</code> length in bytes, followed by UTF-8 encoded data.</p>
+<h4 id="city-locations"><a class="header" href="#city-locations">City Locations</a></h4>
+<p>Then follows the list of city coordinates.</p>
+<h4 id="map-data"><a class="header" href="#map-data">Map Data</a></h4>
+<p>Then follows the map data.</p>
+<p>If compressed length &lt; uncompressed length, the data is LZ4 compressed.</p>
+<p>If compressed length == uncompressed length, the data is raw/uncompressed.</p>
+<p>First, the map data is encoded as one byte per tile:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>-----xxx</code></td><td>Tile Kind</td></tr>
+<tr><td><code>-xxx----</code></td><td>Item Kind</td></tr>
+</tbody></table>
+</div>
+<p>Tile Kind: same encoding as the &quot;Tile Kind Update&quot; message below.
+Item Kind: same encoding as the &quot;Reveal Item&quot; message below.</p>
+<p>The Item Kind is only used for spectator streams and replay files, so that they
+don't need to start with a long sequence of &quot;Reveal Item&quot; messages at tick 0
+for all the initial items on the map. In player streams, this field should be 0.</p>
+<p>If any starting Structures must be encoded (say for a custom game mode / scenario),
+initialize them using regular gameplay messages at tick 0.</p>
+<p>The tiles are encoded in concentric-ring order, starting from the center of
+the map. The map data ends when all rings up until the map radius specified in
+the header have been encoded.</p>
+<p>Each ring starts from the lowest (Y,X) coordinate and follows the +X direction first:</p>
+<p>Square example:</p>
+<pre><code>654
+7.3
+012
+</code></pre>
+<p>Hex example:</p>
+<pre><code> 4 3
+5 . 2
+ 0 1
+</code></pre>
+<p>(<code>0</code> is the starting position, assuming +X points right and +Y points up)</p>
+<p>After the map data, regions are encoded the same way: one byte per tile, in
+concentric ring order. The byte is the city/region ID for that tile.</p>
+<h2 id="gameplay-messages"><a class="header" href="#gameplay-messages">Gameplay Messages</a></h2>
+<p>Updates for the player are encoded as a raw uncompressed block of data
+consisting of any number of <strong>messages</strong> concatenated together. Each message
+is a variable-length byte sequence.</p>
+<p>Each message is at least one byte long. The type of the message is determined
+by magic bits in that first byte (similar to opcodes in CPU instruction set
+encodings). The first byte may also have bit-fields embedding data into it,
+for some message types.</p>
+<h3 id="message-classes"><a class="header" href="#message-classes">Message Classes</a></h3>
+<p>This affects how messages should be sent over the network transport protocol.
+It is valid (though suboptimal) to play the game over a single TCP stream
+(reliable, ordered delivery of all messages). However, for optimal performance,
+a protocol like QUIC, that allows more granular control of ordering and
+reliability, should be used.</p>
+<p>There are five classes of messages: PvP, Notification, Personal, Background, Unreliable.</p>
+<p>PvP messages are all game updates that are part of a player's interaction with
+the game world and other players. Reliable, ordered, elevated (highest)
+priority.</p>
+<p>Notification messages inform the client about important events, but are not
+directly part of moment-to-moment gameplay. Reliable, ordered, medium priority.</p>
+<p>Personal messages are all game updates that are part of game mechanics internal
+within a player's own territory. Things that only directly affect them.
+Reliable, ordered, lower priority.</p>
+<p>Background messages are things that are not an interactive part of gameplay.
+Reliable, unordered, lowest priority.</p>
+<p>Unreliable messages are realtime things that are fine to miss. Can be sent as
+datagrams. They can also be omitted from replay files / spectation.</p>
+<h3 id="opcode-summary"><a class="header" href="#opcode-summary">Opcode Summary</a></h3>
+<p>Quick table summarizing the opcodes of all the message types. A few are left
+unused, reserved for future use.</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Message Kind</th><th>Class</th></tr></thead><tbody>
+<tr><td><code>00000000</code></td><td>Player Update</td><td>Notification</td></tr>
+<tr><td><code>00000001</code></td><td>Tremor</td><td>Background</td></tr>
+<tr><td><code>00000010</code></td><td>Smoke Start</td><td>PvP</td></tr>
+<tr><td><code>00000011</code></td><td>Smoke End</td><td>PvP</td></tr>
+<tr><td><code>00000100</code></td><td>City MoneyInfo</td><td>Unreliable</td></tr>
+<tr><td><code>00000101</code></td><td>City Spending</td><td>Personal</td></tr>
+<tr><td><code>00000110</code></td><td>City ResInfo</td><td>Personal</td></tr>
+<tr><td><code>00000111</code></td><td>City TradeInfo</td><td>Personal</td></tr>
+<tr><td><code>00001---</code></td><td>--</td><td></td></tr>
+<tr><td><code>00010---</code></td><td>--</td><td></td></tr>
+<tr><td><code>00011---</code></td><td>--</td><td></td></tr>
+<tr><td><code>00100000</code></td><td>Structure Gone</td><td>PvP, Personal (cancel pending)</td></tr>
+<tr><td><code>0010----</code></td><td>Structure HP</td><td>PvP</td></tr>
+<tr><td><code>0011----</code></td><td>Explosions</td><td>PvP</td></tr>
+<tr><td><code>0100----</code></td><td>Construction Queued</td><td>Personal</td></tr>
+<tr><td><code>01001111</code></td><td>Construction Update</td><td>Unreliable</td></tr>
+<tr><td><code>0101----</code></td><td>Reveal Structure</td><td>PvP</td></tr>
+<tr><td><code>01011111</code></td><td>--</td><td></td></tr>
+<tr><td><code>0110----</code></td><td>Digits (single)</td><td>PvP</td></tr>
+<tr><td><code>01110---</code></td><td>Reveal Item</td><td>PvP (foreign), Personal (own)</td></tr>
+<tr><td><code>01111---</code></td><td>Tile Kind Update</td><td>PvP</td></tr>
+<tr><td><code>1000----</code></td><td>Digits (multi)</td><td>PvP</td></tr>
+<tr><td><code>1-------</code></td><td>Ownership Updates</td><td>PvP</td></tr>
+</tbody></table>
+</div>
+<p>The patterns must be checked in the correct order, so that more specific
+bit sequences are matched first.</p>
+<h3 id="messages-documentation"><a class="header" href="#messages-documentation">Messages Documentation</a></h3>
+<p>Here is the complete list of game update messages and their encodings:</p>
+<h4 id="player-update"><a class="header" href="#player-update">Player Update</a></h4>
+<p>Something notable happened with a specific player.</p>
+<p>Assembly:</p>
+<pre><code>PLAYER p status
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000000</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>The next byte:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>xxxx----</code></td><td>PlayerId</td></tr>
+<tr><td><code>----xxxx</code></td><td>Status</td></tr>
+</tbody></table>
+</div>
+<p>PlayerId must not be zero.</p>
+<p>The Status frield specifies what happened:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0000</code></td><td>Joined</td></tr>
+<tr><td><code>0001</code></td><td>(reserved)</td></tr>
+<tr><td><code>0010</code></td><td>Stunned/Killed</td></tr>
+<tr><td><code>0011</code></td><td>Un-Stunned</td></tr>
+<tr><td><code>0100</code></td><td>Blinded</td></tr>
+<tr><td><code>0101</code></td><td>Un-Blinded</td></tr>
+<tr><td><code>0110</code></td><td>Protected</td></tr>
+<tr><td><code>0111</code></td><td>Un-Protected</td></tr>
+<tr><td><code>1000</code></td><td>Eliminated</td></tr>
+<tr><td><code>1001</code></td><td>Surrendered</td></tr>
+<tr><td><code>1010</code></td><td>Disconnected</td></tr>
+<tr><td><code>1011</code></td><td>Kicked</td></tr>
+<tr><td><code>1100</code></td><td>(reserved)</td></tr>
+<tr><td><code>1101</code></td><td>(reserved)</td></tr>
+<tr><td><code>1110</code></td><td>Friendly-Chat</td></tr>
+<tr><td><code>1111</code></td><td>All-Chat</td></tr>
+</tbody></table>
+</div>
+<h4 id="tremor"><a class="header" href="#tremor">Tremor</a></h4>
+<p>Some explosion occurred at an unknown location. Client should shake the screen lightly.</p>
+<p>Assembly:</p>
+<pre><code>SHAKE
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000001</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<h4 id="smoke-start"><a class="header" href="#smoke-start">Smoke Start</a></h4>
+<p>A tile was smoked.</p>
+<p>Assembly:</p>
+<pre><code>SMOKE y,x
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000010</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinate of the tile.</p>
+<h4 id="smoke-end"><a class="header" href="#smoke-end">Smoke End</a></h4>
+<p>A tile is no longer smoked.</p>
+<p>Assembly:</p>
+<pre><code>UNSMOKE y,x
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000011</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinate of the tile.</p>
+<h4 id="construction-update"><a class="header" href="#construction-update">Construction Update</a></h4>
+<p>Update on the progress of a pending structure.</p>
+<p>Assembly:</p>
+<pre><code>BUILD y,x current rate
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>01001111</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinates of the tile.</p>
+<p>Followed by <code>u16</code> indicating current accumulated units.</p>
+<p>Followed by <code>u16</code> indicating rate of construction.</p>
+<h4 id="digits--implied-capture"><a class="header" href="#digits--implied-capture">Digits (+ Implied Capture)</a></h4>
+<p>The specified tiles are owned by the player and display the given Minesweeper digit.</p>
+<p>Can be used to capture tiles, if the tile is not owned by the player.</p>
+<p>Can be used to update digits on owned tiles, when they change.</p>
+<p>Assembly:</p>
+<pre><code>DIGITS d/y,x ...
+DIGITS d*/y,x ...
+</code></pre>
+<p>Compact (single) Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0110----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----x---</code></td><td>Asterisk</td></tr>
+<tr><td><code>-----xxx</code></td><td>Digit Value</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinate of the tile.</p>
+<p>Multi-tile Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>1000----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----xxxx</code></td><td>Tile Count - 1</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinates of the tiles.</p>
+<p>Followed by the digit for each tile, two digits packed into one byte (note
+big endian):</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>x-------</code></td><td>asterisk N</td></tr>
+<tr><td><code>-xxx----</code></td><td>digit N</td></tr>
+<tr><td><code>----x---</code></td><td>asterisk N+1</td></tr>
+<tr><td><code>-----xxx</code></td><td>digit N+1</td></tr>
+</tbody></table>
+</div>
+<p>(this encoding allows them to be easily read when inspecting a hex dump)</p>
+<p>For an odd number of tiles, the final digit is ignored (should be encoded as zero).</p>
+<h4 id="structure-gone"><a class="header" href="#structure-gone">Structure Gone</a></h4>
+<p>Something notable happened with a structure.</p>
+<p>Assembly:</p>
+<pre><code>DECONSTRUCT y,x
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00100000</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the tile coordinates.</p>
+<h4 id="structure-hp"><a class="header" href="#structure-hp">Structure HP</a></h4>
+<p>The HP of a structure changed.</p>
+<p>Assembly:</p>
+<pre><code>STRUCTHP y,x hp
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0010----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----xxxx</code></td><td>HP</td></tr>
+</tbody></table>
+</div>
+<p>HP must be &gt; 0.</p>
+<p>Followed by the tile coordinates.</p>
+<h4 id="explosions"><a class="header" href="#explosions">Explosions</a></h4>
+<p>Explosions have occurred. Tile converts to destroyed land. Any item gone.</p>
+<p>If the client should know what item was destroyed, send a &quot;Reveal Item&quot; first.</p>
+<p>Assembly:</p>
+<pre><code>EXPLODE y,x ...
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0011----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----xxxx</code></td><td>Tile Count - 1</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinates of the tiles.</p>
+<h4 id="construction-queued"><a class="header" href="#construction-queued">Construction Queued</a></h4>
+<p>A new structure is pending construction.</p>
+<p>Assembly:</p>
+<pre><code>BUILDNEW y,x {road|bridge|wall|tower}
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0100----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----xxxx</code></td><td>Structure Kind</td></tr>
+</tbody></table>
+</div>
+<p>The Item Kind is:</p>
+<ul>
+<li><code>0000</code>: Road</li>
+<li><code>0001</code>: Bridge</li>
+<li><code>0010</code>: Wall</li>
+<li><code>0011</code>: Tower</li>
+<li>other values reserved</li>
+</ul>
+<p>Must not be <code>1111</code>.</p>
+<p>Followed by tile coordinate.</p>
+<p>Followed by <code>u16</code> indicating total points required to complete construction.</p>
+<h4 id="reveal-structure"><a class="header" href="#reveal-structure">Reveal Structure</a></h4>
+<p>There is a structure on the specified tile.</p>
+<p>Used both when revealing foreign structures and also when own structures finish construction.</p>
+<p>Assembly:</p>
+<pre><code>STRUCT y,x {road|bridge|wall|tower}
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0101----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----xxxx</code></td><td>Structure Kind</td></tr>
+</tbody></table>
+</div>
+<p>The Item Kind is:</p>
+<ul>
+<li><code>0000</code>: Road</li>
+<li><code>0001</code>: Bridge</li>
+<li><code>0010</code>: Wall</li>
+<li><code>0011</code>: Tower</li>
+<li>other values reserved</li>
+</ul>
+<p>Must not be <code>1111</code>.</p>
+<p>Followed by tile coordinate.</p>
+<h4 id="city-moneyinfo"><a class="header" href="#city-moneyinfo">City MoneyInfo</a></h4>
+<p>Reports how much money a city has.</p>
+<p>Assembly:</p>
+<pre><code>CITMONEY i money [income]
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000100</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by:</p>
+<ul>
+<li><code>u8</code>: City ID</li>
+<li><code>u32</code>: current money</li>
+<li>[<code>u16</code>: current income rate]</li>
+</ul>
+<p>The top bit (bit 31) of money indicates whether the
+income is reported too. The income field is only
+present if this bit is <code>1</code>.</p>
+<p>The remaining 31 bits are used for the money value.</p>
+<h4 id="city-spending"><a class="header" href="#city-spending">City Spending</a></h4>
+<p>Reports that a city has spent a given sum of money.</p>
+<p>Assembly:</p>
+<pre><code>CITSPEND i spent
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000101</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by:</p>
+<ul>
+<li><code>u8</code>: City ID</li>
+<li><code>u16</code>: the amount of money spent</li>
+</ul>
+<h4 id="city-resinfo"><a class="header" href="#city-resinfo">City ResInfo</a></h4>
+<p>Update on the resources of a city.</p>
+<p>Assembly:</p>
+<pre><code>CITRES i res
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000110</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by:</p>
+<ul>
+<li><code>u8</code>: City ID</li>
+<li><code>u16</code>: the amount of resources</li>
+</ul>
+<h4 id="city-tradeinfo"><a class="header" href="#city-tradeinfo">City TradeInfo</a></h4>
+<p>Update on the export/import policy of a city.</p>
+<p>Assembly:</p>
+<pre><code>CITTRADE export import
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000111</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by:</p>
+<ul>
+<li><code>u8</code>: City ID</li>
+<li><code>u8</code>: Export rate</li>
+<li><code>u8</code>: Import rate</li>
+</ul>
+<h4 id="tile-kind-update"><a class="header" href="#tile-kind-update">Tile Kind Update</a></h4>
+<p>Changes the base tile type.</p>
+<p>Assembly:</p>
+<pre><code>TILE y,x {water|regular|fertile|destroyed|mountain|forest}
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>01111---</code></td><td>(opcode)</td></tr>
+<tr><td><code>-----xxx</code></td><td>Tile Kind</td></tr>
+</tbody></table>
+</div>
+<p>The Tile Kind is:</p>
+<ul>
+<li><code>000</code>: Water</li>
+<li><code>001</code>: (reserved)</li>
+<li><code>010</code>: Mountain</li>
+<li><code>011</code>: Forest</li>
+<li><code>100</code>: Destroyed Land</li>
+<li><code>101</code>: (reserved)</li>
+<li><code>110</code>: Regular Land</li>
+<li><code>111</code>: Fertile Land</li>
+</ul>
+<p>Followed by tile coordinate.</p>
+<h4 id="reveal-item"><a class="header" href="#reveal-item">Reveal Item</a></h4>
+<p>There is an item on the specified tile.</p>
+<p>Used both when revealing foreign items and also when acking own deployed items.</p>
+<p>Assembly:</p>
+<pre><code>ITEM y,x {none|decoy|mine|flash}
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>01110---</code></td><td>(opcode)</td></tr>
+<tr><td><code>-----xxx</code></td><td>Item Kind</td></tr>
+</tbody></table>
+</div>
+<p>The Item Kind is:</p>
+<ul>
+<li><code>000</code>: None</li>
+<li><code>001</code>: Decoy</li>
+<li><code>010</code>: Mine</li>
+<li><code>011</code>: Flashbang</li>
+<li><code>1--</code>: (reserved)</li>
+</ul>
+<p>Followed by tile coordinate.</p>
+<h4 id="ownership-update"><a class="header" href="#ownership-update">Ownership Update</a></h4>
+<p>Multiple tiles are now known to be owned by the specified player id.</p>
+<p>Assembly:</p>
+<pre><code>OWNER p y,x ...
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>1-------</code></td><td>(opcode)</td></tr>
+<tr><td><code>-xxxx---</code></td><td>PlayerId</td></tr>
+<tr><td><code>-----xxx</code></td><td>Tile Count - 1</td></tr>
+</tbody></table>
+</div>
+<p>The PlayerId must not be zero.</p>
+<p>Followed by the coordinates of the tiles.</p>
+<p>If any of the tiles are of a clustered tile kind (mountain, forest), it is assumed
+that the ownership update applies to the entire cluster. There is no need to list
+every tile coordinate of the cluster.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../tech.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../tech/dataformat-spectator.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../tech.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../tech/dataformat-spectator.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

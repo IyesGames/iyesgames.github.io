@@ -1,0 +1,353 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Spectator/Replay Stream Format - MineWars</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../foss.html"><strong aria-hidden="true">2.</strong> Open-Source Builds</a></li><li class="chapter-item expanded "><a href="../game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="../gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gameplay/map.html"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="../gameplay/territory.html"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="../gameplay/economy.html"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="../gameplay/pvp.html"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="../gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="../gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="../gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="../ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="../gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li><li class="chapter-item expanded "><a href="../achievements.html"><strong aria-hidden="true">3.5.</strong> Achievement Ideas</a></li></ol></li><li class="chapter-item expanded "><a href="../mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li></ol></li><li class="chapter-item expanded "><a href="../tech.html"><strong aria-hidden="true">5.</strong> Technical Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech/dataformat-player.html"><strong aria-hidden="true">5.1.</strong> Player Stream Format</a></li><li class="chapter-item expanded "><a href="../tech/dataformat-spectator.html" class="active"><strong aria-hidden="true">5.2.</strong> Spectator/Replay Stream Format</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MineWars</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="spectatorreplay-stream-format"><a class="header" href="#spectatorreplay-stream-format">Spectator/Replay Stream Format</a></h1>
+<p>The Spectator Protocol is essentially a container format that multiplexes
+multiple <a href="./dataformat-player.html">player protocol</a> streams (one for each player in
+the game, representing their view of the world) together, along with a global
+&quot;spectator view&quot; stream (also in the same format) providing a global view
+of the game world.</p>
+<p>This is used to give spectator clients all the data they need to simultaneously
+follow all participants in the game. This is also the file format used for
+replay files.</p>
+<h2 id="stream-structure"><a class="header" href="#stream-structure">Stream Structure</a></h2>
+<p>The contents of the stream/file appear in this order:</p>
+<ul>
+<li>File Header (file only)</li>
+<li>Initialization Sequence</li>
+<li>[... frames ...]</li>
+</ul>
+<h2 id="file-header"><a class="header" href="#file-header">File Header</a></h2>
+<p>In the case of a replay file, a header is prepended.</p>
+<p>The file header has the following structure:</p>
+<ul>
+<li><code>[u64; 3]</code>: checksums</li>
+<li><code>u16</code>: length of compressed frame data in bytes</li>
+<li><code>u16</code>: length of uncompressed frame data in bytes</li>
+</ul>
+<p>If compressed length == uncompressed length, the frames data is stored uncompressed.</p>
+<p>If compressed length &lt; uncompressed length, all the frames are compressed as a single big LZ4 block.</p>
+<p>The compression is to be done using a special dictionary, see <a href="#compression-dictionary">compression dictionary</a>.</p>
+<h2 id="checksums"><a class="header" href="#checksums">Checksums</a></h2>
+<p>Checksums are only used in the case of replay files. Network streams do
+not have checksums. In that case, the transport protocol is assumed to be
+responsible for data integrity.</p>
+<p>The file begins with 3 SeaHash checksums.</p>
+<p>The first checksum covers:</p>
+<ul>
+<li>the remainder of the file header, incl. the following 2 checksums</li>
+<li>the header part of the initialization sequence: everything until the city and map data</li>
+</ul>
+<p>The second checksum covers:</p>
+<ul>
+<li>the data payload of the initialization sequence: list of cities and map data</li>
+</ul>
+<p>The third checksum covers:</p>
+<ul>
+<li>all the frames data</li>
+</ul>
+<h2 id="initialization-sequence"><a class="header" href="#initialization-sequence">Initialization Sequence</a></h2>
+<p>This is the same as described in the <a href="./dataformat-player.html">player protocol documentation</a>.</p>
+<p>However, starting item positions should be encoded inside the map data.</p>
+<h2 id="frames"><a class="header" href="#frames">Frames</a></h2>
+<p>A Frame is a collection of game updates that happen together at the same time.
+It encodes the point of view of every player in the game who is involved + a
+special global spectator view. All of these &quot;streams&quot; are stored together inside
+the frame.</p>
+<p>Note: it is not a requirement that <em>all</em> game update messages from the same
+timestamp are encoded together. They may be fragmented into multiple frames.
+Subsequent frames would just have the timestamp field set to zero.</p>
+<p>Such fragmentation is necessary if the frame payload exceeds 256 bytes in length.</p>
+<p>There are three kinds of frame encodings: Homogenous, Heterogenous, Keepalive.</p>
+<h3 id="homogenous-frames"><a class="header" href="#homogenous-frames">Homogenous Frames</a></h3>
+<p>Homogenous frames are frames where every participant gets the same data. The data is
+only encoded once and assumed to apply to all participating streams.</p>
+<p>Homogenous frames have the following structure:</p>
+<ul>
+<li><code>u16</code>: Header</li>
+<li><code>u8</code>/<code>u16</code>: participation mask</li>
+<li><code>u8</code>: length of data payload in bytes - 1</li>
+<li>[ ... data payload ... ]</li>
+</ul>
+<p>The top bit (bit 15) in the Header must be <code>1</code>, indicating that this is a Homogenous
+Frame. The remaining 15 bits represent the time delta since the previous frame, in
+milliseconds, and must not be all-ones (the max value is reserved for Keepalive Frames).</p>
+<p>The participation mask is a bitmask indicating which PlayerIds the frame applies to.
+Bit 0 represents the global spectator view.</p>
+<p>The size of the participation mask is determined by the &quot;max player id&quot; bit in the
+Initialization Sequence.</p>
+<p>The data payload is the <a href="./dataformat-player.html#gameplay-messages">player protocol update messages</a>.
+All of the players listed in the participation mask must receive the entire identical data payload.</p>
+<h3 id="heterogenous-frames"><a class="header" href="#heterogenous-frames">Heterogenous Frames</a></h3>
+<p>Heterogenous frames are freams where each participant gets different data. The data
+for each participating stream is included in the frame.</p>
+<p>Heterogenous frames have the following structure:</p>
+<ul>
+<li><code>u16</code>: Header</li>
+<li><code>u8</code>/<code>u16</code>: participation mask</li>
+<li><code>[u8]</code>: lengths of each player view's portion of the data payload (as many as specified in the participation mask)</li>
+<li>[ ... data payload ... ]</li>
+</ul>
+<p>The top bit (bit 15) in the Header must be <code>0</code>, indicating that this is a Heterogenous
+Frame. The remaining 15 bits represent the time delta since the previous frame, in
+milliseconds, and must not be all-ones (the max value is reserved for Keepalive Frames).</p>
+<p>The participation mask is a bitmask indicating which PlayerIds the frame applies to.
+Bit 0 represents the global spectator view.</p>
+<p>The size of the participation mask is determined by the &quot;max player id&quot; bit in the
+Initialization Sequence.</p>
+<p>The data payload is the global spectator view + each player's view (in the order
+of the bits in the participation mask), concatenated together.</p>
+<p>Each view's data is the <a href="./dataformat-player.html#gameplay-messages">player protocol update
+messages</a> for that view.</p>
+<p>The total length of the data payload is the sum of the lengths of each view's
+data, as given in the Heterogenous Frame Header described above.</p>
+<h3 id="keepalive-frames"><a class="header" href="#keepalive-frames">Keepalive Frames</a></h3>
+<p>Keepalive frames are to be used if the time delta since the last frame is too
+long to be represented in a single frame header. It is an empty frame with no
+data payload, just used to advance time.</p>
+<p>It is encoded as a frame with the time delta field being all-ones (the maximum
+value). The topmost bit is unimportant/ignored.</p>
+<p>Keepalive frames have the following structure:</p>
+<ul>
+<li><code>u16</code>: <code>-111111111111111</code></li>
+</ul>
+<p>Note: there is no participation mask, no data length field, no data payload</p>
+<h2 id="the-global-spectator-view"><a class="header" href="#the-global-spectator-view">The Global Spectator View</a></h2>
+<p>The global spectator view behaves somewhat differently from the player views.</p>
+<ul>
+<li>No fog of war must be displayed</li>
+<li>Digits are to be calculated by the client, from known mine locations</li>
+</ul>
+<p>To accommodate this, there are some special provisions in the spectator
+stream format, that differ from the player stream.</p>
+<p>The initialization sequence encodes mine positions inside the map data.</p>
+<p>The global spectator view is controlled using the same update message format
+as player views, but some message types are used differently:</p>
+<ul>
+<li>&quot;Digit Update&quot; and &quot;Capture + Digits&quot; must have the tile owner inferred
+from the participation mask. The mask must encode only one PlayerID
+(other than bit 0 for the spectator stream).</li>
+</ul>
+<h2 id="compression-dictionary"><a class="header" href="#compression-dictionary">Compression Dictionary</a></h2>
+<p>A special dictionary is prepared to help improve compression of the update
+frames. It is to be generated from the data in the initialization sequence.</p>
+<p>It is constructed by concatenating the following data:</p>
+<ul>
+<li>Every mountain coordinate on the map, in sorted order.</li>
+<li>Every land coordinate on the map, in sorted order.</li>
+</ul>
+<p>All permutations of a given sample pattern are to be concatenated, before
+moving onto the next pattern.</p>
+<p>This effectively pre-seeds the compression algorithm with data sequences
+likely to occur early-game.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../tech/dataformat-player.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../tech/dataformat-player.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

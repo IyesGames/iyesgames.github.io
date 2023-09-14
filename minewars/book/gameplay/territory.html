@@ -1,0 +1,359 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Territory and Ownership - MineWars</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../foss.html"><strong aria-hidden="true">2.</strong> Open-Source Builds</a></li><li class="chapter-item expanded "><a href="../game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="../gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gameplay/map.html"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="../gameplay/territory.html" class="active"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="../gameplay/economy.html"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="../gameplay/pvp.html"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="../gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="../gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="../gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="../ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="../gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li><li class="chapter-item expanded "><a href="../achievements.html"><strong aria-hidden="true">3.5.</strong> Achievement Ideas</a></li></ol></li><li class="chapter-item expanded "><a href="../mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li></ol></li><li class="chapter-item expanded "><a href="../tech.html"><strong aria-hidden="true">5.</strong> Technical Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech/dataformat-player.html"><strong aria-hidden="true">5.1.</strong> Player Stream Format</a></li><li class="chapter-item expanded "><a href="../tech/dataformat-spectator.html"><strong aria-hidden="true">5.2.</strong> Spectator/Replay Stream Format</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MineWars</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="territory-and-ownership"><a class="header" href="#territory-and-ownership">Territory and Ownership</a></h1>
+<p>MineWars is a game of territory. Players must expand to claim resources and
+progress through the game.</p>
+<h2 id="visibility"><a class="header" href="#visibility">Visibility</a></h2>
+<p>Areas away from the player's territory are covered by &quot;fog of war&quot;. The
+player can see <strong>3</strong> tiles away from tiles they own.</p>
+<p>The entire map's geography is shown to all players at all times, there are no
+areas that are completely &quot;black&quot;. Fog of war simply means that the player does
+not get updates on the status of the tile / any gameplay that happens there.</p>
+<p>Any changes to the tile kind behind fog of war are not revealed, so a player's
+view of the map geography can be outdated.</p>
+<p>Previous ownership is not shown behind fog of war. Tiles should have a neutral
+color.</p>
+<p>Mountain tiles are always treated as a cluster. If you can see one tile of
+the cluster, you see them all.</p>
+<p>There are technically 3 levels of visibility, showing increasing amounts of info:</p>
+<ul>
+<li>Fog: any tile further than the visibility radius away from a player-owned tile</li>
+<li>Limited: any tile not owned by the player, within the visibility radius</li>
+<li>Full: tiles owned by the player, tiles within the range of a <strong>Watch Tower</strong>, tiles where a <strong>City</strong> is located</li>
+</ul>
+<p>Within &quot;Fog Visibility&quot; tiles, the player sees:</p>
+<ul>
+<li>Last known tile kind / geography (may be outdated)</li>
+<li>Skulls</li>
+</ul>
+<p>Within &quot;Limited Visibility&quot; tiles, the player also sees:</p>
+<ul>
+<li>Current tile kind (if changed due to harvesting, explosions, etc.)</li>
+<li>The ownership of the tile (displayed using the owner's color)</li>
+<li>Completed Structures</li>
+<li>Smokes</li>
+<li>Explosions</li>
+</ul>
+<p>Within &quot;Full Visibility&quot; tiles, the player also sees:</p>
+<ul>
+<li>Items</li>
+<li>Pending Structures</li>
+</ul>
+<h2 id="ownership-of-territory"><a class="header" href="#ownership-of-territory">Ownership of Territory</a></h2>
+<p>Each tile on the map can have an owner: one of the players in the game. The
+owner is indicated by the tile's color. Every player has a color. For
+accessibility reasons, the colors should be customizable client-side. Players do
+not get to pick the exact colors displayed to others.</p>
+<p>At the start of the game, all tiles are neutral, except for the starting cities
+of the players and all tiles adjacent to them.</p>
+<p>Owned tiles provide <strong>Resources</strong> to the city of the region they are associated
+with, if the player owns the city.</p>
+<p>On owned <strong>Land</strong>, the player gets:</p>
+<ul>
+<li>the ability to deploy <strong>Items</strong> on the tile</li>
+<li>the ability to perform <strong>offensive actions</strong> on adjacent unowned tiles</li>
+<li>the ability to <strong>build structures</strong>, if the player owns the region's city</li>
+<li>the ability to <strong>Harvest</strong> the tile, if the player owns the region's city</li>
+<li>visibility of surrounding tiles</li>
+<li>a digit (like Minesweeper) indicating how many (if any) items exist on adjacent unowned tiles</li>
+</ul>
+<p>(&quot;unowned&quot; here means: neutral or owned by another player)</p>
+<h2 id="capturing-territory"><a class="header" href="#capturing-territory">Capturing Territory</a></h2>
+<h3 id="land"><a class="header" href="#land">Land</a></h3>
+<p>Land is captured simply by clicking on it. You can only do it if you own at
+least one adjacent tile.</p>
+<p>After being captured, the land is <strong>protected</strong> for <strong>2.5</strong> sec, meaning it
+cannot be captured by another player. This gives the new owner a chance to
+deploy items to defend it, preventing the game from turning into a clickfest.</p>
+<p>If the tile is known empty (there is no adjacent digit), the game will
+autoexpand. All safe land (up to any tiles with digits) will be recursively
+captured instantly, like in Minesweeper.</p>
+<p>If there is an adjacent digit, that indicates the tile is potentially unsafe --
+a risk to the player.</p>
+<p>If the tile contains any <strong>Items</strong>, their respective effects will be triggered
+when the player attempts to capture the tile (see their respective docs for more detail):</p>
+<ul>
+<li><strong>Mines</strong> will <strong>explode</strong>, causing the player to be <strong>stunned</strong></li>
+<li><strong>Decoys</strong> will <strong>break</strong> / do nothing, and the tile will be captured as if it was empty</li>
+<li><strong>Flashbang Traps</strong> will &quot;blind&quot; the player</li>
+</ul>
+<p>Player strategy: if they think the tile is empty or a decoy, they should capture
+it, breaking any decoy. If they think the tile contains a dangerous item, they
+can either <strong>Strike the tile</strong> to destroy it, or try to safely surround and
+<strong>capture the item</strong>.</p>
+<h3 id="clusters"><a class="header" href="#clusters">Clusters</a></h3>
+<p><strong>Mountains</strong> and <strong>Forests</strong> are always owned as a cluster. If there are multiple
+adjacent tiles of one of these types, the player cannot own them individually;
+they are captured all at once and lost all at once.</p>
+<p>To capture a cluster, surround it on all sides by capturing all adjacent land
+tiles. If there are multiple adjacent clusters (say, a forest next to a
+mountain), or if any of the adjacent land contains <strong>Items</strong> or <strong>Structures</strong>,
+all of those tiles are grouped together for the purpose of capturing. The player
+must surround the entire group (capture all adjacent safe tiles), gaining
+control of all the clusters, items, and structures, at once.</p>
+<p>A player only maintains ownership of a mountain or forest cluster <em>while</em> they
+maintain ownership of <em>all</em> adjacent land tiles. You immediately lose ownership
+of the entire cluster if another player captures even a single adjacent land
+tile.</p>
+<p>Note that only land tiles are counted. If there are adjacent clusters (forest
+next to a mountain), it is possible to lose one while keeping the other.</p>
+<h3 id="items"><a class="header" href="#items">Items</a></h3>
+<p>When there are <strong>Items</strong> deployed on <strong>Land</strong>, you can capture the items by
+surrounding them. Capture all safe tiles around them.</p>
+<p>If there are multiple adjacent tiles with items on them, they are treated
+as a Cluster, similar to mountains/forests.</p>
+<p>When the items have been successfully surrounded, all the land tiles are
+automatically captured by the player. The items are <strong>sold</strong> for money.
+See the Economy section for more info.</p>
+<p>Player strategy implications: This rewards the player for playing the game
+carefully and taking the time to treat foreign items as a puzzle to be solved,
+rather than simply striking the tiles to destroy the items. Striking is quick and
+easy, but costs money, and destroys the land's resources. Capturing the items
+is time-consuming and requires mental effort to solve the minesweeper digits
+puzzle, but rewards the player with money and keeps the land intact.</p>
+<h3 id="cities"><a class="header" href="#cities">Cities</a></h3>
+<p>To capture a city, the player must surround the city, by capturing every
+land tile adjacent to the city's tile.</p>
+<p>The city remains owned by the player until another player does the same
+(captures every adjacent land tile).</p>
+<p>See the <strong>Economy</strong> section for further implications of capturing cities.</p>
+<h3 id="structures"><a class="header" href="#structures">Structures</a></h3>
+<h4 id="roads"><a class="header" href="#roads">Roads</a></h4>
+<p>Road tiles are treated as land tiles for the purpose of capturing.</p>
+<p>However, note that cities only count as connected, if there is a path
+that is fully owned by the player. Upon losing even a single tile,
+the connection is broken.</p>
+<h4 id="barricades"><a class="header" href="#barricades">Barricades</a></h4>
+<p>Given that barricades connect mountain clusters, they have implications
+for the ownership of those clusters. They make it effectively impossible
+to capture each of the mountain clusters individually. However, each
+cluster can still be lost individually.</p>
+<p>When a player surrounds both clusters together with the barricade between
+them, they capture the barricade along with both clusters.</p>
+<h4 id="watch-towers"><a class="header" href="#watch-towers">Watch Towers</a></h4>
+<p>Watch Towers are captured by surrounding them, similar to cities. If they
+are built adjacent to a cluster, they need to be captured together with
+that cluster. If they are built between clusters, they effectively work
+as a Barricade.</p>
+<h4 id="bridges"><a class="header" href="#bridges">Bridges</a></h4>
+<p>Bridges are built on water, and therefore have no ownership. However,
+they allow a player to capture tiles on the opposite side of the water,
+if they own tiles on one side.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../gameplay/map.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../gameplay/economy.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../gameplay/map.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../gameplay/economy.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

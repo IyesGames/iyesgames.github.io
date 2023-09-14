@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Economy - MineWars</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../foss.html"><strong aria-hidden="true">2.</strong> Open-Source Builds</a></li><li class="chapter-item expanded "><a href="../game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="../gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gameplay/map.html"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="../gameplay/territory.html"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="../gameplay/economy.html" class="active"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="../gameplay/pvp.html"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="../gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="../gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="../gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="../ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="../gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li><li class="chapter-item expanded "><a href="../achievements.html"><strong aria-hidden="true">3.5.</strong> Achievement Ideas</a></li></ol></li><li class="chapter-item expanded "><a href="../mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li></ol></li><li class="chapter-item expanded "><a href="../tech.html"><strong aria-hidden="true">5.</strong> Technical Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech/dataformat-player.html"><strong aria-hidden="true">5.1.</strong> Player Stream Format</a></li><li class="chapter-item expanded "><a href="../tech/dataformat-spectator.html"><strong aria-hidden="true">5.2.</strong> Spectator/Replay Stream Format</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MineWars</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="economy"><a class="header" href="#economy">Economy</a></h1>
+<p>The <strong>Economy</strong> is a core part of the game. Each city generates income for
+the player, which can be spent to perform gameplay actions.</p>
+<h3 id="money"><a class="header" href="#money">Money</a></h3>
+<p>Each city has a <strong>Bank</strong>. The Bank is the total <strong>money</strong> of the city.</p>
+<p>The player can spend money to:</p>
+<ul>
+<li>Build structures</li>
+<li>Deploy items</li>
+<li>Perform offensive actions</li>
+</ul>
+<p>The actions are funded by the city of the region of the tile where the action
+takes place.</p>
+<p>In foreign regions (where the player does not own the local city), actions
+are funded by the nearest city by distance and have their cost multiplied by <strong>1.25</strong>.</p>
+<p>If a city has <em>active road connections</em> to other cities, then they will fund the
+actions collectively. The cost of the actions is split between all connected
+neighboring cities, proportionally to the total amount of money each city has in
+its bank. The local city's contribution is weighted double.</p>
+<p>If a city is captured by another player, <strong>75%</strong> of the city's money will be
+distributed between your remaining cities. <strong>25%</strong> of the money will stay in the
+city and be usable by the new owner.</p>
+<h3 id="income"><a class="header" href="#income">Income</a></h3>
+<p>Each city constantly generates/accumulates money. The rate of income is determined
+by the total <strong>resources</strong> owned by the city; that is, the sum of the resources
+of each owned tile within the city's region.</p>
+<p>If a structure is currently being built, the city does not generate income until
+it is completed. Instead, the resources are counted towards the rate of
+construction progress on the structure.</p>
+<p>Neutral cities (not owned by any player) do not generate any income.</p>
+<h3 id="resources"><a class="header" href="#resources">Resources</a></h3>
+<p>Each tile provides a certain number of resource points, counted towards the
+city of the region where the tile is located, if the player owns both the
+city and the tile.</p>
+<p>Resources given by each tile owned:</p>
+<ul>
+<li><strong>Regular Land</strong>: <strong>1</strong> Res/sec</li>
+<li><strong>Fertile Land</strong>: <strong>2</strong> Res/sec</li>
+<li><strong>Destroyed Land</strong> and <strong>Foundation</strong>: <strong>0</strong> Res/sec</li>
+<li><strong>Forest</strong>: <strong>3</strong> Res/sec</li>
+<li><strong>Mountain</strong>: <strong>5</strong> Res/sec</li>
+</ul>
+<p>Further, each city has <strong>50</strong> Base Res: the minimum amount of resources inherent
+to the city, regardless of any owned tiles in the region.</p>
+<h3 id="harvesting-tiles"><a class="header" href="#harvesting-tiles">Harvesting Tiles</a></h3>
+<p>Players may *<em>harvest</em> tiles (one tile at a time) to instantly claim a large sum
+of resources. They are awarded to the city of the region the tile belongs to.</p>
+<p>This is a one-time action. After harvesting, the tile is converted to
+<strong>Destroyed Land</strong> and produces no more resources for the remainder of the game.</p>
+<p>The player must own both the tile and the city whose region it belongs to.</p>
+<p>The change in tile kind is not visible to other players behind fog of war. When
+players gain visibility of the tile, that is when they will get the update.</p>
+<p>This mechanic exists to give players more options for survival in tense
+situations. They can accelerate their current production one-time, at the cost
+of foregoing all the potential resources they could have accumulated from the
+tile over time and also potentially worsening the natural protection they get
+from the map's geography.</p>
+<p>Harvest bounties (resource given when harvesting a tile):</p>
+<ul>
+<li><strong>Regular Land</strong>: <strong>100</strong> Res</li>
+<li><strong>Fertile Land</strong>: <strong>250</strong> Res</li>
+<li><strong>Destroyed Land</strong> and <strong>Foundation</strong>: <strong>0</strong> Res</li>
+<li><strong>Forest</strong>: <strong>420</strong> Res</li>
+<li><strong>Mountain</strong>: <strong>600</strong> Res</li>
+</ul>
+<h3 id="constructing-structures"><a class="header" href="#constructing-structures">Constructing Structures</a></h3>
+<p>The player may construct infrastructure on land that they own, if they own the
+city in the region. When the player wants to build something, the city's
+resources will go towards the structure and the city will not generate income
+until construction is complete.</p>
+<p>If construction is canceled before it is completed, <strong>50%</strong> of the spent
+resources are instantly reclaimed and the remaining resources are lost.</p>
+<h3 id="bulldozing-structures"><a class="header" href="#bulldozing-structures">Bulldozing Structures</a></h3>
+<p>Any structures on land owned by the player can be bulldozed. This returns
+<strong>25%</strong> of the resource cost of the structure back to the player as income.</p>
+<p>The reward is counted towards the city of the tile's region, if owned by the
+player, or the nearest city by distance otherwise.</p>
+<h3 id="capturing-foreign-items"><a class="header" href="#capturing-foreign-items">Capturing Foreign Items</a></h3>
+<p>If a player captures a tile that contains an item, the item is instantly sold,
+giving the player <strong>75%</strong> of the usual cost of the item.</p>
+<p>The reward is counted towards the city of the tile's region, if owned by the
+player, or the nearest city by distance otherwise.</p>
+<h3 id="costs"><a class="header" href="#costs">Costs</a></h3>
+<p>The cost of everything is determined using a multiplier applied to a <strong>Base
+Unit</strong>; this helps negate the unpredictability of the random procedural world
+generation. This is calculated once at the start of the game, based on the
+generated map, and remains fixed throughout the game.</p>
+<p>The <strong>Base Unit</strong> is roughly representative of how powerful cities could
+get in a given game session, and is calculated as follows:</p>
+<ul>
+<li>The arithmetic mean of the available resources in each region</li>
+</ul>
+<p>This should help give relatively well-balanced costs with varying map configurations.</p>
+<p>The final amounts are rounded up to the nearest <strong>100</strong>.</p>
+<p>Cost sheet (TODO playtest and balance):</p>
+<p>Items:</p>
+<ul>
+<li>Mine: 3.0</li>
+<li>Decoy: 3.0</li>
+<li>Flashbang: 4.0</li>
+</ul>
+<p>Structures:</p>
+<ul>
+<li>Road: 1.5</li>
+<li>Barricade: 8.0</li>
+<li>WatchTower: 12.0</li>
+<li>Bridge: 5.0</li>
+</ul>
+<p>Actions:</p>
+<ul>
+<li>Strike: 1.0 + 0.25 * NTiles</li>
+<li>Reveal: 10.0</li>
+<li>Smoke: 2.0</li>
+</ul>
+<p>Starting money:</p>
+<ul>
+<li>If a player captures a neutral city: 10.0</li>
+<li>The initial (spawn) city of each player starts with: 16.0</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../gameplay/territory.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../gameplay/pvp.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../gameplay/territory.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../gameplay/pvp.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

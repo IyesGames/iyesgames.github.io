@@ -1,0 +1,1966 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>MineWars</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="foss.html"><strong aria-hidden="true">2.</strong> Open-Source Builds</a></li><li class="chapter-item expanded "><a href="game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gameplay/map.html"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="gameplay/territory.html"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="gameplay/economy.html"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="gameplay/pvp.html"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li><li class="chapter-item expanded "><a href="achievements.html"><strong aria-hidden="true">3.5.</strong> Achievement Ideas</a></li></ol></li><li class="chapter-item expanded "><a href="mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li></ol></li><li class="chapter-item expanded "><a href="tech.html"><strong aria-hidden="true">5.</strong> Technical Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tech/dataformat-player.html"><strong aria-hidden="true">5.1.</strong> Player Stream Format</a></li><li class="chapter-item expanded "><a href="tech/dataformat-spectator.html"><strong aria-hidden="true">5.2.</strong> Spectator/Replay Stream Format</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MineWars</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="overview"><a class="header" href="#overview">Overview</a></h1>
+<p>MineWars is a multiplayer real-time strategy game, inspired by Minesweeper and
+Civilization. Players battle for territory and control over cities. The objective
+of the game is to eliminate other players by capturing their cities.</p>
+<p>PvP confrontations happen via Minesweeper-like gameplay. Players place mines and
+other items on their own territory to defend it and challenge their opponents.
+They see digits hinting at the locations of enemy items.</p>
+<p>There is an in-game economy. Cities accumulate money based on the territory
+the player owns, which the player can spend to deploy items, build infrastructure,
+or perform offensive attacks.</p>
+<p>A good MineWars player knows how to strategically build their empire: manage
+their economy and build infrastructure to set themselves up for success. They
+can make good use of the map's varied geography. They can also out-Minesweeper
+their opponents in the raw fight for territory.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="open-source-builds"><a class="header" href="#open-source-builds">Open-Source Builds</a></h1>
+<p>MineWars is a partially-open-source project.</p>
+<p>All official game releases are proprietary. The full source code for the
+official builds of the game (as distributed through official channels) is <em>not</em>
+available.</p>
+<p>However, a somewhat cut-down version of the game can be built from the public
+<a href="https://github.com/IyesGames/MineWars">GitHub Repository</a>. All the source code
+in that repository is dual-licensed as MIT/Apache2, and so is completely free
+(as in freedom) for anyone to do whatever they want with it.</p>
+<h2 id="what-is-included-in-the-open-source-version"><a class="header" href="#what-is-included-in-the-open-source-version">What is included in the open-source version?</a></h2>
+<p>The open-source version actually includes most of the technology in MineWars.
+The majority of the game client, and the foundations of the game servers are
+open-source.</p>
+<p>However, the following features are <strong>not</strong> included:</p>
+<ul>
+<li>The ability to play or host the main MineWars multiplayer game mode
+<ul>
+<li>This includes networked play, offline play, and the tutorial</li>
+</ul>
+</li>
+<li>Procedurally-generated MineWars maps (for any game mode, editor, etc.)</li>
+<li>Any form of anti-cheat</li>
+<li>Access to official multiplayer servers</li>
+<li>Anything related to integration with 3rd-party services like Steam and Discord</li>
+</ul>
+<p>Notably, you <strong>can</strong> do the following:</p>
+<ul>
+<li>Play other game modes (such as the Minesweeper-like multiplayer and singleplayer modes)</li>
+<li>Connect to and play on unofficial servers that host games in other game modes
+<ul>
+<li>Even if they use the proprietary version of the server</li>
+</ul>
+</li>
+<li>Host your own game servers for other game modes, using custom maps</li>
+<li>Spectate matches and watch replays of the main MineWars multiplayer game mode</li>
+<li>Use the scenario editor to create custom maps (random map generation is disabled)</li>
+</ul>
+<p>Basically, it provides a great starting point for developing your own
+alternative game modes, if you wish to do so. Make your own modded servers with
+your own custom game modes and configs, custom maps (or procedural generation
+algo), etc. Learn from the code. Copypaste our code into your own gamedev
+projects. Whatever. Go wild. Go nuts.</p>
+<p>However, if you want to host unofficial servers for the main MineWars game mode,
+you need the official proprietary server build, included with the official game
+release. If you want to play MineWars on community servers, you need the
+official game client.</p>
+<p>The proprietary server is still decently flexible, though. It is designed to
+allow the community to create unofficial infrastructure and services around it,
+if you want to create your own multiplayer matchmaking platform or whatever.
+You can control it via a RPC interface, to set up MineWars sessions, meaning you
+could develop your own management / launcher / frontend / authentication / etc.
+You can also integrate a custom anti-cheat solution.</p>
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<p>The code in the GitHub repo <em>is</em> what is actually used for official builds. It
+is not a separate stripped-down code dump.</p>
+<p>For official builds, we simply replace the stub libraries in the <code>proprietary</code>
+folder with code from our private repos, to add in the additional functionality.</p>
+<p>If you make contributions to our open-source repo, your contributions will be
+included in future official updates for the game, too. :) You will be credited
+for your contributions.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="game-design"><a class="header" href="#game-design">Game Design</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="target-audience"><a class="header" href="#target-audience">Target Audience</a></h1>
+<p>Who is this game for? What makes it fun and appealing?</p>
+<h2 id="game-appeal"><a class="header" href="#game-appeal">Game Appeal</a></h2>
+<h3 id="intense-time-pressure-and-conflict"><a class="header" href="#intense-time-pressure-and-conflict">Intense Time Pressure and Conflict</a></h3>
+<p>Intense fast-paced high-pressure gameplay.</p>
+<p>You have to be constantly engaged and making decisions, be good at managing
+your time and attention. Be fast and decisive.</p>
+<p>Every second is an <strong>opportunity cost</strong>. If you are not doing something useful,
+you are falling behind other players. If you make good decisions quickly,
+you pull ahead.</p>
+<p>You are racing for domination.</p>
+<h3 id="gameplay-variety"><a class="header" href="#gameplay-variety">Gameplay Variety</a></h3>
+<p>Large variety of interconnected game mechanics give multi-dimensional gameplay.
+The game mechanics fit well together and have cross-cutting implications.</p>
+<p>Every decision has consequences. You are constantly considering your
+opportunity cost – making trade-offs about where to invest your time,
+attention, and resources.</p>
+<p>The diversity of gameplay mechanics gives players the chance to develop their
+own unique playstyles and try different strategies every game, making the
+game exciting to replay.</p>
+<h3 id="emotional-moments"><a class="header" href="#emotional-moments">Emotional Moments</a></h3>
+<p>Emotional tension from facing the consequences of your mistakes and poor
+decisions.</p>
+<p>Emotional reward from making good decisions that pay off, and from exploiting
+the mistakes and vulnerabilities of other players.</p>
+<h3 id="skill-based-gameplay"><a class="header" href="#skill-based-gameplay">Skill-based Gameplay</a></h3>
+<p>You get better at the game as you play more. Your skill and experience are
+the primary things that determine your success, not chance (and certainly
+not pay-to-win).</p>
+<p>The gameplay effects due to the randomness of the procedurally-generated map
+and spawn location are quickly dwarfed by the consequences of your skills
+and decisions.</p>
+<h4 id="macro-play"><a class="header" href="#macro-play">Macro Play</a></h4>
+<p>MineWars is fundamentally a real-time strategy game. You build your empire by
+capturing cities, taking control of the map, constructing infrastructure, and
+managing resources.</p>
+<p>As you become more experienced, you reduce your cognitive overhead. You
+become more decisive with your actions.</p>
+<p>Build intuition and instincts for how to react to different situations. What
+game mechanics to focus your attention on. How to adapt to the map's geography.</p>
+<p>Learn how to plan well for the progression of the game and set yourself up
+for success.</p>
+<h4 id="micro-play"><a class="header" href="#micro-play">Micro Play</a></h4>
+<p>The Minesweeper-inspired gameplay is how you fight other players.</p>
+<p>Get good at parsing the Minesweeper digits. Glance at the screen and instantly
+know what to do, where to click.</p>
+<p>Get good at your defense game. Know effective mine/decoy formations and quickly
+deploy them appropriately to the situation.</p>
+<h3 id="infinite-replayability"><a class="header" href="#infinite-replayability">Infinite Replayability</a></h3>
+<p>The procedurally-generated map guarantees that every game is a unique
+experience.</p>
+<p>Learn to navigate the unique geography of each particular map and your spawn
+position in it.</p>
+<p>Also, competitive PvP games are replayable by nature …</p>
+<h3 id="social-dynamics"><a class="header" href="#social-dynamics">Social Dynamics</a></h3>
+<p>… your opponents are other humans that also learn and get more skilled,
+and everyone has their own unique playstyle.</p>
+<p>Play psychological mind-games with your opponent.</p>
+<p><a href="/ideas.html#alliances">Alliances Extension</a> may greatly expand the scope for this.</p>
+<h2 id="audience"><a class="header" href="#audience">Audience</a></h2>
+<p>The highly-determined competitive strategy player is the primary target of this game.</p>
+<h3 id="spectating-experience"><a class="header" href="#spectating-experience">Spectating Experience</a></h3>
+<p>Such a game is likely to also be engaging to watch, not just play.</p>
+<p>There is a whole separate e-sports-like potential audience for this game.</p>
+<p>Some people may be more interested in spectating and analyzing the matches of
+other players, rather than playing the game themselves. Offering good
+spectator and replay experiences can provide a lot of value to the community.</p>
+<p>Being able to watch offline replays, not just live matches, is also a valuable
+tool for analyzing matches and learning from prior experiences. Game replay
+and analysis features would be valuable to both spectator/analyst and to
+player audiences.</p>
+<h3 id="who-do-you-play-against"><a class="header" href="#who-do-you-play-against">Who do you play against?</a></h3>
+<p>The playerbase could also be categorized based on who they most likely want to play with.</p>
+<p>Some players may prefer to play against their friends or at local tournaments. They may prefer a LAN session.</p>
+<p>Some players may prefer to play against strangers. They may prefer online matchmaking.</p>
+<p>Some players may prefer to play with a semi-restricted number of people on a community server.</p>
+<p>The above is just a list of possibilities. It is not necessarily a development
+goal to support all of these multiplayer modes, but it's important to point
+out that it would increase the playerbase.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="gameplay-and-rules"><a class="header" href="#gameplay-and-rules">Gameplay and Rules</a></h1>
+<p>Note: everything subject to change, as we play-test and balance the game.</p>
+<p>Note: many of the concepts are interconnected; by necessity, this document
+cannot introduce them in isolation, and each section may refer to concepts
+not yet explained (if you are reading in order).</p>
+<h2 id="gameplay-objective"><a class="header" href="#gameplay-objective">Gameplay Objective</a></h2>
+<p>In MineWars, a number of players compete for ownership over <strong>cities</strong>
+and <strong>territory</strong>.</p>
+<p>There are a number of <strong>cities</strong> in various locations on the map. Each
+player begins the game with one <strong>starting city</strong>.</p>
+<p>A player must own <em>at least one city</em> at all times; otherwise is eliminated
+from the game. The objective of the game is to eliminate other players.</p>
+<h2 id="game-over-condition"><a class="header" href="#game-over-condition">Game Over Condition</a></h2>
+<h3 id="lose"><a class="header" href="#lose">Lose</a></h3>
+<p>If a player loses the last city they own, they are out of the game. All
+territory they own becomes neutral. They may continue to spectate the game.</p>
+<h3 id="win"><a class="header" href="#win">Win</a></h3>
+<p>If a player is the last one standing, they are the winner of the game.</p>
+<h2 id="score"><a class="header" href="#score">Score</a></h2>
+<p>During the game, there can be a scoreboard allowing players to judge the progress
+through the game, based on their (and other players') stats.</p>
+<p>The most important number is the &quot;cities owned&quot;. It indicates the size of each
+player's empire. All players must know the status of all cities at all times.
+Their locations and owners are visible, even behind fog of war. There can be a
+mini-scoreboard on-screen at all times, showing the number of cities for each
+player in the match.</p>
+<p>Additionally, players can bring up a detailed scoreboard, which provides more
+stats. Some example things we can include:</p>
+<ul>
+<li>&quot;Kills&quot;: number of times another player has stepped on a player's mine</li>
+<li>&quot;Deaths&quot;: number of times the player has stepped on another player's mine</li>
+<li>&quot;Captures&quot;: number of times the player has captured a city</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="the-map-cities-and-geography"><a class="header" href="#the-map-cities-and-geography">The Map: Cities and Geography</a></h1>
+<p>Every game session/match happens on a new, procedurally-generated map.</p>
+<h2 id="map-geography"><a class="header" href="#map-geography">Map Geography</a></h2>
+<p>The game map is a procedurally-generated fully-contiguous island/continent.</p>
+<p>There are 4 types of tiles (geographical features):</p>
+<p><strong>Water</strong> is everything outside of the playable area. Non-interactive.</p>
+<p><strong>Land</strong> is an interactive tile, forming the playable area.</p>
+<p><strong>Fertile Land</strong> gives extra resources. Besides the resources, this tile behaves
+identically to <strong>Land</strong>.</p>
+<p><strong>Destroyed Land</strong> is a tile where a destructive player action has occured,
+such as a mine explosion, or resource harvesting. Once a tile is converted
+into destroyed land, it generates no resources for the remainder of the game.
+Besides the resources, this tile behaves identically to <strong>Land</strong>.</p>
+<p><strong>Mountains</strong> and <strong>Forests</strong> are generated in random clusters of multiple
+adjacent tiles. They can only be captured as an entire cluster. They give large
+amounts of resources when owned by players. No gameplay actions can happen on
+these tiles, and they do not display digits.</p>
+<p><strong>Foundation</strong> is a land tile with a building/structure on it. This tile
+generates no resources.</p>
+<h3 id="generation"><a class="header" href="#generation">Generation</a></h3>
+<p>A biased algorithm (which may include techniques such as different probability
+distributions, floodfill or pathfinding, pattern substitution, ...) generates
+the general (irregular) shape of the playable area. The whole playable area must
+be contiguous. Everything outside of the playable area is Water. The playable area
+is Land.</p>
+<p>The Land can then be populated with various geographical features.</p>
+<p>Rivers can be generated by tracing a path of water tiles, starting from a random
+location, going outwards to be joined into the water that surrounds the playable
+area.</p>
+<p>Lakes/Mountains/Forests, can be generated by creating small clusters of
+water/mountain/forest tiles.</p>
+<p>Land next to Water can be converted to Fertile Land.</p>
+<h2 id="cities"><a class="header" href="#cities">Cities</a></h2>
+<p>At map generation time, a number of <strong>cities</strong> are placed randomly. The
+generation algorithm aims to position them in diverse geographical locations,
+with a large distance between cities.</p>
+<p>All tiles adjacent to the city tile must be playable <strong>land</strong>, cities cannot
+be located next to <strong>mountains</strong>, <strong>forests</strong>, or <strong>water</strong>.</p>
+<p>The location of cities, and a visualization of the extents of their regions, is
+always visible to all players, even behind fog of war. Players know who owns
+which cities (and how many cities each player owns) at all times -- it is
+important to judge the progression of the game and to plan strategies.</p>
+<h3 id="starting-cities"><a class="header" href="#starting-cities">Starting Cities</a></h3>
+<p>Given the random nature of the map, it is important that players are not left
+feeling like they (or another player) got an unfair spawn location.</p>
+<p>Because of this, we need a solution to give players some agency over the
+randomness, to prevent someone spawning with a large unfair advantage.</p>
+<p>Current proposal:</p>
+<h4 id="ban-stage-no-pick"><a class="header" href="#ban-stage-no-pick">Ban Stage (no pick)</a></h4>
+<p>At the start of the session, before the game begins, there is a ban stage.</p>
+<p>Players are shown an overview of the map and all the city locations.</p>
+<p>Players are given <strong>15</strong> seconds to place a <strong>vote</strong> for <strong>up to 2</strong> cities.</p>
+<p>The votes are revealed to other players after the time elapses.</p>
+<p>The highest-voted city is <strong>banned</strong>. Nobody will spawn there.</p>
+<p>If a player does nothing during this stage, they just do not contribute
+any votes. If all players do nothing, no cities get banned.</p>
+<p>The process may be repeated multiple times depending on game mode, to ban
+multiple cities.</p>
+<p>Spawn locations are picked randomly from the remaining cities.</p>
+<h2 id="regions"><a class="header" href="#regions">Regions</a></h2>
+<p>Each tile on the map is associated with a city. All tiles that are associated
+with a given city are collectively known as that city's <strong>region</strong>. The region
+is the city's &quot;area of responsibility&quot;.</p>
+<p>The city's resource points are accumulated from all the tiles in its region that
+are owned by the same player that owns the city. The city generates <strong>income</strong>
+for the player, based on the amount of available resources.</p>
+<p>If a player wants to construct structures on a given tile, the player must
+own both the city of that region, and the tile to build on. While a structure
+is being built, the city's resources will go towards construction progress,
+instead of producing <strong>income</strong> for the player.</p>
+<p>Regions are generated with the map, ahead of time, and cannot change during the
+course of a game.</p>
+<h3 id="generation-1"><a class="header" href="#generation-1">Generation</a></h3>
+<p>Due to the randomness and geographical diversity of the map, some cities will
+naturally be considered more attractive to players, which could lead to power
+imbalances. To counteract this, the map generation algorithm strives to keep
+cities balanced in resource availablitity. Regions will be computed so that
+similar amounts of total resources are available in each region.</p>
+<p>The algorithm starts from the location of each city and gradually expands the
+region in the area around it, similar to a &quot;floodfill&quot; or &quot;breadth-first-search&quot;
+algorithm, until every playable tile on the map has been assigned to a city. At
+every iteration of the loop, the region with the fewest total available
+resources is selected for expansion.</p>
+<p>When there are multiple candidate tiles (the search frontier),
+they are prioritized as follows:</p>
+<ol>
+<li>Clusters (mountains, forests) before single tiles (land)</li>
+<li>Sorted by reverse distance from the center of the map (furthest tiles first)</li>
+</ol>
+<p><strong>Land</strong> tiles are assigned one-at-a-time. <strong>Mountain</strong>/<strong>Forest</strong> tiles are
+assigned as a whole cluster (clusters are never split between regions).</p>
+<h2 id="starting-mines-and-decoys"><a class="header" href="#starting-mines-and-decoys">Starting Mines and Decoys</a></h2>
+<p>On world generation, a large number of mines and decoys are randomly scattered
+around the map, in all the neutral unexplored areas. Other items are not generated.</p>
+<p>This serves to impede the initial expansion of players' territories. It also
+allows players to capture them, giving precious money, while their cities'
+income is still rather low due to a lack of territory.</p>
+<p>The early-game stage of MineWars, before encountering another player, is hence
+more like a glorified single-player minesweeper experience, as each player tries
+to form some initial territory and prepare for their first PvP encounter, while
+being mindful and trying to figure out the randomly-placed initial mines.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="territory-and-ownership"><a class="header" href="#territory-and-ownership">Territory and Ownership</a></h1>
+<p>MineWars is a game of territory. Players must expand to claim resources and
+progress through the game.</p>
+<h2 id="visibility"><a class="header" href="#visibility">Visibility</a></h2>
+<p>Areas away from the player's territory are covered by &quot;fog of war&quot;. The
+player can see <strong>3</strong> tiles away from tiles they own.</p>
+<p>The entire map's geography is shown to all players at all times, there are no
+areas that are completely &quot;black&quot;. Fog of war simply means that the player does
+not get updates on the status of the tile / any gameplay that happens there.</p>
+<p>Any changes to the tile kind behind fog of war are not revealed, so a player's
+view of the map geography can be outdated.</p>
+<p>Previous ownership is not shown behind fog of war. Tiles should have a neutral
+color.</p>
+<p>Mountain tiles are always treated as a cluster. If you can see one tile of
+the cluster, you see them all.</p>
+<p>There are technically 3 levels of visibility, showing increasing amounts of info:</p>
+<ul>
+<li>Fog: any tile further than the visibility radius away from a player-owned tile</li>
+<li>Limited: any tile not owned by the player, within the visibility radius</li>
+<li>Full: tiles owned by the player, tiles within the range of a <strong>Watch Tower</strong>, tiles where a <strong>City</strong> is located</li>
+</ul>
+<p>Within &quot;Fog Visibility&quot; tiles, the player sees:</p>
+<ul>
+<li>Last known tile kind / geography (may be outdated)</li>
+<li>Skulls</li>
+</ul>
+<p>Within &quot;Limited Visibility&quot; tiles, the player also sees:</p>
+<ul>
+<li>Current tile kind (if changed due to harvesting, explosions, etc.)</li>
+<li>The ownership of the tile (displayed using the owner's color)</li>
+<li>Completed Structures</li>
+<li>Smokes</li>
+<li>Explosions</li>
+</ul>
+<p>Within &quot;Full Visibility&quot; tiles, the player also sees:</p>
+<ul>
+<li>Items</li>
+<li>Pending Structures</li>
+</ul>
+<h2 id="ownership-of-territory"><a class="header" href="#ownership-of-territory">Ownership of Territory</a></h2>
+<p>Each tile on the map can have an owner: one of the players in the game. The
+owner is indicated by the tile's color. Every player has a color. For
+accessibility reasons, the colors should be customizable client-side. Players do
+not get to pick the exact colors displayed to others.</p>
+<p>At the start of the game, all tiles are neutral, except for the starting cities
+of the players and all tiles adjacent to them.</p>
+<p>Owned tiles provide <strong>Resources</strong> to the city of the region they are associated
+with, if the player owns the city.</p>
+<p>On owned <strong>Land</strong>, the player gets:</p>
+<ul>
+<li>the ability to deploy <strong>Items</strong> on the tile</li>
+<li>the ability to perform <strong>offensive actions</strong> on adjacent unowned tiles</li>
+<li>the ability to <strong>build structures</strong>, if the player owns the region's city</li>
+<li>the ability to <strong>Harvest</strong> the tile, if the player owns the region's city</li>
+<li>visibility of surrounding tiles</li>
+<li>a digit (like Minesweeper) indicating how many (if any) items exist on adjacent unowned tiles</li>
+</ul>
+<p>(&quot;unowned&quot; here means: neutral or owned by another player)</p>
+<h2 id="capturing-territory"><a class="header" href="#capturing-territory">Capturing Territory</a></h2>
+<h3 id="land"><a class="header" href="#land">Land</a></h3>
+<p>Land is captured simply by clicking on it. You can only do it if you own at
+least one adjacent tile.</p>
+<p>After being captured, the land is <strong>protected</strong> for <strong>2.5</strong> sec, meaning it
+cannot be captured by another player. This gives the new owner a chance to
+deploy items to defend it, preventing the game from turning into a clickfest.</p>
+<p>If the tile is known empty (there is no adjacent digit), the game will
+autoexpand. All safe land (up to any tiles with digits) will be recursively
+captured instantly, like in Minesweeper.</p>
+<p>If there is an adjacent digit, that indicates the tile is potentially unsafe --
+a risk to the player.</p>
+<p>If the tile contains any <strong>Items</strong>, their respective effects will be triggered
+when the player attempts to capture the tile (see their respective docs for more detail):</p>
+<ul>
+<li><strong>Mines</strong> will <strong>explode</strong>, causing the player to be <strong>stunned</strong></li>
+<li><strong>Decoys</strong> will <strong>break</strong> / do nothing, and the tile will be captured as if it was empty</li>
+<li><strong>Flashbang Traps</strong> will &quot;blind&quot; the player</li>
+</ul>
+<p>Player strategy: if they think the tile is empty or a decoy, they should capture
+it, breaking any decoy. If they think the tile contains a dangerous item, they
+can either <strong>Strike the tile</strong> to destroy it, or try to safely surround and
+<strong>capture the item</strong>.</p>
+<h3 id="clusters"><a class="header" href="#clusters">Clusters</a></h3>
+<p><strong>Mountains</strong> and <strong>Forests</strong> are always owned as a cluster. If there are multiple
+adjacent tiles of one of these types, the player cannot own them individually;
+they are captured all at once and lost all at once.</p>
+<p>To capture a cluster, surround it on all sides by capturing all adjacent land
+tiles. If there are multiple adjacent clusters (say, a forest next to a
+mountain), or if any of the adjacent land contains <strong>Items</strong> or <strong>Structures</strong>,
+all of those tiles are grouped together for the purpose of capturing. The player
+must surround the entire group (capture all adjacent safe tiles), gaining
+control of all the clusters, items, and structures, at once.</p>
+<p>A player only maintains ownership of a mountain or forest cluster <em>while</em> they
+maintain ownership of <em>all</em> adjacent land tiles. You immediately lose ownership
+of the entire cluster if another player captures even a single adjacent land
+tile.</p>
+<p>Note that only land tiles are counted. If there are adjacent clusters (forest
+next to a mountain), it is possible to lose one while keeping the other.</p>
+<h3 id="items"><a class="header" href="#items">Items</a></h3>
+<p>When there are <strong>Items</strong> deployed on <strong>Land</strong>, you can capture the items by
+surrounding them. Capture all safe tiles around them.</p>
+<p>If there are multiple adjacent tiles with items on them, they are treated
+as a Cluster, similar to mountains/forests.</p>
+<p>When the items have been successfully surrounded, all the land tiles are
+automatically captured by the player. The items are <strong>sold</strong> for money.
+See the Economy section for more info.</p>
+<p>Player strategy implications: This rewards the player for playing the game
+carefully and taking the time to treat foreign items as a puzzle to be solved,
+rather than simply striking the tiles to destroy the items. Striking is quick and
+easy, but costs money, and destroys the land's resources. Capturing the items
+is time-consuming and requires mental effort to solve the minesweeper digits
+puzzle, but rewards the player with money and keeps the land intact.</p>
+<h3 id="cities-1"><a class="header" href="#cities-1">Cities</a></h3>
+<p>To capture a city, the player must surround the city, by capturing every
+land tile adjacent to the city's tile.</p>
+<p>The city remains owned by the player until another player does the same
+(captures every adjacent land tile).</p>
+<p>See the <strong>Economy</strong> section for further implications of capturing cities.</p>
+<h3 id="structures"><a class="header" href="#structures">Structures</a></h3>
+<h4 id="roads"><a class="header" href="#roads">Roads</a></h4>
+<p>Road tiles are treated as land tiles for the purpose of capturing.</p>
+<p>However, note that cities only count as connected, if there is a path
+that is fully owned by the player. Upon losing even a single tile,
+the connection is broken.</p>
+<h4 id="barricades"><a class="header" href="#barricades">Barricades</a></h4>
+<p>Given that barricades connect mountain clusters, they have implications
+for the ownership of those clusters. They make it effectively impossible
+to capture each of the mountain clusters individually. However, each
+cluster can still be lost individually.</p>
+<p>When a player surrounds both clusters together with the barricade between
+them, they capture the barricade along with both clusters.</p>
+<h4 id="watch-towers"><a class="header" href="#watch-towers">Watch Towers</a></h4>
+<p>Watch Towers are captured by surrounding them, similar to cities. If they
+are built adjacent to a cluster, they need to be captured together with
+that cluster. If they are built between clusters, they effectively work
+as a Barricade.</p>
+<h4 id="bridges"><a class="header" href="#bridges">Bridges</a></h4>
+<p>Bridges are built on water, and therefore have no ownership. However,
+they allow a player to capture tiles on the opposite side of the water,
+if they own tiles on one side.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="economy"><a class="header" href="#economy">Economy</a></h1>
+<p>The <strong>Economy</strong> is a core part of the game. Each city generates income for
+the player, which can be spent to perform gameplay actions.</p>
+<h3 id="money"><a class="header" href="#money">Money</a></h3>
+<p>Each city has a <strong>Bank</strong>. The Bank is the total <strong>money</strong> of the city.</p>
+<p>The player can spend money to:</p>
+<ul>
+<li>Build structures</li>
+<li>Deploy items</li>
+<li>Perform offensive actions</li>
+</ul>
+<p>The actions are funded by the city of the region of the tile where the action
+takes place.</p>
+<p>In foreign regions (where the player does not own the local city), actions
+are funded by the nearest city by distance and have their cost multiplied by <strong>1.25</strong>.</p>
+<p>If a city has <em>active road connections</em> to other cities, then they will fund the
+actions collectively. The cost of the actions is split between all connected
+neighboring cities, proportionally to the total amount of money each city has in
+its bank. The local city's contribution is weighted double.</p>
+<p>If a city is captured by another player, <strong>75%</strong> of the city's money will be
+distributed between your remaining cities. <strong>25%</strong> of the money will stay in the
+city and be usable by the new owner.</p>
+<h3 id="income"><a class="header" href="#income">Income</a></h3>
+<p>Each city constantly generates/accumulates money. The rate of income is determined
+by the total <strong>resources</strong> owned by the city; that is, the sum of the resources
+of each owned tile within the city's region.</p>
+<p>If a structure is currently being built, the city does not generate income until
+it is completed. Instead, the resources are counted towards the rate of
+construction progress on the structure.</p>
+<p>Neutral cities (not owned by any player) do not generate any income.</p>
+<h3 id="resources"><a class="header" href="#resources">Resources</a></h3>
+<p>Each tile provides a certain number of resource points, counted towards the
+city of the region where the tile is located, if the player owns both the
+city and the tile.</p>
+<p>Resources given by each tile owned:</p>
+<ul>
+<li><strong>Regular Land</strong>: <strong>1</strong> Res/sec</li>
+<li><strong>Fertile Land</strong>: <strong>2</strong> Res/sec</li>
+<li><strong>Destroyed Land</strong> and <strong>Foundation</strong>: <strong>0</strong> Res/sec</li>
+<li><strong>Forest</strong>: <strong>3</strong> Res/sec</li>
+<li><strong>Mountain</strong>: <strong>5</strong> Res/sec</li>
+</ul>
+<p>Further, each city has <strong>50</strong> Base Res: the minimum amount of resources inherent
+to the city, regardless of any owned tiles in the region.</p>
+<h3 id="harvesting-tiles"><a class="header" href="#harvesting-tiles">Harvesting Tiles</a></h3>
+<p>Players may *<em>harvest</em> tiles (one tile at a time) to instantly claim a large sum
+of resources. They are awarded to the city of the region the tile belongs to.</p>
+<p>This is a one-time action. After harvesting, the tile is converted to
+<strong>Destroyed Land</strong> and produces no more resources for the remainder of the game.</p>
+<p>The player must own both the tile and the city whose region it belongs to.</p>
+<p>The change in tile kind is not visible to other players behind fog of war. When
+players gain visibility of the tile, that is when they will get the update.</p>
+<p>This mechanic exists to give players more options for survival in tense
+situations. They can accelerate their current production one-time, at the cost
+of foregoing all the potential resources they could have accumulated from the
+tile over time and also potentially worsening the natural protection they get
+from the map's geography.</p>
+<p>Harvest bounties (resource given when harvesting a tile):</p>
+<ul>
+<li><strong>Regular Land</strong>: <strong>100</strong> Res</li>
+<li><strong>Fertile Land</strong>: <strong>250</strong> Res</li>
+<li><strong>Destroyed Land</strong> and <strong>Foundation</strong>: <strong>0</strong> Res</li>
+<li><strong>Forest</strong>: <strong>420</strong> Res</li>
+<li><strong>Mountain</strong>: <strong>600</strong> Res</li>
+</ul>
+<h3 id="constructing-structures"><a class="header" href="#constructing-structures">Constructing Structures</a></h3>
+<p>The player may construct infrastructure on land that they own, if they own the
+city in the region. When the player wants to build something, the city's
+resources will go towards the structure and the city will not generate income
+until construction is complete.</p>
+<p>If construction is canceled before it is completed, <strong>50%</strong> of the spent
+resources are instantly reclaimed and the remaining resources are lost.</p>
+<h3 id="bulldozing-structures"><a class="header" href="#bulldozing-structures">Bulldozing Structures</a></h3>
+<p>Any structures on land owned by the player can be bulldozed. This returns
+<strong>25%</strong> of the resource cost of the structure back to the player as income.</p>
+<p>The reward is counted towards the city of the tile's region, if owned by the
+player, or the nearest city by distance otherwise.</p>
+<h3 id="capturing-foreign-items"><a class="header" href="#capturing-foreign-items">Capturing Foreign Items</a></h3>
+<p>If a player captures a tile that contains an item, the item is instantly sold,
+giving the player <strong>75%</strong> of the usual cost of the item.</p>
+<p>The reward is counted towards the city of the tile's region, if owned by the
+player, or the nearest city by distance otherwise.</p>
+<h3 id="costs"><a class="header" href="#costs">Costs</a></h3>
+<p>The cost of everything is determined using a multiplier applied to a <strong>Base
+Unit</strong>; this helps negate the unpredictability of the random procedural world
+generation. This is calculated once at the start of the game, based on the
+generated map, and remains fixed throughout the game.</p>
+<p>The <strong>Base Unit</strong> is roughly representative of how powerful cities could
+get in a given game session, and is calculated as follows:</p>
+<ul>
+<li>The arithmetic mean of the available resources in each region</li>
+</ul>
+<p>This should help give relatively well-balanced costs with varying map configurations.</p>
+<p>The final amounts are rounded up to the nearest <strong>100</strong>.</p>
+<p>Cost sheet (TODO playtest and balance):</p>
+<p>Items:</p>
+<ul>
+<li>Mine: 3.0</li>
+<li>Decoy: 3.0</li>
+<li>Flashbang: 4.0</li>
+</ul>
+<p>Structures:</p>
+<ul>
+<li>Road: 1.5</li>
+<li>Barricade: 8.0</li>
+<li>WatchTower: 12.0</li>
+<li>Bridge: 5.0</li>
+</ul>
+<p>Actions:</p>
+<ul>
+<li>Strike: 1.0 + 0.25 * NTiles</li>
+<li>Reveal: 10.0</li>
+<li>Smoke: 2.0</li>
+</ul>
+<p>Starting money:</p>
+<ul>
+<li>If a player captures a neutral city: 10.0</li>
+<li>The initial (spawn) city of each player starts with: 16.0</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="pvp-combat"><a class="header" href="#pvp-combat">PvP Combat</a></h1>
+<p>Player encounters happen on &quot;front lines&quot;; that is, when your territory reaches
+that of another player.</p>
+<p>You can try to capture another player's territory, just like you do neutral land
+at the start of the game.</p>
+<p>Everyone is incentivised to set up defenses by deploying items and building
+structures on their territory, to protect themselves from other players
+advancing into it.</p>
+<p>Similarly, everyone is incentivised to attack and advance into other
+territories, in their attempt to play towards the game's overall objective:
+eliminating the other players.</p>
+<h2 id="digits"><a class="header" href="#digits">Digits</a></h2>
+<p>Every player-owned tile will show a Minesweeper-like <strong>Digit</strong>, to indicate the
+total number of <strong>Items</strong> on adjacent tiles not owned by the player.</p>
+<p>Further, an <strong>Asterisk</strong> (*) will be displayed with the digit, if there are any
+<strong>Decoys</strong>. The player can use this hint/information to figure out where decoys
+might be and decide if they want to try and risk stepping on those tiles.</p>
+<p>The game client can provide a feature to switch digits to &quot;enemy preview&quot; mode,
+where the other players' digits are displayed instead, to allow the player
+to visualize how their defensive item formations would be seen by others.</p>
+<h2 id="defensive-play-overview"><a class="header" href="#defensive-play-overview">Defensive Play Overview</a></h2>
+<p>When you own territory, you do not want to leave it undefended and easy to capture.
+Also, remember, if a player clicks on a &quot;known safe&quot; tile (with no digit), they
+can capture large swaths of territory in a single click!</p>
+<p>Therefore, as you gain new territory, you want to set up formations of defensive
+<strong>Items</strong> to protect it. The presence of items will stop an invader's expansion
+and force them to solve a Minesweeper digit puzzle.</p>
+<p>It is very important to use creative and clever formations of defensive items
+(mines, flashbangs), decoys, and empty tiles, in order to create a challenging
+Minesweeper puzzle for the other player. The more variety, the better. For
+example, using too many items without leaving empty tiles will make the digits
+very easy to figure out. Ditto for not using decoys.</p>
+<p>At the front line itself, you need to be especially careful. Deploying some
+additional items in real-time can be helpful to confuse the opponent, if they
+are actively trying to invade.</p>
+<p>You can use <strong>Smokes</strong> to conceal specific digits for the enemy. This gives you
+an opportunity to deploy your items without immediately giving away information
+about what you are doing.</p>
+<p>If you have a large territory, you might have multiple fronts, possibly with
+multiple other players. You need to keep an eye on all of them.</p>
+<p>Further, you can build <strong>Structures</strong> within your territory. Barricades allow you
+to make use of geography (mountain clusters) to limit mobility and make it
+difficult for a future invader to advance into key locations. Watch Towers
+will give you visibility in case you lose the surrounding territory, and reveal
+nearby enemy items.</p>
+<h2 id="offensive-play-overview"><a class="header" href="#offensive-play-overview">Offensive Play Overview</a></h2>
+<p>At the front line, you might decide to attack and advance into enemy territory.</p>
+<p>To do this, you need to solve the Minesweeper puzzle. Use the digits to figure
+out where enemy items are, and determine what tiles are safe to step on.</p>
+<p>Logically, there are three possibilities for any given enemy tile:</p>
+<ul>
+<li>Empty (no item): does not count towards digits</li>
+<li>Safe Item (decoy): counts towards digits, but makes them display an asterisk (*)</li>
+<li>Dangerous Item (mine, flashbang): counts towards digits</li>
+</ul>
+<p>You want to avoid dangerous items, and step on tiles that are safe (empty or
+decoy). Decoys make the puzzle more challenging: you need to account for them
+when you mentally parse the digits + asterisks.</p>
+<p>If you need information quickly, you can use the <strong>Reveal</strong> action (which costs a
+lot of money), to immediately learn what is on an enemy tile.</p>
+<p>If you think you know where dangerous items is located, you have options for dealing with them:</p>
+<ul>
+<li><strong>Strike</strong> the tiles (offensive action), causing explosions that destroy the item and the land it stands on. Costs money.</li>
+<li>Carefully surround the items by stepping on adjacent safe tiles, <strong>capturing</strong> them. Rewards you with money.</li>
+<li>Just step on the tile anyway and suffer the consequences. ;) Probably best reserved for dire situations.</li>
+</ul>
+<p>This presents an interesting tradeoff:</p>
+<p>If you value your time and have money, you can play quickly and recklessly,
+striking enemy tiles to destroy items. You can be even more reckless and just
+strike enemy tiles, regardless of whether you think there is an item there, and
+not even bothering with the Minesweeper puzzle. This costs even more money and
+will destroy a lot of land, removing valuable natural resources.</p>
+<p>On the other hand, if you want to take your time to play carefully and methodically,
+solving the Minesweeper puzzle can allow you to capture the enemy items. This way,
+you don't spend any money on your invasion. In fact, you gain money as a reward
+for the items you find. You also do no damage to the natural resources on the map.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="all-gameplay-actions"><a class="header" href="#all-gameplay-actions">All Gameplay Actions</a></h1>
+<p>This page describes all gameplay actions that a player can perform.</p>
+<p>Most actions have a <strong>Cooldown</strong> to prevent abuse. This is the amount of time
+that must pass between successive invocations of the same action.</p>
+<p>Some actions also have a <strong>Delay</strong>. This is the amount of time between when
+the action is initiated and when it is completed.</p>
+<p>The game client should display a progress indicator to visualize Cooldowns and
+Delays. Cooldown indicators should be displayed within the game UI/HUD, where
+the action is triggered. Delay indicators should be displayed on the tile where
+the action is being performed.</p>
+<h2 id="capture-land"><a class="header" href="#capture-land">Capture Land</a></h2>
+<p>Cooldown: <strong>0.125 sec</strong>.
+Delay: <strong>0.25 sec</strong>.</p>
+<p>Attempt to capture a foreign land tile. Any items on the tile will be triggered
+and their affects applied to the player. If the tile has a digit value of zero,
+adjacent tiles will be automatically captured, recursively.</p>
+<h2 id="strike"><a class="header" href="#strike">Strike</a></h2>
+<p>Cooldown: <strong>1.0 sec</strong>.
+Delay: <strong>1.0 sec</strong>.</p>
+<p>Cause an <strong>Explosion</strong> on the given tiles. Destroys any <strong>Items</strong> on the
+marked tiles. Converts the tile kind to <strong>Destroyed Land</strong>.</p>
+<p>Costs money.</p>
+<p>Can be applied to any tile that has a Visibility state above &quot;Fog&quot;.</p>
+<p>The game client should allow the user to first &quot;mark&quot;/&quot;flag&quot; the tiles
+selected for a strike. This displays <strong>Flags</strong> on the map, on the marked
+tiles. This happens entirely client-side. Then, the user can confirm
+the selections, to launch the strike. The flags disappear and all the
+marked tiles are submitted as a single action to the server.</p>
+<h2 id="reveal"><a class="header" href="#reveal">Reveal</a></h2>
+<p>Cooldown: <strong>1.0 sec</strong>.
+Delay: <strong>0.25 sec</strong>.</p>
+<p>Grants &quot;Full Visibility&quot; status to a single foreign tile, thus revealing any
+items there.</p>
+<p>The increased visibility state remains until any of the following occurs on the tile:</p>
+<ul>
+<li>Explosion</li>
+<li>Change of Ownership</li>
+<li>Tile enters &quot;Fog&quot; state due to being outside of the visibility radius</li>
+</ul>
+<p>Costs money.</p>
+<p>Can be applied to any tile that has a Visibility state of &quot;Limited&quot;.</p>
+<h2 id="smoke"><a class="header" href="#smoke">Smoke</a></h2>
+<p>Cooldown: <strong>1.0 sec</strong>.
+Delay: <strong>0.5 sec</strong>.</p>
+<p>Places a <strong>Smoke</strong> on an enemy tile, concealing the digit on that tile. The
+other player cannot see any digit on that tile for the duration of the smoke.</p>
+<p>This gives the player an opportunity deploy items on their territory, while
+limiting how much information is revealed to the opponent.</p>
+<p>The smoke lasts <strong>5.0 sec</strong>.</p>
+<p>Costs money.</p>
+<p>Can be applied to any tile that is owned by another player and has a Visibility
+state above &quot;Fog&quot;.</p>
+<p>If an explosion occurs on a smoked tile, the smoke is instantly cleared.</p>
+<h2 id="deploy-item"><a class="header" href="#deploy-item">Deploy Item</a></h2>
+<p>Cooldown: <strong>1.0 sec</strong>.
+Delay: <strong>0.5 sec</strong>.</p>
+<p>Place an <strong>Item</strong> on a tile that is owned by the player.</p>
+<p>The item is purchased using money from the city's region (if owned), or
+the nearest city by distance (if unowned). The cost may be spread out
+between multiple cities, if there are active road connections.</p>
+<h2 id="initiate-construction"><a class="header" href="#initiate-construction">Initiate Construction</a></h2>
+<p>Cooldown: <strong>0.5 sec</strong>.
+Delay: <strong>0.0 sec</strong>.</p>
+<p>Place a <strong>Structure</strong> on a tile that is owned by the player.</p>
+<p>The player must own the city of the region.</p>
+<p>The tile kind is immediately changed to <strong>Foundation</strong>.</p>
+<p>The Structure is not ready immediately. When placed, it is in &quot;pending&quot;
+mode, and the city is set to &quot;construction&quot; mode.</p>
+<p>While a structure is &quot;pending&quot;, it will not perform its intended effects.
+Instead, it will accumulate &quot;construction points&quot; based on the city's resources.
+The player should be able to see the progress.</p>
+<p>While a city is in &quot;construction&quot; mode, it does not generate income.
+Instead, its resources are counted towards the pending structures.</p>
+<p>If there are multiple &quot;pending&quot; structures in a given region, they are processed
+one-by-one, in a queue, in the order they were submitted by the player.</p>
+<p>When building roads, all selected tiles are submitted as a single action.</p>
+<h2 id="bulldoze-structure"><a class="header" href="#bulldoze-structure">Bulldoze Structure</a></h2>
+<p>Cooldown: <strong>2.0 sec</strong>.
+Delay: <strong>5.0 sec</strong>.</p>
+<p>Remove a <strong>Structure</strong> from a tile, recovering part of its value.</p>
+<h2 id="harvest-tile"><a class="header" href="#harvest-tile">Harvest Tile</a></h2>
+<p>Cooldown: <strong>1.0 sec</strong>.
+Delay: <strong>2.0 sec</strong>.</p>
+<p>Instatly claim a sum of resources (counted either towards income or
+construction, based on the current state of the region's city).</p>
+<p>The player must own the region's city.</p>
+<p>The tile kind is changed to <strong>Destroyed Land</strong>.</p>
+<p>The amount gained depends on the tile kind.</p>
+<p>The tile is converted to <strong>Destroyed Land</strong>, meaning it will have no resources
+for the rest of the game.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="items-1"><a class="header" href="#items-1">Items</a></h1>
+<p>Items are defensive things that you can <strong>deploy</strong> onto <strong>land</strong> tiles that you own.
+If another player attempts to capture the land, they will suffer the effect of the item.</p>
+<p>Once deployed, you cannot remove your own items from the tiles they are on.</p>
+<p>Every player sees <strong>Digits</strong> on tiles they own, indicating the total number of items
+on adjacent tiles they do not own.</p>
+<h2 id="mines"><a class="header" href="#mines">Mines</a></h2>
+<p><strong>Mines</strong> will <strong>explode</strong> when stepped on, resulting in the offending player
+receiving a <strong>Stun</strong>. This adds to the &quot;Death&quot; count of the offending player and
+to your &quot;Kill&quot; count.</p>
+<p>All players in the match will be notified of this event. The explosion effect
+and location will be seen by all players. The tile where the explosion occurs
+will be upgraded to &quot;Limited Visibility&quot; status for all players for a duration
+of <strong>2.0 sec</strong>. Note: this means players can see ownership, etc.</p>
+<p>A skull decal will be left behind to commemorate the occasion.</p>
+<p>The <strong>Stun</strong> is a timeout during which a player cannot perform any game actions.
+All of their cities pause production for the duration of the stun.</p>
+<p>The stun duration is <strong>5</strong> seconds.</p>
+<p>The tile will be converted to <strong>Destroyed Land</strong>, thereby providing no more
+resources for the remainder of the game.</p>
+<h2 id="decoys"><a class="header" href="#decoys">Decoys</a></h2>
+<p><strong>Decoys</strong> are harmless and will <strong>break</strong> when stepped on. The other player
+will successfully capture the tile.</p>
+<p>The purpose of decoys is to confuse the other player and make the Minesweeper
+digits puzzle more difficult for them to solve.</p>
+<p>The presence of a decoy will add an asterisk (*) to the digits other players see
+on adjacent tiles. This provides a hint to them, without directly revealing the
+actual location of the decoy.</p>
+<h2 id="flashbang-traps"><a class="header" href="#flashbang-traps">Flashbang Traps</a></h2>
+<p><strong>Flashbangs</strong> will cause <strong>Blindness</strong> when stepped on.</p>
+<p>All players in the match will be notified of this event. The explosion effect
+and location will be seen by all players.</p>
+<p>The offending player will get a &quot;full white&quot; screen flash, which fades out over
+<strong>0.36</strong> seconds. For accessibility reasons, the color of the flash should be
+customizable, but it cannot be disabled completely.</p>
+<p>Every land tile the player owns, that is adjacent to a tile owned by another
+player, will get random nonsensical digits, thus preventing them from knowing
+any information about other players' items.</p>
+<p>The blindness duration is <strong>5</strong> seconds.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="structures-1"><a class="header" href="#structures-1">Structures</a></h1>
+<p>There are several structures that can be built by players to give them a stategic
+advantage. Structures are built on land, using the production points of the city
+whose region the land is part of. The player must own the city and the land.</p>
+<p>When a structure is placed on a tile, the underlying tile kind is changed to
+<strong>Foundation</strong>.</p>
+<p>Structures can be bulldozed to reclaim part of their value. After bulldozing,
+the underlying tile kind is changed to <strong>Destroyed Land</strong>.</p>
+<p>Structures are destructable. They take <strong>1</strong> damage from adjacent explosions and
+<strong>2</strong> damage from direct explosions (on the same tile).</p>
+<p><strong>Strike</strong> can be peformed on structures, causing direct damage. Adjacent damage
+can be caused by nearby mine explosions or strikes.</p>
+<h2 id="roads-1"><a class="header" href="#roads-1">Roads</a></h2>
+<p>HP: <strong>3</strong>.</p>
+<p>Roads serve to connect cities. An active road connection brings numerous benefits.</p>
+<p>Roads do not have a <em>direction</em>, they are simply a kind of grid tile; each
+tile either has road built on it, or not. The &quot;path&quot; / pathfinding algorithm
+simply follows grid tiles. That is, a road tile is considered connected to any
+adjacent road tiles. (think Civ-like road behavior)</p>
+<p>Two cities are considered to have an active road connection iff:</p>
+<ul>
+<li>there is an uninterrupted path of roads between them
+(the pathfinding algo must be able to reach one city from the other by following road tiles)</li>
+<li>both cities are owned by the same player</li>
+<li>all tiles along the path must be owned by the player</li>
+<li>the path may not cross other regions / all tiles along the path must be part of either city's region</li>
+</ul>
+<p>Roads allow gameplay to still occur on the tile. The tile is playable like a
+land tile. The tile can be captured like land, Items can be placed, Digits are
+displayed, etc.</p>
+<p>Therefore, it is possible for a mine to explode directly on a road. This
+is another possible way to damage roads, as well as a <strong>Strike</strong>.</p>
+<p>Note that this means an enemy can interrupt a road connection between two cities
+simply by capturing or destroying a single road tile along it. Roads are very
+vulnerable. This encourages players to invest in redundant road networks with
+backup paths.</p>
+<h2 id="mountain-barricades"><a class="header" href="#mountain-barricades">Mountain Barricades</a></h2>
+<p>HP: <strong>8</strong>.</p>
+<p>Mountain Barricades block mobility by closing gaps/chokepoints between mountains.</p>
+<p>The player must own the land tile to build on, the city of the tile's region, and
+also the adjacent mountains.</p>
+<p>The barricade effectively prevents the opponent from capturing ownership of
+either mountain cluster, unless they surround everything and capture both
+mountain clusters + the barricade all at once, or destroy the barricade.</p>
+<p>A barricade longer than one tile is counted as a single structure. It is
+constructed all at once and destroyed all at once. Cost adds up, but HP does
+not. Therefore, longer barricades become prohibitive to build and vulnerable /
+easier to destroy.</p>
+<h2 id="watch-towers-1"><a class="header" href="#watch-towers-1">Watch Towers</a></h2>
+<p>HP: <strong>5</strong>.</p>
+<p>Watch towers give &quot;Full Visibility&quot; of the surrounding area (radius of <strong>5</strong>
+tiles).</p>
+<p>They can be built on any player-owned land tile, as long as the player owns the
+city of the region. If adjacent to a mountain or forest, the player must also
+own the mountain or forest.</p>
+<p>They can be captured in a way similar to cities: the opponent must surround them
+by capturing the adjacent tiles.</p>
+<p>If built adjacent to mountains/forest, they need to be captured with the
+mountain cluster.</p>
+<p>Note: towers can effecively be used in place of barricades. A tower, if built
+between two mountain clusters, will effectively behave like a barricade that
+also gives visibility.</p>
+<p>Hence, balance must be kept to keep both structures viable. Towers should be
+more expensive to build and easier to destroy (in that scenario, not too easy to
+destroy on open land either).</p>
+<h2 id="bridges-1"><a class="header" href="#bridges-1">Bridges</a></h2>
+<p>HP: <strong>4</strong>.</p>
+<p>Bridges can be built on <strong>Water</strong> tiles, as long as there is <strong>Land</strong> on two
+opposing adjacent tiles. Effectively, this limits them to straight sections
+of single-tile-thick rivers.</p>
+<p>Bridges allow land to be captured and roads to be built across the water,
+thus reducing the impact of the rivers as a geographical feature to segment
+the map and impede movement.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="more-ideas-to-explore"><a class="header" href="#more-ideas-to-explore">More Ideas to Explore</a></h1>
+<p>This is a list of additional gameplay ideas to be explored after we have a playable demo/MVP.</p>
+<h2 id="grid-style"><a class="header" href="#grid-style">Grid Style</a></h2>
+<p>Compare whether the game plays better on a hexagonal grid or a square grid.</p>
+<p>Strong personal preference for hexagonal, but maybe we should play-test both?</p>
+<h2 id="alliances"><a class="header" href="#alliances">Alliances</a></h2>
+<p>Temporary friendly relations between players.</p>
+<p>During the game, a player can propose an <strong>alliance</strong> to another player,
+which the other player can accept or reject.</p>
+<p>The following <strong>extra rules</strong> apply to <strong>allied players</strong>:</p>
+<ul>
+<li>Full visibility of each others' territory
+<ul>
+<li>Digits are <em>not</em> revealed</li>
+</ul>
+</li>
+<li>Protection from offenses
+<ul>
+<li>Cannot capture each other's land</li>
+<li>Cannot use Smoke</li>
+<li>Cannot Strike in each other's territory or adjacent to the border</li>
+</ul>
+</li>
+<li>Trade
+<ul>
+<li>Can connect each others' cities with roads</li>
+</ul>
+</li>
+<li>(maybe?) in-game chat / comms</li>
+</ul>
+<p>The alliance can be canceled by either player at any time.</p>
+<p>If all other players are eliminated, the alliance automatically breaks. They
+must then fight each other to determine the final winner of the game.</p>
+<h2 id="premade-maps"><a class="header" href="#premade-maps">Premade Maps</a></h2>
+<p>Perhaps it could be interesting to play on a handcrafted map, instead of
+procedurally generated?</p>
+<p>There is a replayability argument to be made.</p>
+<p>Procedurally generated maps make the game replayable, because every match is
+unique. Player skill comes from adaptability -- being able to figure out the
+best strategy on an unknown map.</p>
+<p>Fixed maps make the game replayable, because players can learn them, and apply
+better strategies the next time they play. Similar to games like Counter-Strike,
+this raises the skill ceiling, as players can learn a map and rely on their
+familiarity and knowledge of how to play it most effectively.</p>
+<p>For this to work at its best, we need a map/scenario editor.</p>
+<p>As a cheap alternative, we can also provide the ability to specify a seed for
+the usual procedural generation algorithm. However, that would obviously only
+allow replaying the same randomly generated map multiple times. It would not
+enable completely custom handcrafted maps.</p>
+<h2 id="city-population--sustenance-cost"><a class="header" href="#city-population--sustenance-cost">City Population / Sustenance Cost</a></h2>
+<p>This is just a reserve game design idea that should <em>only</em> be added if the game
+otherwise proves to be very challenging to balance (particularly in the
+late-game when players have a large and very productive empire).</p>
+<p>Introduce an additional variable on cities, can be called &quot;population&quot; or &quot;sustenance&quot;.
+This is a base number of Resources that is subtracted from the city's total resources,
+to slow down the production rate.</p>
+<p>As the game advances, its sustenance cost can rise, preventing it from becoming
+<em>too</em> productive in the late-game.</p>
+<p>Additional things that this number could be used for:</p>
+<h3 id="building-progression"><a class="header" href="#building-progression">Building progression</a></h3>
+<p>Require a minimum population number for certain structures, preventing them from
+being constructed too early in the game.</p>
+<h3 id="starvation"><a class="header" href="#starvation">Starvation</a></h3>
+<p>If the city fails to cover its sustenance cost for an extended period of time
+(&quot;starvation&quot;), it could be destroyed / removed from the game.</p>
+<p>For example:
+if the sustenance cost is currently X, and the city has less than X total resources,
+a timer (say, one minute) starts. If the timer elapses, the city is turned to ruin.
+If the player manages to recover some land within the timer, as soon as the city
+has at least X resources, it leaves &quot;starving&quot; state and the timer resets.</p>
+<p>This would make cities non-permanent and allow the total number of cities on the
+map to be reduced in the late-game.</p>
+<p>When a player is eating away at the opponent's territory, the oppenent's city's
+resources fall drastically. The risk of starvation puts extra pressure on the
+defender to defend the territory in the region of the city.</p>
+<p>This also puts pressure on the attacker: if they want the city, they must commit
+to reaching and capturing it as quickly as possible, before it has starved.
+Alternatively, if they want the city gone, they could deliberately starve the
+city by playing slowly.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="game-modes"><a class="header" href="#game-modes">Game Modes</a></h1>
+<p>The game client can offer a variety of different modes to offer gameplay
+experiences for different users' tastes.</p>
+<p>These are just interesting ideas to try out. I honestly don't know what game
+modes we will end up with after playtesting. :)</p>
+<h2 id="minewars-game-modes"><a class="header" href="#minewars-game-modes">MineWars Game Modes</a></h2>
+<p>These are variants of the MineWars real-time competitive multiplayer game,
+as described in <a href="./gameplay.html">gameplay</a>.</p>
+<h3 id="elimination-classic"><a class="header" href="#elimination-classic">Elimination (classic)</a></h3>
+<ul>
+<li>Players: <strong>4</strong>.</li>
+<li>Cities: <strong>8</strong>.</li>
+<li>Map size: <strong>64</strong>.</li>
+</ul>
+<p>Balanced experience. The goal is to balance strategy and action.</p>
+<p>Plenty of breathing room for players to grow their empires and establish their
+strategies. The map is big, plenty of space and resources. There are more
+cities than players, meaning neutral cities are available for taking.</p>
+<p>Leads to distinct &quot;early game&quot;, &quot;mid game&quot;, and &quot;late game&quot; gameplay.</p>
+<p>Early game is the initial exploration, to establish a presence on the map,
+before the player has encountered another player. This feels a bit like singleplayer
+Minesweeper -- you try to expand into neutral territory while uncovering the random
+pre-seeded mines.</p>
+<p>Mid game starts from your first encounter with another player. You now need to worry
+about your border / battlefront, offense and defense. The midgame is a battle for
+survival, your goal is to eliminate weaker players and prepare for the final duel.</p>
+<p>Late game is when there are only two empires left on the map and the other
+players have been eliminated. The two remaining players are likely the
+strongest, with big empires, and need to battle to determine the final winner.</p>
+<h3 id="mayhem"><a class="header" href="#mayhem">Mayhem</a></h3>
+<ul>
+<li>Players: <strong>6</strong></li>
+<li>Cities: <strong>6</strong></li>
+<li>Map size: <strong>48</strong></li>
+<li>Reduced production costs</li>
+<li>No Ban stage</li>
+</ul>
+<p>Game mode designed for frantic action and less room for strategy. The
+progression of the game effectively moves faster. The idea is to lead to a
+short early game and frantic mid game.</p>
+<p>There are more players than in a classic game, and there are exactly as many
+cities as there are players, so players are forced into PvP confrontations
+almost immediately. The map is smaller and more claustrophobic.</p>
+<h3 id="duel"><a class="header" href="#duel">Duel</a></h3>
+<ul>
+<li>Players: <strong>2</strong></li>
+<li>Cities: <strong>5</strong></li>
+<li>Map size: <strong>32</strong></li>
+</ul>
+<p>With only two players, effectively skips from early game to late game, skipping
+the mid game. The map is smaller and tighter, to keep the game time shorter and
+prevent it from becoming boring from the early game taking too long. There are plenty
+of cities for the players to battle over.</p>
+<h3 id="duos"><a class="header" href="#duos">Duos</a></h3>
+<ul>
+<li>Two players control one empire</li>
+<li>Empires: <strong>3</strong> (6 players)</li>
+<li>Cities: <strong>6</strong></li>
+<li>Map size: <strong>48</strong></li>
+</ul>
+<p>Adds some teamwork and cooperation to the mix. Reliant on having communication
+between the teammates.</p>
+<h2 id="turn-based-minewars"><a class="header" href="#turn-based-minewars">Turn-Based MineWars</a></h2>
+<p>GAME DESIGN WIP!! This will need a lot of revision!</p>
+<p>Alternative turn-based Duel, for those who prefer a slower-paced methodical
+game, instead of the frantic action of regular MineWars.</p>
+<ul>
+<li>Players: <strong>2</strong></li>
+<li>Cities: <strong>5</strong></li>
+<li>Map size: <strong>24</strong></li>
+</ul>
+<p>Map must be tiny, due to the slow-paced action of turn-based gameplay.</p>
+<p>There is no fog of war, all tiles have a Visibility state of at least Limited.</p>
+<p>Turn time limit: <strong>10 seconds</strong>.</p>
+<p>Within each turn, players have a quota of actions they may perform:</p>
+<ul>
+<li>Capture up to <strong>3</strong> land tiles.</li>
+<li>Deploy up to <strong>3</strong> items.</li>
+<li>Queue up production items for their cities.</li>
+</ul>
+<p>... blah blah blah ... todo todo</p>
+<h2 id="singleplayer-minewars-like"><a class="header" href="#singleplayer-minewars-like">Singleplayer MineWars-like</a></h2>
+<p>Game modes that can be played offline, sharing some mechanics with the
+regular multiplayer MineWars.</p>
+<h3 id="minewars-vs-aibots"><a class="header" href="#minewars-vs-aibots">MineWars vs. AI/bots</a></h3>
+<p>(considered out of scope for now)</p>
+<h3 id="minewars-playground"><a class="header" href="#minewars-playground">MineWars Playground</a></h3>
+<p>For experimentation: allow one client to control all views/empires.</p>
+<h3 id="minewars-like-minesweeper"><a class="header" href="#minewars-like-minesweeper">MineWars-like Minesweeper</a></h3>
+<p>Like Minesweeper, the goal is to capture all safe tiles on the map.</p>
+<h2 id="classic-minesweeper"><a class="header" href="#classic-minesweeper">Classic Minesweeper</a></h2>
+<p>Game modes without any of the fancy MineWars mechanics. Just simply
+click on tiles and avoid mines. The goal is to claim all safe tiles
+in the quickest time possible. May be made more forgiving by giving
+players multiple lives.</p>
+<p>We can offer some diversity in terms of map styles. Choose between:
+square grid (like good ol' Minesweeper), hex grid, MineWars map.</p>
+<h3 id="singleplayer"><a class="header" href="#singleplayer">Singleplayer</a></h3>
+<p>Just play by yourself.</p>
+<h3 id="co-op"><a class="header" href="#co-op">Co-op</a></h3>
+<p>Multiplayer session, where all players share the same color/territory and lives.</p>
+<h3 id="pvp"><a class="header" href="#pvp">PvP</a></h3>
+<p>Multiplayer session, but every client gets their own color/territory, lives, and
+stats for how much of the map they have explored. At the end, players are ranked
+on who has explored the most.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="achievement-ideas"><a class="header" href="#achievement-ideas">Achievement Ideas</a></h1>
+<h2 id="minesweeper-pro"><a class="header" href="#minesweeper-pro">Minesweeper Pro</a></h2>
+<p>Win a multiplayer game without ever stepping on a mine.</p>
+<h2 id="suicidal"><a class="header" href="#suicidal">Suicidal</a></h2>
+<p>Die over 20 times in one game.</p>
+<h2 id="lucky"><a class="header" href="#lucky">Lucky</a></h2>
+<p>Step on 5 decoys in succession.</p>
+<h2 id="high-redundancy"><a class="header" href="#high-redundancy">High Redundancy</a></h2>
+<p>Have at least 3 different road routes between the same 2 cities.</p>
+<h2 id="maximum-redundancy"><a class="header" href="#maximum-redundancy">Maximum Redundancy</a></h2>
+<p>Have at least 3 different road routes between every pair of cities in an empire of at least 3 cities.</p>
+<h2 id="environmentalist"><a class="header" href="#environmentalist">Environmentalist</a></h2>
+<p>Win a game without harvesting any tiles.</p>
+<h2 id="pacifist"><a class="header" href="#pacifist">Pacifist</a></h2>
+<p>Win a game having captured more mines than you have destroyed.</p>
+<h2 id="kaboom"><a class="header" href="#kaboom">Kaboom!</a></h2>
+<p>Explode at least 5 enemy mines (and only mines) with a single strike.</p>
+<h2 id="tricked-you"><a class="header" href="#tricked-you">Tricked You!</a></h2>
+<p>Another player attempted a strike on your tiles, but hit only decoys.</p>
+<h2 id="uh--that-was-totally-on-purpose"><a class="header" href="#uh--that-was-totally-on-purpose">Uh ... that was totally on purpose!</a></h2>
+<p>Strike multiple enemy tiles and only hit safe tiles.</p>
+<h2 id="all-seeing"><a class="header" href="#all-seeing">All-Seeing</a></h2>
+<p>Cover over 1/3 of the map with observation towers.</p>
+<h2 id="maze"><a class="header" href="#maze">Maze</a></h2>
+<p>Connect 5 or more nearby mountain clusters with barricades.</p>
+<h2 id="important-city"><a class="header" href="#important-city">Important City</a></h2>
+<p>Recapture the same city 5 times in a single game.</p>
+<h2 id="comeback"><a class="header" href="#comeback">Comeback</a></h2>
+<p>Win a game where you had only 1 city when another player had 4 or more.</p>
+<h2 id="millionaire"><a class="header" href="#millionaire">Millionaire</a></h2>
+<p>Accumulate $1,000,000.</p>
+<h2 id="post-war-apocalypse"><a class="header" href="#post-war-apocalypse">Post-War Apocalypse</a></h2>
+<p>Win a game where over 80% of the land was destroyed.</p>
+<h2 id="divide-and-conquer"><a class="header" href="#divide-and-conquer">Divide and Conquer</a></h2>
+<p>Split another player's territory into two.</p>
+<h2 id="left-unprotected"><a class="header" href="#left-unprotected">Left Unprotected</a></h2>
+<p>Capture 10 or more tiles of another player's territory all at once.</p>
+<h2 id="cant-blind-me"><a class="header" href="#cant-blind-me">Can't Blind Me!</a></h2>
+<p>Mark and strike at least 3 enemy items (decoys excluded) while flashbanged.</p>
+<h2 id="reckless"><a class="header" href="#reckless">Reckless</a></h2>
+<p>Strike at least 100 empty tiles during a game.</p>
+<h2 id="smoke-mid-everyday"><a class="header" href="#smoke-mid-everyday">Smoke Mid Everyday</a></h2>
+<p>Smoke a tile in a narrow passage.</p>
+<h2 id="blitzkrieg"><a class="header" href="#blitzkrieg">Blitzkrieg</a></h2>
+<p>Strike over 10 tiles at once.</p>
+<h2 id="mass-resource-extraction"><a class="header" href="#mass-resource-extraction">Mass Resource Extraction</a></h2>
+<p>Harvest all mountains and forests in a region.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="project-planning"><a class="header" href="#project-planning">Project Planning</a></h1>
+<p>Notes about the management of the project.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="monetization-ideas"><a class="header" href="#monetization-ideas">Monetization Ideas</a></h1>
+<p>This page describes various monetization ideas that could be implemented for MineWars.</p>
+<h2 id="premium-accounts"><a class="header" href="#premium-accounts">Premium Accounts</a></h2>
+<p>Players could purchase an upgraded account that unlocks extra features that
+are intended for more competitive players who are more serious about the game.</p>
+<p>This may include:</p>
+<ul>
+<li>features that help you improve your skills</li>
+<li>options that help you avoid players who are cheating</li>
+<li>…</li>
+</ul>
+<p>It could be marketed with some language that appeals to competitive players, like:
+&quot;Pro Competition Upgrade&quot; or something.</p>
+<p>It could offer features like:</p>
+<h3 id="replay-history"><a class="header" href="#replay-history">Replay History</a></h3>
+<p>Non-premium players can only download a replay of the game they just played,
+at the end of each game. The server will not store replays.</p>
+<p>Premium players could have replays of their past games stored with their
+account for later retrieval.</p>
+<p>There could also be an option to get a link/code for sharing a replay to let
+other people watch it.</p>
+<h3 id="premium-only-online-multiplayer"><a class="header" href="#premium-only-online-multiplayer">Premium-only Online Multiplayer</a></h3>
+<p>Have the option of filtering the online multiplayer game mode, to only play
+with other premium players. This should reduce the likelihood of encountering
+cheaters.</p>
+<h3 id="spectator-visibility-settings"><a class="header" href="#spectator-visibility-settings">Spectator Visibility Settings</a></h3>
+<p>Decide whether you want to be visible to spectators in online games.</p>
+<p>Unlocks new preferences in the game settings, like:</p>
+<ul>
+<li>Anyone can see me (default for non-premium players)</li>
+<li>Only my friends can see me</li>
+<li>Nobody can see me</li>
+<li>Manual Whitelist</li>
+<li>In-game toggle and confirmation</li>
+</ul>
+<p>(just examples of the possibilities)</p>
+<p>If you reduce or disable your visibility to spectators, you can be confident
+that untrusted players cannot cheat/ghost by abusing the spectator view.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="game-settings"><a class="header" href="#game-settings">Game Settings</a></h1>
+<p>Here we keep track of all the ideas for what aspects of the game should be
+customizable and exposed in the game's settings.</p>
+<p>These are just ideas to explore, not a plan to commit to. Some of these might
+never be implemented.</p>
+<h2 id="camera-behavior"><a class="header" href="#camera-behavior">Camera Behavior</a></h2>
+<ul>
+<li>Screen Shake: on/off</li>
+<li>Jump tweening transition duration</li>
+<li>Move camera on screen edge</li>
+</ul>
+<h2 id="gameplay-behavior"><a class="header" href="#gameplay-behavior">Gameplay Behavior</a></h2>
+<ul>
+<li>Show region highlight:
+<ul>
+<li>based on cursor location</li>
+<li>based on camera location</li>
+</ul>
+</li>
+</ul>
+<h2 id="ui"><a class="header" href="#ui">UI</a></h2>
+<ul>
+<li>Show minimap: on/off</li>
+<li>City UI:
+<ul>
+<li>Floating</li>
+<li>Sidebar</li>
+</ul>
+</li>
+</ul>
+<h2 id="control-scheme"><a class="header" href="#control-scheme">Control Scheme</a></h2>
+<h3 id="mousekeyboard"><a class="header" href="#mousekeyboard">Mouse/Keyboard</a></h3>
+<p>// TODO</p>
+<h3 id="touchscreen"><a class="header" href="#touchscreen">Touchscreen</a></h3>
+<p>// TODO</p>
+<h2 id="accessibility-options"><a class="header" href="#accessibility-options">Accessibility Options</a></h2>
+<h3 id="flashbang-alternatives"><a class="header" href="#flashbang-alternatives">Flashbang Alternatives</a></h3>
+<p>Allow changing the white flashbang to black or a custom color.</p>
+<h3 id="colorblindness-color-remapping"><a class="header" href="#colorblindness-color-remapping">Colorblindness: color remapping</a></h3>
+<p>Allow selecting a custom color for each of the up-to-6 players in a match.</p>
+<p>Should allow tweaking colors completely, selecting both a bright and dim shade for each player.</p>
+<p>Should ideally have a UI color picker and a preview render to see what it looks like in context.</p>
+<h3 id="colorblindness-tile-patterns"><a class="header" href="#colorblindness-tile-patterns">Colorblindness: tile patterns</a></h3>
+<p>Provide &quot;patterned&quot; alternatives which could be used instead of the base flat color tile.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="technical-documentation"><a class="header" href="#technical-documentation">Technical Documentation</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="player-stream-format"><a class="header" href="#player-stream-format">Player Stream Format</a></h1>
+<p>This page describes all the encodings used for data sent from the server to
+the client.</p>
+<p>This message format is also used inside of the <a href="tech/./dataformat-spectator.html">spectator/replay
+message</a> format (which encapsulates multiple streams of
+this player message format).</p>
+<hr />
+<h2 id="prerequisites-for-implementation"><a class="header" href="#prerequisites-for-implementation">Prerequisites for Implementation</a></h2>
+<p>This is a custom purpose-built compact binary format.</p>
+<p>All multi-byte values are encoded as <strong>big endian</strong> and unaligned.</p>
+<p>All <strong>coordinates</strong> are encoded as <code>(row: u8, col: u8)</code> (note (Y,X) order).
+In places where a sequence of multiple coordinates is listed, it is recommended
+to encode them in sorted order. This helps compression.</p>
+<p>All <strong>time durations</strong> are encoded as:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0xxxxxxx</code></td><td><code>x</code> milliseconds</td></tr>
+<tr><td><code>10xxxxxx</code></td><td>(<code>x</code> + 12) centiseconds</td></tr>
+<tr><td><code>11xxxxxx</code></td><td>(<code>x</code> + 7) deciseconds</td></tr>
+</tbody></table>
+</div>
+<p><strong>PlayerId</strong>: a value between 1-6 inclusive.</p>
+<p>You will also need to bring a LZ4 implementation supporting <strong>raw blocks</strong>
+and dictionary data. The <code>lz4_flex</code> Rust crate is perfect. :)</p>
+<h2 id="initialization-sequence"><a class="header" href="#initialization-sequence">Initialization Sequence</a></h2>
+<p>When a connected player is successfully authenticated and ready to begin
+the game, it will receive in <strong>initialization sequence</strong>, which includes
+metadata about the game session, and the map data.</p>
+<h3 id="header"><a class="header" href="#header">Header</a></h3>
+<p>It begins with a header:</p>
+<ul>
+<li><code>u8</code>: protocol version (must be <code>0x01</code>)</li>
+<li><code>u8</code>: flags</li>
+<li><code>u8</code>: map size (radius)</li>
+<li><code>u8</code>: number of players and cities/regions</li>
+<li><code>u16</code>: length of player names data (0 for an anonymized stream)</li>
+<li><code>u16</code>: length of compressed map data in bytes</li>
+<li><code>u16</code>: length of uncompressed map data in bytes</li>
+</ul>
+<p>The <code>flags</code> field is encoded as follows:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>----0---</code></td><td>Game uses a hexagonal grid</td></tr>
+<tr><td><code>----1---</code></td><td>Game uses a square grid</td></tr>
+<tr><td><code>xxx--xxx</code></td><td>(reserved bits)</td></tr>
+</tbody></table>
+</div>
+<p>The player/city counts are encoded as follows:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>----xxxx</code></td><td>Number of cities/regions - 1</td></tr>
+<tr><td><code>xxxx----</code></td><td>Number of Players</td></tr>
+</tbody></table>
+</div>
+<h4 id="game-parameters"><a class="header" href="#game-parameters">Game Parameters</a></h4>
+<p>Then follow the parameters used for the game rules, in this game.</p>
+<p>// TODO</p>
+<h3 id="data-payload"><a class="header" href="#data-payload">Data Payload</a></h3>
+<h4 id="player-names"><a class="header" href="#player-names">Player Names</a></h4>
+<p>If the file is not anonymized, then follow the display names of each player,
+encoded as: <code>u8</code> length in bytes, followed by UTF-8 encoded data.</p>
+<h4 id="city-locations"><a class="header" href="#city-locations">City Locations</a></h4>
+<p>Then follows the list of city coordinates.</p>
+<h4 id="map-data"><a class="header" href="#map-data">Map Data</a></h4>
+<p>Then follows the map data.</p>
+<p>If compressed length &lt; uncompressed length, the data is LZ4 compressed.</p>
+<p>If compressed length == uncompressed length, the data is raw/uncompressed.</p>
+<p>First, the map data is encoded as one byte per tile:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>-----xxx</code></td><td>Tile Kind</td></tr>
+<tr><td><code>-xxx----</code></td><td>Item Kind</td></tr>
+</tbody></table>
+</div>
+<p>Tile Kind: same encoding as the &quot;Tile Kind Update&quot; message below.
+Item Kind: same encoding as the &quot;Reveal Item&quot; message below.</p>
+<p>The Item Kind is only used for spectator streams and replay files, so that they
+don't need to start with a long sequence of &quot;Reveal Item&quot; messages at tick 0
+for all the initial items on the map. In player streams, this field should be 0.</p>
+<p>If any starting Structures must be encoded (say for a custom game mode / scenario),
+initialize them using regular gameplay messages at tick 0.</p>
+<p>The tiles are encoded in concentric-ring order, starting from the center of
+the map. The map data ends when all rings up until the map radius specified in
+the header have been encoded.</p>
+<p>Each ring starts from the lowest (Y,X) coordinate and follows the +X direction first:</p>
+<p>Square example:</p>
+<pre><code>654
+7.3
+012
+</code></pre>
+<p>Hex example:</p>
+<pre><code> 4 3
+5 . 2
+ 0 1
+</code></pre>
+<p>(<code>0</code> is the starting position, assuming +X points right and +Y points up)</p>
+<p>After the map data, regions are encoded the same way: one byte per tile, in
+concentric ring order. The byte is the city/region ID for that tile.</p>
+<h2 id="gameplay-messages"><a class="header" href="#gameplay-messages">Gameplay Messages</a></h2>
+<p>Updates for the player are encoded as a raw uncompressed block of data
+consisting of any number of <strong>messages</strong> concatenated together. Each message
+is a variable-length byte sequence.</p>
+<p>Each message is at least one byte long. The type of the message is determined
+by magic bits in that first byte (similar to opcodes in CPU instruction set
+encodings). The first byte may also have bit-fields embedding data into it,
+for some message types.</p>
+<h3 id="message-classes"><a class="header" href="#message-classes">Message Classes</a></h3>
+<p>This affects how messages should be sent over the network transport protocol.
+It is valid (though suboptimal) to play the game over a single TCP stream
+(reliable, ordered delivery of all messages). However, for optimal performance,
+a protocol like QUIC, that allows more granular control of ordering and
+reliability, should be used.</p>
+<p>There are five classes of messages: PvP, Notification, Personal, Background, Unreliable.</p>
+<p>PvP messages are all game updates that are part of a player's interaction with
+the game world and other players. Reliable, ordered, elevated (highest)
+priority.</p>
+<p>Notification messages inform the client about important events, but are not
+directly part of moment-to-moment gameplay. Reliable, ordered, medium priority.</p>
+<p>Personal messages are all game updates that are part of game mechanics internal
+within a player's own territory. Things that only directly affect them.
+Reliable, ordered, lower priority.</p>
+<p>Background messages are things that are not an interactive part of gameplay.
+Reliable, unordered, lowest priority.</p>
+<p>Unreliable messages are realtime things that are fine to miss. Can be sent as
+datagrams. They can also be omitted from replay files / spectation.</p>
+<h3 id="opcode-summary"><a class="header" href="#opcode-summary">Opcode Summary</a></h3>
+<p>Quick table summarizing the opcodes of all the message types. A few are left
+unused, reserved for future use.</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Message Kind</th><th>Class</th></tr></thead><tbody>
+<tr><td><code>00000000</code></td><td>Player Update</td><td>Notification</td></tr>
+<tr><td><code>00000001</code></td><td>Tremor</td><td>Background</td></tr>
+<tr><td><code>00000010</code></td><td>Smoke Start</td><td>PvP</td></tr>
+<tr><td><code>00000011</code></td><td>Smoke End</td><td>PvP</td></tr>
+<tr><td><code>00000100</code></td><td>City MoneyInfo</td><td>Unreliable</td></tr>
+<tr><td><code>00000101</code></td><td>City Spending</td><td>Personal</td></tr>
+<tr><td><code>00000110</code></td><td>City ResInfo</td><td>Personal</td></tr>
+<tr><td><code>00000111</code></td><td>City TradeInfo</td><td>Personal</td></tr>
+<tr><td><code>00001---</code></td><td>--</td><td></td></tr>
+<tr><td><code>00010---</code></td><td>--</td><td></td></tr>
+<tr><td><code>00011---</code></td><td>--</td><td></td></tr>
+<tr><td><code>00100000</code></td><td>Structure Gone</td><td>PvP, Personal (cancel pending)</td></tr>
+<tr><td><code>0010----</code></td><td>Structure HP</td><td>PvP</td></tr>
+<tr><td><code>0011----</code></td><td>Explosions</td><td>PvP</td></tr>
+<tr><td><code>0100----</code></td><td>Construction Queued</td><td>Personal</td></tr>
+<tr><td><code>01001111</code></td><td>Construction Update</td><td>Unreliable</td></tr>
+<tr><td><code>0101----</code></td><td>Reveal Structure</td><td>PvP</td></tr>
+<tr><td><code>01011111</code></td><td>--</td><td></td></tr>
+<tr><td><code>0110----</code></td><td>Digits (single)</td><td>PvP</td></tr>
+<tr><td><code>01110---</code></td><td>Reveal Item</td><td>PvP (foreign), Personal (own)</td></tr>
+<tr><td><code>01111---</code></td><td>Tile Kind Update</td><td>PvP</td></tr>
+<tr><td><code>1000----</code></td><td>Digits (multi)</td><td>PvP</td></tr>
+<tr><td><code>1-------</code></td><td>Ownership Updates</td><td>PvP</td></tr>
+</tbody></table>
+</div>
+<p>The patterns must be checked in the correct order, so that more specific
+bit sequences are matched first.</p>
+<h3 id="messages-documentation"><a class="header" href="#messages-documentation">Messages Documentation</a></h3>
+<p>Here is the complete list of game update messages and their encodings:</p>
+<h4 id="player-update"><a class="header" href="#player-update">Player Update</a></h4>
+<p>Something notable happened with a specific player.</p>
+<p>Assembly:</p>
+<pre><code>PLAYER p status
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000000</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>The next byte:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>xxxx----</code></td><td>PlayerId</td></tr>
+<tr><td><code>----xxxx</code></td><td>Status</td></tr>
+</tbody></table>
+</div>
+<p>PlayerId must not be zero.</p>
+<p>The Status frield specifies what happened:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0000</code></td><td>Joined</td></tr>
+<tr><td><code>0001</code></td><td>(reserved)</td></tr>
+<tr><td><code>0010</code></td><td>Stunned/Killed</td></tr>
+<tr><td><code>0011</code></td><td>Un-Stunned</td></tr>
+<tr><td><code>0100</code></td><td>Blinded</td></tr>
+<tr><td><code>0101</code></td><td>Un-Blinded</td></tr>
+<tr><td><code>0110</code></td><td>Protected</td></tr>
+<tr><td><code>0111</code></td><td>Un-Protected</td></tr>
+<tr><td><code>1000</code></td><td>Eliminated</td></tr>
+<tr><td><code>1001</code></td><td>Surrendered</td></tr>
+<tr><td><code>1010</code></td><td>Disconnected</td></tr>
+<tr><td><code>1011</code></td><td>Kicked</td></tr>
+<tr><td><code>1100</code></td><td>(reserved)</td></tr>
+<tr><td><code>1101</code></td><td>(reserved)</td></tr>
+<tr><td><code>1110</code></td><td>Friendly-Chat</td></tr>
+<tr><td><code>1111</code></td><td>All-Chat</td></tr>
+</tbody></table>
+</div>
+<h4 id="tremor"><a class="header" href="#tremor">Tremor</a></h4>
+<p>Some explosion occurred at an unknown location. Client should shake the screen lightly.</p>
+<p>Assembly:</p>
+<pre><code>SHAKE
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000001</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<h4 id="smoke-start"><a class="header" href="#smoke-start">Smoke Start</a></h4>
+<p>A tile was smoked.</p>
+<p>Assembly:</p>
+<pre><code>SMOKE y,x
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000010</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinate of the tile.</p>
+<h4 id="smoke-end"><a class="header" href="#smoke-end">Smoke End</a></h4>
+<p>A tile is no longer smoked.</p>
+<p>Assembly:</p>
+<pre><code>UNSMOKE y,x
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000011</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinate of the tile.</p>
+<h4 id="construction-update"><a class="header" href="#construction-update">Construction Update</a></h4>
+<p>Update on the progress of a pending structure.</p>
+<p>Assembly:</p>
+<pre><code>BUILD y,x current rate
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>01001111</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinates of the tile.</p>
+<p>Followed by <code>u16</code> indicating current accumulated units.</p>
+<p>Followed by <code>u16</code> indicating rate of construction.</p>
+<h4 id="digits--implied-capture"><a class="header" href="#digits--implied-capture">Digits (+ Implied Capture)</a></h4>
+<p>The specified tiles are owned by the player and display the given Minesweeper digit.</p>
+<p>Can be used to capture tiles, if the tile is not owned by the player.</p>
+<p>Can be used to update digits on owned tiles, when they change.</p>
+<p>Assembly:</p>
+<pre><code>DIGITS d/y,x ...
+DIGITS d*/y,x ...
+</code></pre>
+<p>Compact (single) Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0110----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----x---</code></td><td>Asterisk</td></tr>
+<tr><td><code>-----xxx</code></td><td>Digit Value</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinate of the tile.</p>
+<p>Multi-tile Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>1000----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----xxxx</code></td><td>Tile Count - 1</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinates of the tiles.</p>
+<p>Followed by the digit for each tile, two digits packed into one byte (note
+big endian):</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>x-------</code></td><td>asterisk N</td></tr>
+<tr><td><code>-xxx----</code></td><td>digit N</td></tr>
+<tr><td><code>----x---</code></td><td>asterisk N+1</td></tr>
+<tr><td><code>-----xxx</code></td><td>digit N+1</td></tr>
+</tbody></table>
+</div>
+<p>(this encoding allows them to be easily read when inspecting a hex dump)</p>
+<p>For an odd number of tiles, the final digit is ignored (should be encoded as zero).</p>
+<h4 id="structure-gone"><a class="header" href="#structure-gone">Structure Gone</a></h4>
+<p>Something notable happened with a structure.</p>
+<p>Assembly:</p>
+<pre><code>DECONSTRUCT y,x
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00100000</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the tile coordinates.</p>
+<h4 id="structure-hp"><a class="header" href="#structure-hp">Structure HP</a></h4>
+<p>The HP of a structure changed.</p>
+<p>Assembly:</p>
+<pre><code>STRUCTHP y,x hp
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0010----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----xxxx</code></td><td>HP</td></tr>
+</tbody></table>
+</div>
+<p>HP must be &gt; 0.</p>
+<p>Followed by the tile coordinates.</p>
+<h4 id="explosions"><a class="header" href="#explosions">Explosions</a></h4>
+<p>Explosions have occurred. Tile converts to destroyed land. Any item gone.</p>
+<p>If the client should know what item was destroyed, send a &quot;Reveal Item&quot; first.</p>
+<p>Assembly:</p>
+<pre><code>EXPLODE y,x ...
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0011----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----xxxx</code></td><td>Tile Count - 1</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinates of the tiles.</p>
+<h4 id="construction-queued"><a class="header" href="#construction-queued">Construction Queued</a></h4>
+<p>A new structure is pending construction.</p>
+<p>Assembly:</p>
+<pre><code>BUILDNEW y,x {road|bridge|wall|tower}
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0100----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----xxxx</code></td><td>Structure Kind</td></tr>
+</tbody></table>
+</div>
+<p>The Item Kind is:</p>
+<ul>
+<li><code>0000</code>: Road</li>
+<li><code>0001</code>: Bridge</li>
+<li><code>0010</code>: Wall</li>
+<li><code>0011</code>: Tower</li>
+<li>other values reserved</li>
+</ul>
+<p>Must not be <code>1111</code>.</p>
+<p>Followed by tile coordinate.</p>
+<p>Followed by <code>u16</code> indicating total points required to complete construction.</p>
+<h4 id="reveal-structure"><a class="header" href="#reveal-structure">Reveal Structure</a></h4>
+<p>There is a structure on the specified tile.</p>
+<p>Used both when revealing foreign structures and also when own structures finish construction.</p>
+<p>Assembly:</p>
+<pre><code>STRUCT y,x {road|bridge|wall|tower}
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0101----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----xxxx</code></td><td>Structure Kind</td></tr>
+</tbody></table>
+</div>
+<p>The Item Kind is:</p>
+<ul>
+<li><code>0000</code>: Road</li>
+<li><code>0001</code>: Bridge</li>
+<li><code>0010</code>: Wall</li>
+<li><code>0011</code>: Tower</li>
+<li>other values reserved</li>
+</ul>
+<p>Must not be <code>1111</code>.</p>
+<p>Followed by tile coordinate.</p>
+<h4 id="city-moneyinfo"><a class="header" href="#city-moneyinfo">City MoneyInfo</a></h4>
+<p>Reports how much money a city has.</p>
+<p>Assembly:</p>
+<pre><code>CITMONEY i money [income]
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000100</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by:</p>
+<ul>
+<li><code>u8</code>: City ID</li>
+<li><code>u32</code>: current money</li>
+<li>[<code>u16</code>: current income rate]</li>
+</ul>
+<p>The top bit (bit 31) of money indicates whether the
+income is reported too. The income field is only
+present if this bit is <code>1</code>.</p>
+<p>The remaining 31 bits are used for the money value.</p>
+<h4 id="city-spending"><a class="header" href="#city-spending">City Spending</a></h4>
+<p>Reports that a city has spent a given sum of money.</p>
+<p>Assembly:</p>
+<pre><code>CITSPEND i spent
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000101</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by:</p>
+<ul>
+<li><code>u8</code>: City ID</li>
+<li><code>u16</code>: the amount of money spent</li>
+</ul>
+<h4 id="city-resinfo"><a class="header" href="#city-resinfo">City ResInfo</a></h4>
+<p>Update on the resources of a city.</p>
+<p>Assembly:</p>
+<pre><code>CITRES i res
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000110</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by:</p>
+<ul>
+<li><code>u8</code>: City ID</li>
+<li><code>u16</code>: the amount of resources</li>
+</ul>
+<h4 id="city-tradeinfo"><a class="header" href="#city-tradeinfo">City TradeInfo</a></h4>
+<p>Update on the export/import policy of a city.</p>
+<p>Assembly:</p>
+<pre><code>CITTRADE export import
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00000111</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by:</p>
+<ul>
+<li><code>u8</code>: City ID</li>
+<li><code>u8</code>: Export rate</li>
+<li><code>u8</code>: Import rate</li>
+</ul>
+<h4 id="tile-kind-update"><a class="header" href="#tile-kind-update">Tile Kind Update</a></h4>
+<p>Changes the base tile type.</p>
+<p>Assembly:</p>
+<pre><code>TILE y,x {water|regular|fertile|destroyed|mountain|forest}
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>01111---</code></td><td>(opcode)</td></tr>
+<tr><td><code>-----xxx</code></td><td>Tile Kind</td></tr>
+</tbody></table>
+</div>
+<p>The Tile Kind is:</p>
+<ul>
+<li><code>000</code>: Water</li>
+<li><code>001</code>: (reserved)</li>
+<li><code>010</code>: Mountain</li>
+<li><code>011</code>: Forest</li>
+<li><code>100</code>: Destroyed Land</li>
+<li><code>101</code>: (reserved)</li>
+<li><code>110</code>: Regular Land</li>
+<li><code>111</code>: Fertile Land</li>
+</ul>
+<p>Followed by tile coordinate.</p>
+<h4 id="reveal-item"><a class="header" href="#reveal-item">Reveal Item</a></h4>
+<p>There is an item on the specified tile.</p>
+<p>Used both when revealing foreign items and also when acking own deployed items.</p>
+<p>Assembly:</p>
+<pre><code>ITEM y,x {none|decoy|mine|flash}
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>01110---</code></td><td>(opcode)</td></tr>
+<tr><td><code>-----xxx</code></td><td>Item Kind</td></tr>
+</tbody></table>
+</div>
+<p>The Item Kind is:</p>
+<ul>
+<li><code>000</code>: None</li>
+<li><code>001</code>: Decoy</li>
+<li><code>010</code>: Mine</li>
+<li><code>011</code>: Flashbang</li>
+<li><code>1--</code>: (reserved)</li>
+</ul>
+<p>Followed by tile coordinate.</p>
+<h4 id="ownership-update"><a class="header" href="#ownership-update">Ownership Update</a></h4>
+<p>Multiple tiles are now known to be owned by the specified player id.</p>
+<p>Assembly:</p>
+<pre><code>OWNER p y,x ...
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>1-------</code></td><td>(opcode)</td></tr>
+<tr><td><code>-xxxx---</code></td><td>PlayerId</td></tr>
+<tr><td><code>-----xxx</code></td><td>Tile Count - 1</td></tr>
+</tbody></table>
+</div>
+<p>The PlayerId must not be zero.</p>
+<p>Followed by the coordinates of the tiles.</p>
+<p>If any of the tiles are of a clustered tile kind (mountain, forest), it is assumed
+that the ownership update applies to the entire cluster. There is no need to list
+every tile coordinate of the cluster.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="spectatorreplay-stream-format"><a class="header" href="#spectatorreplay-stream-format">Spectator/Replay Stream Format</a></h1>
+<p>The Spectator Protocol is essentially a container format that multiplexes
+multiple <a href="tech/./dataformat-player.html">player protocol</a> streams (one for each player in
+the game, representing their view of the world) together, along with a global
+&quot;spectator view&quot; stream (also in the same format) providing a global view
+of the game world.</p>
+<p>This is used to give spectator clients all the data they need to simultaneously
+follow all participants in the game. This is also the file format used for
+replay files.</p>
+<h2 id="stream-structure"><a class="header" href="#stream-structure">Stream Structure</a></h2>
+<p>The contents of the stream/file appear in this order:</p>
+<ul>
+<li>File Header (file only)</li>
+<li>Initialization Sequence</li>
+<li>[... frames ...]</li>
+</ul>
+<h2 id="file-header"><a class="header" href="#file-header">File Header</a></h2>
+<p>In the case of a replay file, a header is prepended.</p>
+<p>The file header has the following structure:</p>
+<ul>
+<li><code>[u64; 3]</code>: checksums</li>
+<li><code>u16</code>: length of compressed frame data in bytes</li>
+<li><code>u16</code>: length of uncompressed frame data in bytes</li>
+</ul>
+<p>If compressed length == uncompressed length, the frames data is stored uncompressed.</p>
+<p>If compressed length &lt; uncompressed length, all the frames are compressed as a single big LZ4 block.</p>
+<p>The compression is to be done using a special dictionary, see <a href="tech/dataformat-spectator.html#compression-dictionary">compression dictionary</a>.</p>
+<h2 id="checksums"><a class="header" href="#checksums">Checksums</a></h2>
+<p>Checksums are only used in the case of replay files. Network streams do
+not have checksums. In that case, the transport protocol is assumed to be
+responsible for data integrity.</p>
+<p>The file begins with 3 SeaHash checksums.</p>
+<p>The first checksum covers:</p>
+<ul>
+<li>the remainder of the file header, incl. the following 2 checksums</li>
+<li>the header part of the initialization sequence: everything until the city and map data</li>
+</ul>
+<p>The second checksum covers:</p>
+<ul>
+<li>the data payload of the initialization sequence: list of cities and map data</li>
+</ul>
+<p>The third checksum covers:</p>
+<ul>
+<li>all the frames data</li>
+</ul>
+<h2 id="initialization-sequence-1"><a class="header" href="#initialization-sequence-1">Initialization Sequence</a></h2>
+<p>This is the same as described in the <a href="tech/./dataformat-player.html">player protocol documentation</a>.</p>
+<p>However, starting item positions should be encoded inside the map data.</p>
+<h2 id="frames"><a class="header" href="#frames">Frames</a></h2>
+<p>A Frame is a collection of game updates that happen together at the same time.
+It encodes the point of view of every player in the game who is involved + a
+special global spectator view. All of these &quot;streams&quot; are stored together inside
+the frame.</p>
+<p>Note: it is not a requirement that <em>all</em> game update messages from the same
+timestamp are encoded together. They may be fragmented into multiple frames.
+Subsequent frames would just have the timestamp field set to zero.</p>
+<p>Such fragmentation is necessary if the frame payload exceeds 256 bytes in length.</p>
+<p>There are three kinds of frame encodings: Homogenous, Heterogenous, Keepalive.</p>
+<h3 id="homogenous-frames"><a class="header" href="#homogenous-frames">Homogenous Frames</a></h3>
+<p>Homogenous frames are frames where every participant gets the same data. The data is
+only encoded once and assumed to apply to all participating streams.</p>
+<p>Homogenous frames have the following structure:</p>
+<ul>
+<li><code>u16</code>: Header</li>
+<li><code>u8</code>/<code>u16</code>: participation mask</li>
+<li><code>u8</code>: length of data payload in bytes - 1</li>
+<li>[ ... data payload ... ]</li>
+</ul>
+<p>The top bit (bit 15) in the Header must be <code>1</code>, indicating that this is a Homogenous
+Frame. The remaining 15 bits represent the time delta since the previous frame, in
+milliseconds, and must not be all-ones (the max value is reserved for Keepalive Frames).</p>
+<p>The participation mask is a bitmask indicating which PlayerIds the frame applies to.
+Bit 0 represents the global spectator view.</p>
+<p>The size of the participation mask is determined by the &quot;max player id&quot; bit in the
+Initialization Sequence.</p>
+<p>The data payload is the <a href="tech/./dataformat-player.html#gameplay-messages">player protocol update messages</a>.
+All of the players listed in the participation mask must receive the entire identical data payload.</p>
+<h3 id="heterogenous-frames"><a class="header" href="#heterogenous-frames">Heterogenous Frames</a></h3>
+<p>Heterogenous frames are freams where each participant gets different data. The data
+for each participating stream is included in the frame.</p>
+<p>Heterogenous frames have the following structure:</p>
+<ul>
+<li><code>u16</code>: Header</li>
+<li><code>u8</code>/<code>u16</code>: participation mask</li>
+<li><code>[u8]</code>: lengths of each player view's portion of the data payload (as many as specified in the participation mask)</li>
+<li>[ ... data payload ... ]</li>
+</ul>
+<p>The top bit (bit 15) in the Header must be <code>0</code>, indicating that this is a Heterogenous
+Frame. The remaining 15 bits represent the time delta since the previous frame, in
+milliseconds, and must not be all-ones (the max value is reserved for Keepalive Frames).</p>
+<p>The participation mask is a bitmask indicating which PlayerIds the frame applies to.
+Bit 0 represents the global spectator view.</p>
+<p>The size of the participation mask is determined by the &quot;max player id&quot; bit in the
+Initialization Sequence.</p>
+<p>The data payload is the global spectator view + each player's view (in the order
+of the bits in the participation mask), concatenated together.</p>
+<p>Each view's data is the <a href="tech/./dataformat-player.html#gameplay-messages">player protocol update
+messages</a> for that view.</p>
+<p>The total length of the data payload is the sum of the lengths of each view's
+data, as given in the Heterogenous Frame Header described above.</p>
+<h3 id="keepalive-frames"><a class="header" href="#keepalive-frames">Keepalive Frames</a></h3>
+<p>Keepalive frames are to be used if the time delta since the last frame is too
+long to be represented in a single frame header. It is an empty frame with no
+data payload, just used to advance time.</p>
+<p>It is encoded as a frame with the time delta field being all-ones (the maximum
+value). The topmost bit is unimportant/ignored.</p>
+<p>Keepalive frames have the following structure:</p>
+<ul>
+<li><code>u16</code>: <code>-111111111111111</code></li>
+</ul>
+<p>Note: there is no participation mask, no data length field, no data payload</p>
+<h2 id="the-global-spectator-view"><a class="header" href="#the-global-spectator-view">The Global Spectator View</a></h2>
+<p>The global spectator view behaves somewhat differently from the player views.</p>
+<ul>
+<li>No fog of war must be displayed</li>
+<li>Digits are to be calculated by the client, from known mine locations</li>
+</ul>
+<p>To accommodate this, there are some special provisions in the spectator
+stream format, that differ from the player stream.</p>
+<p>The initialization sequence encodes mine positions inside the map data.</p>
+<p>The global spectator view is controlled using the same update message format
+as player views, but some message types are used differently:</p>
+<ul>
+<li>&quot;Digit Update&quot; and &quot;Capture + Digits&quot; must have the tile owner inferred
+from the participation mask. The mask must encode only one PlayerID
+(other than bit 0 for the spectator stream).</li>
+</ul>
+<h2 id="compression-dictionary"><a class="header" href="#compression-dictionary">Compression Dictionary</a></h2>
+<p>A special dictionary is prepared to help improve compression of the update
+frames. It is to be generated from the data in the initialization sequence.</p>
+<p>It is constructed by concatenating the following data:</p>
+<ul>
+<li>Every mountain coordinate on the map, in sorted order.</li>
+<li>Every land coordinate on the map, in sorted order.</li>
+</ul>
+<p>All permutations of a given sample pattern are to be concatenated, before
+moving onto the next pattern.</p>
+<p>This effectively pre-seeds the compression algorithm with data sequences
+likely to occur early-game.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
