@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Topology"],"mod":["hex","map","pos","sq"],"struct":["OutOfBoundsError"],"trait":["Coord"]};

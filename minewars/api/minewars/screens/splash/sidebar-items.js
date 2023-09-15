@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["setup_splashscreen","splash_fade","splash_init_bevy","splash_init_iyes","splash_skip"],"struct":["SplashFade","SplashNext","SplashesPlugin","SplashscreenPlugin"]};

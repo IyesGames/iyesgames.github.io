@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AppState"],"fn":["map_topology_is"],"struct":["MapTopologySet","MwCommonPlugin","StateDespawnMarker"]};

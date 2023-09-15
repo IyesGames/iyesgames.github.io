@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["AssetsPlugin","GameAssets","LocaleAssets","SplashAssets","TitleLogo","UiAssets"]};

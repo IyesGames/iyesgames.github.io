@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["exit","settings_reload","settings_write"],"struct":["CliPlugin"]};

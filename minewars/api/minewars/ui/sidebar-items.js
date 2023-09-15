@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["butt_interact_infotext","butt_interact_visual","spawn_button"],"mod":["hud","mainmenu"],"struct":["InfoAreaText","InfoText","UiPlugin"]};

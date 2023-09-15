@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["setup_hud","spawn_cityentry_owned","spawn_cityentry_unowned","spawn_playericon"],"struct":["HudPlugin"]};
