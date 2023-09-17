@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["butt_interact_infotext","butt_interact_visual","spawn_button"],"mod":["hud","mainmenu"],"struct":["InfoAreaText","InfoText","UiPlugin"]};
+window.SIDEBAR_ITEMS = {"fn":["rc_ui_root_needs_resize","ui_root_resize"],"mod":["console","hud","menu","notify","tooltip","widget"],"struct":["UiCamera","UiPlugin","UiRoot"]};

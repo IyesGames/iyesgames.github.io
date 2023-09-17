@@ -92,184 +92,98 @@
 <a href="#92" id="92">92</a>
 <a href="#93" id="93">93</a>
 <a href="#94" id="94">94</a>
-<a href="#95" id="95">95</a>
-<a href="#96" id="96">96</a>
-<a href="#97" id="97">97</a>
-<a href="#98" id="98">98</a>
-<a href="#99" id="99">99</a>
-<a href="#100" id="100">100</a>
-<a href="#101" id="101">101</a>
-<a href="#102" id="102">102</a>
-<a href="#103" id="103">103</a>
-<a href="#104" id="104">104</a>
-<a href="#105" id="105">105</a>
-<a href="#106" id="106">106</a>
-<a href="#107" id="107">107</a>
-<a href="#108" id="108">108</a>
-<a href="#109" id="109">109</a>
-<a href="#110" id="110">110</a>
-<a href="#111" id="111">111</a>
-<a href="#112" id="112">112</a>
-<a href="#113" id="113">113</a>
-<a href="#114" id="114">114</a>
-<a href="#115" id="115">115</a>
-<a href="#116" id="116">116</a>
-<a href="#117" id="117">117</a>
-<a href="#118" id="118">118</a>
-<a href="#119" id="119">119</a>
-<a href="#120" id="120">120</a>
-<a href="#121" id="121">121</a>
-<a href="#122" id="122">122</a>
-<a href="#123" id="123">123</a>
-<a href="#124" id="124">124</a>
-<a href="#125" id="125">125</a>
-<a href="#126" id="126">126</a>
-<a href="#127" id="127">127</a>
-<a href="#128" id="128">128</a>
-<a href="#129" id="129">129</a>
-<a href="#130" id="130">130</a>
-<a href="#131" id="131">131</a>
-<a href="#132" id="132">132</a>
-<a href="#133" id="133">133</a>
-<a href="#134" id="134">134</a>
-<a href="#135" id="135">135</a>
-<a href="#136" id="136">136</a>
-<a href="#137" id="137">137</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, assets::UiAssets, locale::{L10nKey, L10nResolveSet}};
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
+
+<span class="kw">mod </span>console;
+<span class="kw">mod </span>hud;
+<span class="kw">mod </span>menu;
+<span class="kw">mod </span>notify;
+<span class="kw">mod </span>tooltip;
+<span class="kw">mod </span>widget;
 
 <span class="kw">pub struct </span>UiPlugin;
-
-<span class="kw">mod </span>mainmenu;
-<span class="kw">mod </span>hud;
 
 <span class="kw">impl </span>Plugin <span class="kw">for </span>UiPlugin {
     <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, app: <span class="kw-2">&amp;mut </span>App) {
         app.add_plugins((
+            <span class="self">self</span>::console::UiConsolePlugin,
             <span class="self">self</span>::hud::HudPlugin,
-            <span class="self">self</span>::mainmenu::MainMenuPlugin,
+            <span class="self">self</span>::menu::MenuPlugin,
+            <span class="self">self</span>::notify::NotifyPlugin,
+            <span class="self">self</span>::tooltip::TooltipPlugin,
+            <span class="self">self</span>::widget::WidgetsPlugin,
         ));
         app.add_systems(Update, (
-            butt_interact_visual,
-            butt_interact_infotext.before(L10nResolveSet),
+            ui_root_resize.run_if(rc_ui_root_needs_resize),
         ));
     }
 }
 
-<span class="attr">#[derive(Component)]
-</span><span class="kw">struct </span>InfoAreaText;
+<span class="doccomment">/// Marker for the camera that displays our UI
+</span><span class="attr">#[derive(Component)]
+</span><span class="kw">struct </span>UiCamera;
 
-<span class="attr">#[derive(Component)]
-</span><span class="kw">struct </span>InfoText(String);
+<span class="doccomment">/// Marker for UI root entity / top-level container
+///
+/// We spawn all UI under a custom root with absolute positioning,
+/// so we can enforce settings like ultrawide dead space.
+</span><span class="attr">#[derive(Component)]
+</span><span class="kw">struct </span>UiRoot;
 
-<span class="kw">fn </span>spawn_button(
-    commands: <span class="kw-2">&amp;mut </span>Commands,
-    uiassets: <span class="kw-2">&amp;</span>UiAssets,
-    behavior: OnClick,
-    text: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-    info_text: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-    enabled: bool,
-) -&gt; Entity {
-    <span class="kw">let </span>color_init = <span class="kw">if </span>enabled {
-        Color::rgb(<span class="number">0.24</span>, <span class="number">0.24</span>, <span class="number">0.25</span>)
-    } <span class="kw">else </span>{
-        Color::rgb(<span class="number">0.16</span>, <span class="number">0.15</span>, <span class="number">0.15</span>)
+<span class="kw">fn </span>ui_root_resize(
+    settings: Res&lt;AllSettings&gt;,
+    <span class="kw-2">mut </span>q_root: Query&lt;<span class="kw-2">&amp;mut </span>Style, With&lt;UiRoot&gt;&gt;,
+    q_cam: Query&lt;<span class="kw-2">&amp;</span>Camera, With&lt;UiCamera&gt;&gt;,
+) {
+    <span class="kw">let </span><span class="prelude-val">Some</span>(size) = q_cam.get_single().ok()
+        .and_then(|cam| cam.logical_viewport_size())
+    <span class="kw">else </span>{
+        <span class="kw">return</span>;
     };
 
-    <span class="kw">let </span>color_text = <span class="kw">if </span>enabled {
-        Color::WHITE
-    } <span class="kw">else </span>{
-        Color::rgb(<span class="number">0.48</span>, <span class="number">0.44</span>, <span class="number">0.42</span>)
+    <span class="comment">// detect ultrawide (anything &gt; 16:9)
+    </span><span class="kw">let </span>uw_width_threshold = size.y * <span class="number">16.0 </span>/ <span class="number">9.0</span>;
+    <span class="kw">let </span>uw_extra_width = size.x - uw_width_threshold;
+
+    <span class="kw">let </span>width = uw_width_threshold + uw_extra_width * settings.ui.ultrawide_use_extra_width_ratio;
+    <span class="kw">let </span>width = width.min(size.x) * settings.ui.underscan_ratio;
+    <span class="kw">let </span>height = size.y * settings.ui.underscan_ratio;
+
+    <span class="kw">let </span>lr = ((size.x - width) / <span class="number">2.0</span>).floor();
+    <span class="kw">let </span>tb = ((size.y - height) / <span class="number">2.0</span>).floor();
+
+    <span class="kw">for </span><span class="kw-2">mut </span>root_style <span class="kw">in </span><span class="kw-2">&amp;mut </span>q_root {
+        root_style.left = Val::Px(lr);
+        root_style.right = Val::Px(lr);
+        root_style.top = Val::Px(tb);
+        root_style.bottom = Val::Px(tb);
+    }
+}
+
+<span class="doccomment">/// Run condition for `ui_root_resize`
+</span><span class="kw">fn </span>rc_ui_root_needs_resize(
+    settings: <span class="prelude-ty">Option</span>&lt;Res&lt;AllSettings&gt;&gt;,
+    q_cam: Query&lt;<span class="kw-2">&amp;</span>Camera, With&lt;UiCamera&gt;&gt;,
+    <span class="kw-2">mut </span>last_size: Local&lt;<span class="prelude-ty">Option</span>&lt;Vec2&gt;&gt;,
+) -&gt; bool {
+    <span class="kw">let </span><span class="prelude-val">Some</span>(settings) = settings <span class="kw">else </span>{
+        <span class="kw">return </span><span class="bool-val">false</span>;
     };
 
-    <span class="kw">let </span>butt = commands.spawn((
-        behavior,
-        InfoText(info_text.to_owned()),
-        ButtonBundle {
-            background_color: BackgroundColor(color_init),
-            style: Style {
-                justify_content: JustifyContent::Center,
-                align_items: AlignItems::Center,
-                padding: UiRect::all(Val::Px(<span class="number">4.0</span>)),
-                margin: UiRect::all(Val::Px(<span class="number">4.0</span>)),
-                flex_grow: <span class="number">1.0</span>,
-                flex_shrink: <span class="number">0.0</span>,
-                ..Default::default()
-            },
-            ..Default::default()
-        },
-    )).id();
+    <span class="kw">let </span><span class="prelude-val">Ok</span>(camera) = q_cam.get_single() <span class="kw">else </span>{
+        <span class="kw">return </span><span class="bool-val">false</span>;
+    };
 
-    <span class="kw">let </span>text = commands.spawn((
-        L10nKey(text.to_owned()),
-        TextBundle {
-            text: Text::from_section(
-                text,
-                TextStyle {
-                    color: color_text,
-                    font_size: <span class="number">32.0</span>,
-                    font: uiassets.font.clone(),
-                },
-            ),
-            ..Default::default()
-        },
-    )).id();
-
-    commands.entity(butt).push_children(<span class="kw-2">&amp;</span>[text]);
-
-    <span class="kw">if </span>!enabled {
-        commands.entity(butt).insert(UiDisabled);
+    <span class="kw">let </span>viewport_size = camera.logical_viewport_size();
+    <span class="kw">if </span>viewport_size.is_none() {
+        <span class="kw">return </span><span class="bool-val">false</span>;
     }
 
-    butt
+    <span class="kw">let </span>size_changed = viewport_size != <span class="kw-2">*</span>last_size;
+    <span class="kw-2">*</span>last_size = viewport_size;
+
+    <span class="kw">let </span>settings_changed = settings.is_changed();
+
+    settings_changed || size_changed
 }
-
-<span class="kw">fn </span>butt_interact_infotext(
-    q_butt: Query&lt;(<span class="kw-2">&amp;</span>Interaction, <span class="kw-2">&amp;</span>InfoText), Changed&lt;Interaction&gt;&gt;,
-    <span class="kw-2">mut </span>q_info: Query&lt;<span class="kw-2">&amp;mut </span>L10nKey, With&lt;InfoAreaText&gt;&gt;,
-) {
-    <span class="kw">let </span><span class="kw-2">mut </span>newtext = <span class="prelude-val">None</span>;
-    <span class="kw">let </span><span class="kw-2">mut </span>clear = <span class="bool-val">false</span>;
-    <span class="kw">for </span>(interaction, infotext) <span class="kw">in </span><span class="kw-2">&amp;</span>q_butt {
-        <span class="kw">match </span>interaction {
-            Interaction::None =&gt; {
-                clear = <span class="bool-val">true</span>;
-            }
-            <span class="kw">_ </span>=&gt; {
-                newtext = <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>infotext.<span class="number">0</span>);
-            }
-        }
-    }
-    <span class="kw">if </span>clear || newtext.is_some() {
-        <span class="kw">for </span><span class="kw-2">mut </span>infol10n <span class="kw">in </span><span class="kw-2">&amp;mut </span>q_info {
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(newtext) = newtext {
-                infol10n.<span class="number">0 </span>= String::from(newtext);
-            } <span class="kw">else </span>{
-                infol10n.<span class="number">0 </span>= String::new();
-            }
-        }
-    }
-}
-
-<span class="kw">fn </span>butt_interact_visual(
-    <span class="kw-2">mut </span>query: Query&lt;(
-        <span class="kw-2">&amp;</span>Interaction, <span class="kw-2">&amp;mut </span>BackgroundColor,
-    ), (
-        Changed&lt;Interaction&gt;, With&lt;Button&gt;, Without&lt;UiDisabled&gt;,
-    )&gt;,
-) {
-    <span class="kw">for </span>(interaction, <span class="kw-2">mut </span>color) <span class="kw">in </span>query.iter_mut() {
-        <span class="kw">match </span>interaction {
-            Interaction::Pressed =&gt; {
-                <span class="kw-2">*</span>color = BackgroundColor(Color::rgb(<span class="number">0.24</span>, <span class="number">0.24</span>, <span class="number">0.25</span>));
-            }
-            Interaction::Hovered =&gt; {
-                <span class="kw-2">*</span>color = BackgroundColor(Color::rgb(<span class="number">0.20</span>, <span class="number">0.20</span>, <span class="number">0.25</span>));
-            }
-            Interaction::None =&gt; {
-                <span class="kw-2">*</span>color = BackgroundColor(Color::rgb(<span class="number">0.24</span>, <span class="number">0.24</span>, <span class="number">0.25</span>));
-            }
-        }
-    }
-}
-
 </code></pre></div></section></main></body></html>

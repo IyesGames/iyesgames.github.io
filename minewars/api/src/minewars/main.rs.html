@@ -99,6 +99,7 @@
 <a href="#99" id="99">99</a>
 <a href="#100" id="100">100</a>
 <a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/// Convenience, to be imported in every file in the crate
 </span><span class="kw">mod </span>prelude {
     <span class="kw">pub use </span>bevy::prelude::<span class="kw-2">*</span>;
@@ -111,6 +112,7 @@
     <span class="kw">pub use </span>iyes_ui::prelude::<span class="kw-2">*</span>;
     <span class="kw">pub use </span>mw_common::prelude::<span class="kw-2">*</span>;
     <span class="kw">pub use </span>mw_proprietary_client::PROPRIETARY;
+    <span class="kw">pub use </span><span class="kw">crate</span>::settings::AllSettings;
 }
 
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;

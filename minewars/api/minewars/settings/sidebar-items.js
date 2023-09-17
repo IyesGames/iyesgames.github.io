@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["do_write_settings","load_or_init_settings","write_settings"],"struct":["AllSettings","CameraSettings","GameplaySettings","Lcha","PlayerPaletteSettings","SettingsLoaded","SettingsPlugin","UiHudSettings"]};
+window.SIDEBAR_ITEMS = {"fn":["do_write_settings","load_or_init_settings","loadscreen_wait_settings","write_settings"],"struct":["AllSettings","CameraSettings","GameplaySettings","Lcha","NeedsSettingsSet","PlayerPaletteSettings","SettingsLoaded","SettingsPlugin","UiHudSettings","UiSettings"]};

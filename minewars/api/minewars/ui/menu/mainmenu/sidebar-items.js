@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["rc_spawn_mainmenu","setup_mainmenu_layout","spawn_mainmenu"],"struct":["MainMenuPlugin"]};

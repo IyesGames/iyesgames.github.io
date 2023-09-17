@@ -28,7 +28,7 @@ var sourcesIndex = JSON.parse('{\
 "bevy_asset_loader_derive":["",[],["assets.rs","lib.rs"]],\
 "bevy_audio":["",[],["audio.rs","audio_output.rs","audio_source.rs","lib.rs","sinks.rs"]],\
 "bevy_common_assets":["",[],["lib.rs","ron.rs","toml.rs"]],\
-"bevy_core":["",[],["lib.rs","name.rs","task_pool_options.rs"]],\
+"bevy_core":["",[],["lib.rs","name.rs","serde.rs","task_pool_options.rs"]],\
 "bevy_core_pipeline":["",[["blit",[],["mod.rs"]],["bloom",[],["downsampling_pipeline.rs","mod.rs","settings.rs","upsampling_pipeline.rs"]],["contrast_adaptive_sharpening",[],["mod.rs","node.rs"]],["core_2d",[],["camera_2d.rs","main_pass_2d_node.rs","mod.rs"]],["core_3d",[],["camera_3d.rs","main_opaque_pass_3d_node.rs","main_transparent_pass_3d_node.rs","mod.rs"]],["fullscreen_vertex_shader",[],["mod.rs"]],["fxaa",[],["mod.rs","node.rs"]],["prepass",[],["mod.rs","node.rs"]],["skybox",[],["mod.rs"]],["taa",[],["mod.rs"]],["tonemapping",[],["mod.rs","node.rs"]],["upscaling",[],["mod.rs","node.rs"]]],["clear_color.rs","lib.rs","msaa_writeback.rs"]],\
 "bevy_derive":["",[],["app_plugin.rs","bevy_main.rs","derefs.rs","enum_variant_meta.rs","lib.rs"]],\
 "bevy_diagnostic":["",[],["diagnostic.rs","entity_count_diagnostics_plugin.rs","frame_time_diagnostics_plugin.rs","lib.rs","log_diagnostics_plugin.rs","system_information_diagnostics_plugin.rs"]],\
@@ -172,7 +172,7 @@ var sourcesIndex = JSON.parse('{\
 "matchers":["",[],["lib.rs"]],\
 "memchr":["",[["arch",[["all",[["packedpair",[],["default_rank.rs","mod.rs"]]],["memchr.rs","mod.rs","rabinkarp.rs","shiftor.rs","twoway.rs"]],["generic",[],["memchr.rs","mod.rs","packedpair.rs"]],["x86_64",[["avx2",[],["memchr.rs","mod.rs","packedpair.rs"]],["sse2",[],["memchr.rs","mod.rs","packedpair.rs"]]],["memchr.rs","mod.rs"]]],["mod.rs"]],["memmem",[],["mod.rs","searcher.rs"]]],["cow.rs","ext.rs","lib.rs","macros.rs","memchr.rs","vector.rs"]],\
 "memmap2":["",[],["advice.rs","lib.rs","unix.rs"]],\
-"minewars":["",[["screens",[],["loading.rs","splash.rs"]],["ui",[],["hud.rs","mainmenu.rs"]]],["assets.rs","cli.rs","locale.rs","main.rs","settings.rs","ui.rs"]],\
+"minewars":["",[["screens",[],["loading.rs","splash.rs"]],["ui",[["menu",[],["mainmenu.rs"]]],["console.rs","hud.rs","menu.rs","notify.rs","tooltip.rs","widget.rs"]]],["assets.rs","cli.rs","locale.rs","main.rs","settings.rs","ui.rs"]],\
 "minimal_lexical":["",[],["bigint.rs","extended_float.rs","lemire.rs","lib.rs","mask.rs","num.rs","number.rs","parse.rs","rounding.rs","slow.rs","stackvec.rs","table.rs","table_lemire.rs","table_small.rs"]],\
 "miniz_oxide":["",[["deflate",[],["buffer.rs","core.rs","mod.rs","stream.rs"]],["inflate",[],["core.rs","mod.rs","output_buffer.rs","stream.rs"]]],["lib.rs","shared.rs"]],\
 "mio":["",[["event",[],["event.rs","events.rs","mod.rs","source.rs"]],["net",[["tcp",[],["listener.rs","mod.rs","stream.rs"]],["uds",[],["datagram.rs","listener.rs","mod.rs","stream.rs"]]],["mod.rs","udp.rs"]],["sys",[["unix",[["selector",[],["epoll.rs","mod.rs"]],["uds",[],["datagram.rs","listener.rs","mod.rs","socketaddr.rs","stream.rs"]]],["mod.rs","net.rs","pipe.rs","sourcefd.rs","tcp.rs","udp.rs","waker.rs"]]],["mod.rs"]]],["interest.rs","io_source.rs","lib.rs","macros.rs","poll.rs","token.rs","waker.rs"]],\

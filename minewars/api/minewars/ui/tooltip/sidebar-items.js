@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["interact_infotext"],"struct":["InfoAreaText","InfoText","TooltipPlugin"]};
