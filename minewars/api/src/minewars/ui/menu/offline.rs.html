@@ -82,6 +82,8 @@
 <a href="#82" id="82">82</a>
 <a href="#83" id="83">83</a>
 <a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
+<a href="#86" id="86">86</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::assets::UiAssets;
 
@@ -100,6 +102,7 @@
     <span class="kw-2">mut </span>commands: Commands,
     uiassets: Res&lt;UiAssets&gt;,
     settings: Res&lt;AllSettings&gt;,
+    <span class="kw-2">mut </span>stack: ResMut&lt;MenuStack&gt;,
     q_container: Query&lt;Entity, With&lt;MenuContainer&gt;&gt;,
     q_extras: Query&lt;Entity, With&lt;MenuTopBarExtras&gt;&gt;,
     <span class="kw-2">mut </span>q_title: Query&lt;<span class="kw-2">&amp;mut </span>L10nKey, With&lt;MenuTitleText&gt;&gt;,
@@ -117,6 +120,7 @@
     <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>title) = q_title.get_single_mut() {
         title.<span class="number">0 </span>= <span class="string">&quot;menu-title-offline&quot;</span>.into();
     }
+    stack.<span class="number">0</span>.push(<span class="string">&quot;menu_offline&quot;</span>.into());
 
     <span class="kw">let </span>wrapper = commands.spawn((
         NodeBundle {
