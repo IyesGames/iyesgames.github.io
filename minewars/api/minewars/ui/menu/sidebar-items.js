@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["menu_butt_interact_visual","spawn_menu_butt"],"mod":["mainmenu"],"struct":["MenuButton","MenuContainer","MenuPlugin","MenuTopBar"]};
+window.SIDEBAR_ITEMS = {"fn":["menu_butt_interact_visual","spawn_menu_butt","spawn_menu_row","spawn_top_bar"],"mod":["mainmenu","offline"],"struct":["MenuButton","MenuContainer","MenuPlugin","MenuTitleText","MenuTopBar","MenuTopBarExtras"]};

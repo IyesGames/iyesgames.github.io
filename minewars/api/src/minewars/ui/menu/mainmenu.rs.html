@@ -318,21 +318,19 @@
 <a href="#318" id="318">318</a>
 <a href="#319" id="319">319</a>
 <a href="#320" id="320">320</a>
-<a href="#321" id="321">321</a>
-<a href="#322" id="322">322</a>
-<a href="#323" id="323">323</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::ui::tooltip::InfoAreaText;
 <span class="kw">use </span><span class="kw">crate</span>::ui::{UiCamera, UiRoot};
 <span class="kw">use </span><span class="kw">crate</span>::locale::L10nKey;
 <span class="kw">use </span><span class="kw">crate</span>::assets::UiAssets;
 
-<span class="kw">use super</span>::{MenuContainer, MenuTopBar, spawn_menu_butt};
+<span class="kw">use super</span>::<span class="kw-2">*</span>;
 
 <span class="kw">pub struct </span>MainMenuPlugin;
 
 <span class="kw">impl </span>Plugin <span class="kw">for </span>MainMenuPlugin {
     <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, app: <span class="kw-2">&amp;mut </span>App) {
+        app.register_clicommand_noargs(<span class="string">&quot;menu_mainmenu&quot;</span>, spawn_mainmenu);
         app.add_systems(OnEnter(AppState::MainMenu), setup_mainmenu_layout);
         app.add_systems(Update, (
             spawn_mainmenu
@@ -369,20 +367,6 @@
                 flex_direction: FlexDirection::Column,
                 justify_content: JustifyContent::SpaceBetween,
                 align_items: AlignItems::Stretch,
-                ..Default::default()
-            },
-            ..Default::default()
-        },
-    )).id();
-
-    <span class="kw">let </span>top_bar = commands.spawn((
-        MenuTopBar,
-        NodeBundle {
-            style: Style {
-                flex_direction: FlexDirection::Row,
-                justify_content: JustifyContent::SpaceBetween,
-                align_items: AlignItems::Center,
-                padding: UiRect::all(Val::Px(<span class="number">4.0</span>)),
                 ..Default::default()
             },
             ..Default::default()
@@ -442,6 +426,8 @@
         },
     )).id();
 
+    <span class="kw">let </span>top_bar = spawn_top_bar(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>settings, <span class="kw-2">&amp;</span>uiassets);
+
     commands.entity(info_bar)
         .push_children(<span class="kw-2">&amp;</span>[info_text]);
 
@@ -456,10 +442,22 @@
     settings: Res&lt;AllSettings&gt;,
     logo: Res&lt;<span class="kw">crate</span>::assets::TitleLogo&gt;,
     q_container: Query&lt;Entity, With&lt;MenuContainer&gt;&gt;,
+    q_extras: Query&lt;Entity, With&lt;MenuTopBarExtras&gt;&gt;,
+    <span class="kw-2">mut </span>q_title: Query&lt;<span class="kw-2">&amp;mut </span>L10nKey, With&lt;MenuTitleText&gt;&gt;,
 ) {
     <span class="kw">let </span><span class="prelude-val">Ok</span>(container) = q_container.get_single() <span class="kw">else </span>{
+        <span class="macro">error!</span>(<span class="string">&quot;Menu Container Entity not found!&quot;</span>);
         <span class="kw">return</span>;
     };
+
+    <span class="comment">// clear any previous menu
+    </span>commands.entity(container).despawn_descendants();
+    <span class="kw">if let </span><span class="prelude-val">Ok</span>(topbar) = q_extras.get_single() {
+        commands.entity(topbar).despawn_descendants();
+    }
+    <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>title) = q_title.get_single_mut() {
+        title.<span class="number">0 </span>= <span class="string">&quot;&quot;</span>.into();
+    }
 
     <span class="kw">let </span>wrapper = commands.spawn((
         NodeBundle {
@@ -568,7 +566,7 @@
         <span class="kw-2">&amp;mut </span>commands,
         <span class="kw-2">&amp;*</span>uiassets,
         <span class="kw-2">&amp;*</span>settings,
-        OnClick::new(),
+        OnClick::new().cli(<span class="string">&quot;menu_offline&quot;</span>),
         <span class="string">&quot;menu-button-offline&quot;</span>,
         <span class="string">&quot;menu-tooltip-offline&quot;</span>,
         <span class="bool-val">true</span>,
@@ -601,19 +599,11 @@
         <span class="bool-val">true</span>,
     );
 
-    commands
-        .entity(row1)
-        .push_children(<span class="kw-2">&amp;</span>[butt_playofficial, butt_watch, butt_playlan]);
-    commands
-        .entity(row2)
-        .push_children(<span class="kw-2">&amp;</span>[butt_playoffline]);
-    commands
-        .entity(row3)
-        .push_children(<span class="kw-2">&amp;</span>[butt_settings, butt_credits, butt_exit]);
-
-    commands.entity(rows_wrapper).push_children(<span class="kw-2">&amp;</span>[row1, row2, row3]);
-    commands.entity(wrapper).push_children(<span class="kw-2">&amp;</span>[img_logo, rows_wrapper]);
-    commands.entity(container).push_children(<span class="kw-2">&amp;</span>[wrapper]);
+    <span class="kw">let </span>rows = <span class="kw-2">&amp;</span>[
+        spawn_menu_row(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>[butt_playofficial, butt_watch, butt_playlan]),
+        spawn_menu_row(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>[butt_playoffline]),
+        spawn_menu_row(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>[butt_settings, butt_credits, butt_exit]),
+    ];
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;dev&quot;</span>)]
     </span>{
@@ -626,8 +616,12 @@
             <span class="string">&quot;menu-tooltip-dev&quot;</span>,
             <span class="bool-val">true</span>,
         );
-        commands.entity(row2).push_children(<span class="kw-2">&amp;</span>[butt_dev]);
+        commands.entity(rows[<span class="number">1</span>]).push_children(<span class="kw-2">&amp;</span>[butt_dev]);
     }
+
+    commands.entity(rows_wrapper).push_children(rows);
+    commands.entity(wrapper).push_children(<span class="kw-2">&amp;</span>[img_logo, rows_wrapper]);
+    commands.entity(container).push_children(<span class="kw-2">&amp;</span>[wrapper]);
 }
 
 <span class="doccomment">/// Ensure the main menu is spawned whenever there is no other menu displayed
