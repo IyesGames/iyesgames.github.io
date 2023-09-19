@@ -84,6 +84,25 @@
 <a href="#84" id="84">84</a>
 <a href="#85" id="85">85</a>
 <a href="#86" id="86">86</a>
+<a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::assets::UiAssets;
 
@@ -97,8 +116,7 @@
     }
 }
 
-<span class="doccomment">/// Creates the contents of the main menu.
-</span><span class="kw">fn </span>spawn_menu_offline(
+<span class="kw">fn </span>spawn_menu_offline(
     <span class="kw-2">mut </span>commands: Commands,
     uiassets: Res&lt;UiAssets&gt;,
     settings: Res&lt;AllSettings&gt;,
@@ -126,7 +144,7 @@
         NodeBundle {
             style: Style {
                 flex_direction: FlexDirection::Column,
-                justify_content: JustifyContent::SpaceEvenly,
+                justify_content: JustifyContent::Center,
                 align_items: AlignItems::Center,
                 ..Default::default()
             },
@@ -141,6 +159,24 @@
         OnClick::new(),
         <span class="string">&quot;menu-button-play-tutorial&quot;</span>,
         <span class="string">&quot;menu-tooltip-play-tutorial&quot;</span>,
+        PROPRIETARY,
+    );
+    <span class="kw">let </span>butt_playground = spawn_menu_butt(
+        <span class="kw-2">&amp;mut </span>commands,
+        <span class="kw-2">&amp;*</span>uiassets,
+        <span class="kw-2">&amp;*</span>settings,
+        OnClick::new(),
+        <span class="string">&quot;menu-button-playground&quot;</span>,
+        <span class="string">&quot;menu-tooltip-playground&quot;</span>,
+        PROPRIETARY,
+    );
+    <span class="kw">let </span>butt_replay = spawn_menu_butt(
+        <span class="kw-2">&amp;mut </span>commands,
+        <span class="kw-2">&amp;*</span>uiassets,
+        <span class="kw-2">&amp;*</span>settings,
+        OnClick::new(),
+        <span class="string">&quot;menu-button-replay&quot;</span>,
+        <span class="string">&quot;menu-tooltip-replay&quot;</span>,
         PROPRIETARY,
     );
     <span class="kw">let </span>butt_play_ms_single = spawn_menu_butt(
@@ -164,6 +200,8 @@
 
     <span class="kw">let </span>rows = <span class="kw-2">&amp;</span>[
         spawn_menu_row(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>[butt_tutorial]),
+        spawn_menu_row(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>[butt_playground]),
+        spawn_menu_row(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>[butt_replay]),
         spawn_menu_row(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>[butt_play_ms_single]),
         spawn_menu_row(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>[butt_editor]),
     ];

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["spawn_menu_lan_join","spawn_menu_lan_setup"],"struct":["LanMenuPlugin"]};

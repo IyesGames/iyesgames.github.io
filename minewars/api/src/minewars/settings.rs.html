@@ -264,6 +264,23 @@
 <a href="#264" id="264">264</a>
 <a href="#265" id="265">265</a>
 <a href="#266" id="266">266</a>
+<a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
 <span class="kw">pub struct </span>SettingsPlugin;
@@ -291,6 +308,23 @@
     <span class="kw">pub </span>ui: UiSettings,
     <span class="kw">pub </span>ui_hud: UiHudSettings,
     <span class="kw">pub </span>player_colors: PlayerPaletteSettings,
+    <span class="kw">pub </span>net: NetSettings,
+}
+
+<span class="attr">#[derive(Serialize, Deserialize, Clone)]
+#[serde(default)]
+</span><span class="kw">pub struct </span>NetSettings {
+    <span class="kw">pub </span>last_host_addr: SocketAddr,
+    <span class="kw">pub </span>last_host_sessionid: u32,
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span>NetSettings {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        NetSettings {
+            last_host_addr: <span class="string">&quot;127.0.0.1:13370&quot;</span>.parse().unwrap(),
+            last_host_sessionid: <span class="number">0</span>,
+        }
+    }
 }
 
 <span class="attr">#[derive(Serialize, Deserialize, Clone)]

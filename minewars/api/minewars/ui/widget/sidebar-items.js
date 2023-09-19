@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["WidgetsPlugin"]};
+window.SIDEBAR_ITEMS = {"mod":["form","textfield"],"struct":["WidgetsPlugin"]};

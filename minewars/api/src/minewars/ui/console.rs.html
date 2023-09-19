@@ -168,8 +168,6 @@
 <a href="#168" id="168">168</a>
 <a href="#169" id="169">169</a>
 <a href="#170" id="170">170</a>
-<a href="#171" id="171">171</a>
-<a href="#172" id="172">172</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::assets::UiAssets;
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
@@ -186,7 +184,7 @@
 }
 
 <span class="attr">#[derive(Component)]
-</span><span class="kw">struct </span>UiConsole;
+</span><span class="kw">pub struct </span>UiConsole;
 <span class="attr">#[derive(Component)]
 </span><span class="kw">struct </span>UiConsolePrompt(Entity);
 <span class="attr">#[derive(Component)]
@@ -200,9 +198,7 @@
     kbd: Res&lt;Input&lt;KeyCode&gt;&gt;,
     query_existing: Query&lt;Entity, With&lt;UiConsole&gt;&gt;,
     ui_assets: <span class="prelude-ty">Option</span>&lt;Res&lt;UiAssets&gt;&gt;,
-    <span class="comment">// mut input_switch: ResMut&lt;InputSwitch&gt;,
-    // appstate: Res&lt;State&lt;AppState&gt;&gt;,
-</span>) {
+) {
     <span class="kw">if </span>kbd.just_pressed(KeyCode::Grave) {
         <span class="kw">if </span>query_existing.is_empty() {
             <span class="comment">// spawn console
