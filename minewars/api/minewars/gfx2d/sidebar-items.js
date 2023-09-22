@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Gfx2dSet"],"fn":["rc_gfx2d_any","rc_gfx2d_sprites","rc_gfx2d_tilemap"],"mod":["camera","sprite","sprites","tilemap"],"struct":["Gfx2dPlugin"]};

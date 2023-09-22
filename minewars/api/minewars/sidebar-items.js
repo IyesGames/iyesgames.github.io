@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["main"],"mod":["assets","cli","locale","prelude","screens","settings","ui"]};
+window.SIDEBAR_ITEMS = {"fn":["main"],"mod":["assets","camera","cli","gfx2d","input","locale","prelude","screens","settings","ui","view"]};

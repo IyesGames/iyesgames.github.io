@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["rc_accepting_game_input"],"struct":["GameInputSet","InhibitGameInput","InputPlugin"]};

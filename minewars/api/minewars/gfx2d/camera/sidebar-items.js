@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["setup_game_camera"],"struct":["Gfx2dCameraPlugin"]};

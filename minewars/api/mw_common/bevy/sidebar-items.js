@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["AppState"],"fn":["map_topology_is"],"struct":["MapTopologySet","MwCommonPlugin","StateDespawnMarker"]};
+window.SIDEBAR_ITEMS = {"enum":["AppState","SessionKind"],"fn":["map_topology_is"],"mod":["map"],"struct":["MapTopologySet","MwCommonPlugin","StateDespawnMarker"]};
