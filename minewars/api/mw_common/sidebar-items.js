@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["algo","bevy","driver","game","grid","net","plid","prelude"]};
+window.SIDEBAR_ITEMS = {"mod":["algo","driver","game","grid","net","plid","prelude"]};

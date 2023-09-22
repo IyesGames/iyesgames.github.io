@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BevyHostSet"],"struct":["BevyGame","BevyMwHostPlugin"]};

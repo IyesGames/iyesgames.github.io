@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["PlayerState"],"struct":["PlayerBundle","PlayerOwnsCits","PlayerPlid","PlayerStats","PlayersIndex","PlidPlayingAs"]};

@@ -41,9 +41,6 @@
 <a href="#41" id="41">41</a>
 <a href="#42" id="42">42</a>
 <a href="#43" id="43">43</a>
-<a href="#44" id="44">44</a>
-<a href="#45" id="45">45</a>
-<a href="#46" id="46">46</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/// Re-exports everything that I want to easily access from all MineWars crates
 ///
 /// This includes stuff from this crate, and also important dependencies.
@@ -68,10 +65,9 @@
     <span class="kw">pub use </span>std::path::{Path, PathBuf};
     <span class="kw">pub use </span>std::hash::Hash;
     <span class="kw">pub use </span>std::fmt::{Display, Debug};
+    <span class="kw">pub use </span>std::marker::PhantomData;
     <span class="kw">pub use </span>thiserror::Error;
     <span class="kw">pub use </span>tracing::{debug, error, info, trace, warn};
-    <span class="attr">#[cfg(feature = <span class="string">&quot;bevy&quot;</span>)]
-    </span><span class="kw">pub use </span><span class="kw">crate</span>::bevy::<span class="kw-2">*</span>;
     <span class="attr">#[cfg(feature = <span class="string">&quot;net&quot;</span>)]
     </span><span class="kw">pub use </span>tokio;
     <span class="attr">#[cfg(feature = <span class="string">&quot;net&quot;</span>)]
@@ -80,8 +76,6 @@
     </span><span class="kw">pub use </span>quinn;
 }
 
-<span class="attr">#[cfg(feature = <span class="string">&quot;bevy&quot;</span>)]
-</span><span class="kw">pub mod </span>bevy;
 <span class="attr">#[cfg(feature = <span class="string">&quot;net&quot;</span>)]
 </span><span class="kw">pub mod </span>net;
 

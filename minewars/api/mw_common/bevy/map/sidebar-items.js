@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["TileGent","TileVisLevel"],"fn":["setup_map"],"struct":["CitBundle","CitOwner","CitRegion","CitRes","LandTileBundle","MapPlugin","MapTileBundle","MwTilePos","PlayableTileBundle","RecomputeVisEvent","ResClusterTileBundle","TileDigit","TileOwner","TileRegion","TileRoads"]};
