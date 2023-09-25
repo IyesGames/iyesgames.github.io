@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"mw_game_minesweeper":[["impl&lt;C: <a class=\"trait\" href=\"mw_common/grid/trait.Coord.html\" title=\"trait mw_common::grid::Coord\">Coord</a>&gt; <a class=\"trait\" href=\"mw_common/driver/trait.Game.html\" title=\"trait mw_common::driver::Game\">Game</a> for <a class=\"struct\" href=\"mw_game_minesweeper/struct.GameMinesweeper.html\" title=\"struct mw_game_minesweeper::GameMinesweeper\">GameMinesweeper</a>&lt;C&gt;"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

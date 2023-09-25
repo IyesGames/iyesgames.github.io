@@ -491,11 +491,11 @@
         <span class="macro">assert!</span>(r &lt;= <span class="number">127</span>);
         <span class="kw">let </span>r = r <span class="kw">as </span>i8;
         <span class="macro">assert!</span>(c.<span class="number">0 </span>&gt;= -r &amp;&amp; c.<span class="number">0 </span>&lt;= r &amp;&amp; c.<span class="number">1 </span>&gt;= -r &amp;&amp; c.<span class="number">1 </span>&lt;= r);
-        <span class="kw">let </span>r = r <span class="kw">as </span>usize;
+        <span class="kw">let </span>r = r <span class="kw">as </span>i16;
         <span class="kw">let </span>w = r * <span class="number">2 </span>+ <span class="number">1</span>;
-        <span class="kw">let </span>x = c.<span class="number">1 </span><span class="kw">as </span>usize + r;
-        <span class="kw">let </span>y = c.<span class="number">0 </span><span class="kw">as </span>usize + r;
-        y * w + x
+        <span class="kw">let </span>x = c.<span class="number">1 </span><span class="kw">as </span>i16 + r;
+        <span class="kw">let </span>y = c.<span class="number">0 </span><span class="kw">as </span>i16 + r;
+        (y * w + x) <span class="kw">as </span>usize
     }
     <span class="kw">fn </span>row_len(r: u8, _y: i8) -&gt; usize {
         r <span class="kw">as </span>usize * <span class="number">2 </span>+ <span class="number">1

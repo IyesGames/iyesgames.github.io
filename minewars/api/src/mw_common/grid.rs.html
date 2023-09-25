@@ -105,6 +105,8 @@
 <a href="#105" id="105">105</a>
 <a href="#106" id="106">106</a>
 <a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! IyesGames 2D Grid Library
 //!
 //! Library for working with small 2D grid-based game worlds.
@@ -129,6 +131,7 @@
 <span class="kw">use </span>enum_iterator::Sequence;
 <span class="kw">use </span>enum_map::Enum;
 <span class="kw">use </span>thiserror::Error;
+<span class="kw">use </span>serde::{Serialize, Deserialize};
 
 <span class="kw">pub mod </span>hex;
 <span class="kw">pub mod </span>map;
@@ -142,6 +145,7 @@
 
 <span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[derive(Enum, Sequence)]
+#[derive(Serialize, Deserialize)]
 #[repr(u8)]
 </span><span class="kw">pub enum </span>Topology {
     Hex,

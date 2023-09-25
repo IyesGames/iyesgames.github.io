@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["BevyHostSet"],"struct":["BevyGame","BevyMwHostPlugin"]};
+window.SIDEBAR_ITEMS = {"enum":["BevyHostSet"],"struct":["BevyHost","BevyMwHostPlugin"]};

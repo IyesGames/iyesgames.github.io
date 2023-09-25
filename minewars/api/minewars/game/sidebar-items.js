@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["minesweeper","minewars"],"struct":["GameplayPlugin"]};

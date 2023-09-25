@@ -432,14 +432,14 @@
         <span class="kw">if </span>interaction.is_changed() {
             <span class="kw">match </span><span class="kw-2">*</span>interaction {
                 Interaction::Pressed =&gt; {
-                    <span class="kw-2">*</span>color = BackgroundColor(settings.ui.color_menu_button_selected);
+                    <span class="kw-2">*</span>color = BackgroundColor(settings.ui.color_menu_button_selected.into());
                 }
                 Interaction::Hovered =&gt; {
-                    <span class="kw-2">*</span>color = BackgroundColor(settings.ui.color_menu_button_selected);
+                    <span class="kw-2">*</span>color = BackgroundColor(settings.ui.color_menu_button_selected.into());
                 }
                 Interaction::None =&gt; {
                     <span class="kw">if </span>focus.<span class="number">0 </span>!= <span class="prelude-val">Some</span>(e) {
-                        <span class="kw-2">*</span>color = BackgroundColor(settings.ui.color_menu_button);
+                        <span class="kw-2">*</span>color = BackgroundColor(settings.ui.color_menu_button.into());
                     }
                 }
             }
@@ -449,7 +449,7 @@
         <span class="comment">// de-focus any previously focused field
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(oldfocus) = <span class="kw-2">*</span>oldfocus {
             <span class="kw">if let </span><span class="prelude-val">Ok</span>((<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw-2">mut </span>color, textinput)) = q_textfield.get_mut(oldfocus) {
-                <span class="kw-2">*</span>color = BackgroundColor(settings.ui.color_menu_button);
+                <span class="kw-2">*</span>color = BackgroundColor(settings.ui.color_menu_button.into());
                 <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>text) = q_text.get_mut(textinput.e_text) {
                     <span class="comment">// hack to keep field thickness/height:
                     //  - delete the cursor (middle part) if field has text
@@ -465,9 +465,9 @@
         <span class="comment">// focus any newly focused field
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(newfocus) = focus.<span class="number">0 </span>{
             <span class="kw">if let </span><span class="prelude-val">Ok</span>((<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw-2">mut </span>color, textinput)) = q_textfield.get_mut(newfocus) {
-                <span class="kw-2">*</span>color = BackgroundColor(settings.ui.color_menu_button_selected);
+                <span class="kw-2">*</span>color = BackgroundColor(settings.ui.color_menu_button_selected.into());
                 <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>text) = q_text.get_mut(textinput.e_text) {
-                    text.sections[<span class="number">1</span>].style.color = settings.ui.color_text;
+                    text.sections[<span class="number">1</span>].style.color = settings.ui.color_text.into();
                     text.sections[<span class="number">1</span>].value = <span class="string">&quot;|&quot;</span>.into();
                     <span class="comment">// for ease of editing, move cursor to end
                     </span><span class="kw">let </span>strtmp = text.sections[<span class="number">2</span>].value.clone();
@@ -592,7 +592,7 @@
     };
 
     <span class="kw">let </span>text_style = TextStyle {
-        color: color_text,
+        color: color_text.into(),
         font_size: <span class="number">24.0 </span>* settings.ui.text_scale,
         font: uiassets.font.clone(),
     };
@@ -629,7 +629,7 @@
         },
         Interaction::default(),
         NodeBundle {
-            background_color: BackgroundColor(color_init),
+            background_color: BackgroundColor(color_init.into()),
             style: Style {
                 justify_content: JustifyContent::FlexStart,
                 align_items: AlignItems::Center,

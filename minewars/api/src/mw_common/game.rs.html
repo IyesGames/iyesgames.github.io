@@ -152,6 +152,9 @@
 <a href="#152" id="152">152</a>
 <a href="#153" id="153">153</a>
 <a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>enum_iterator::Sequence;
 <span class="kw">use </span>enum_map::{Enum, EnumMap};
 <span class="kw">use </span>num_derive::FromPrimitive;
@@ -163,26 +166,28 @@
 <span class="kw">pub type </span>CitId = u8;
 
 <span class="doccomment">/// The possibilities of what can be on a given tile
-</span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 #[derive(Enum, FromPrimitive, ToPrimitive, BitfieldSpecifier, Sequence)]
 #[cfg_attr(feature = <span class="string">&quot;bevy&quot;</span>, derive(Component))]
 #[bits = <span class="number">2</span>]
 </span><span class="kw">pub enum </span>ItemKind {
-    Safe,
+    <span class="attr">#[default]
+    </span>Safe,
     Mine,
     Decoy,
     Flashbang,
 }
 
 <span class="doccomment">/// The base variant of a map tile
-</span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 #[derive(Enum, FromPrimitive, ToPrimitive, BitfieldSpecifier, Sequence)]
 #[cfg_attr(feature = <span class="string">&quot;bevy&quot;</span>, derive(Component))]
 #[bits = <span class="number">3</span>]
 </span><span class="kw">pub enum </span>TileKind {
     Water,
     Foundation,
-    Regular,
+    <span class="attr">#[default]
+    </span>Regular,
     Fertile,
     Forest,
     Mountain,
@@ -244,12 +249,13 @@
 }
 
 <span class="doccomment">/// All the various structures that can be built
-</span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+</span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 #[derive(Enum, FromPrimitive, ToPrimitive, BitfieldSpecifier, Sequence)]
 #[cfg_attr(feature = <span class="string">&quot;bevy&quot;</span>, derive(Component))]
 #[bits = <span class="number">2</span>]
 </span><span class="kw">pub enum </span>StructureKind {
-    Road,
+    <span class="attr">#[default]
+    </span>Road,
     Barricade,
     WatchTower,
     Bridge,

@@ -77,7 +77,28 @@
 <a href="#77" id="77">77</a>
 <a href="#78" id="78">78</a>
 <a href="#79" id="79">79</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, settings::MwRenderer};
+<a href="#80" id="80">80</a>
+<a href="#81" id="81">81</a>
+<a href="#82" id="82">82</a>
+<a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
+<a href="#86" id="86">86</a>
+<a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>mw_app::map::NeedsMapSet;
+
+<span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, settings::MwRenderer};
 
 <span class="kw">pub mod </span>camera;
 <span class="kw">pub mod </span>tilemap;
@@ -87,10 +108,15 @@
 
 <span class="kw">impl </span>Plugin <span class="kw">for </span>Gfx2dPlugin {
     <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, app: <span class="kw-2">&amp;mut </span>App) {
+        app.add_plugins((
+            camera::Gfx2dCameraPlugin,
+            sprites::Gfx2dSpritesPlugin,
+            tilemap::Gfx2dTilemapPlugin,
+        ));
         app.configure_sets(Update, (
-            Gfx2dSet::Any.run_if(rc_gfx2d_any),
-            Gfx2dSet::Sprites.run_if(rc_gfx2d_sprites),
-            Gfx2dSet::Tilemap.run_if(rc_gfx2d_tilemap),
+            Gfx2dSet::Any.in_set(NeedsMapSet).run_if(rc_gfx2d_any),
+            Gfx2dSet::Sprites.in_set(NeedsMapSet).run_if(rc_gfx2d_sprites),
+            Gfx2dSet::Tilemap.in_set(NeedsMapSet).run_if(rc_gfx2d_tilemap),
         ));
     }
 }
@@ -102,25 +128,37 @@
     Tilemap,
 }
 
+<span class="attr">#[derive(SystemSet, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+</span><span class="kw">struct </span>Gfx2dTileSetupSet;
+
+<span class="attr">#[derive(Resource)]
+</span><span class="kw">pub struct </span>TilemapInitted;
+
 <span class="kw">fn </span>rc_gfx2d_any(
-    settings: Res&lt;AllSettings&gt;,
+    settings: <span class="prelude-ty">Option</span>&lt;Res&lt;AllSettings&gt;&gt;,
 ) -&gt; bool {
-    settings.renderer == MwRenderer::Tilemap || settings.renderer == MwRenderer::Sprites
+    settings.map(|s| s.renderer == MwRenderer::Tilemap || s.renderer == MwRenderer::Sprites).unwrap_or(<span class="bool-val">false</span>)
 }
 
 <span class="kw">fn </span>rc_gfx2d_sprites(
-    settings: Res&lt;AllSettings&gt;,
+    settings: <span class="prelude-ty">Option</span>&lt;Res&lt;AllSettings&gt;&gt;,
 ) -&gt; bool {
-    settings.renderer == MwRenderer::Sprites
+    settings.map(|s| s.renderer == MwRenderer::Sprites).unwrap_or(<span class="bool-val">false</span>)
 }
 
 <span class="kw">fn </span>rc_gfx2d_tilemap(
-    settings: Res&lt;AllSettings&gt;,
+    settings: <span class="prelude-ty">Option</span>&lt;Res&lt;AllSettings&gt;&gt;,
 ) -&gt; bool {
-    settings.renderer == MwRenderer::Sprites
+    settings.map(|s| s.renderer == MwRenderer::Tilemap).unwrap_or(<span class="bool-val">false</span>)
 }
 
 <span class="kw">mod </span>sprite {
+    <span class="kw">pub const </span>WIDTH6: f32 = <span class="number">112.0</span>;
+    <span class="kw">pub const </span>HEIGHT6: f32 = <span class="number">128.0</span>;
+
+    <span class="kw">pub const </span>WIDTH4: f32 = <span class="number">112.0</span>;
+    <span class="kw">pub const </span>HEIGHT4: f32 = <span class="number">112.0</span>;
+
     <span class="kw">pub const </span>STRIDE: usize = <span class="number">10</span>;
 
     <span class="kw">pub const </span>DIG: usize = <span class="number">0 </span>* STRIDE;

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {};
+window.SIDEBAR_ITEMS = {"fn":["setup_base_tile","tile_kind","tile_owner"],"struct":["Gfx2dSpritesPlugin"]};

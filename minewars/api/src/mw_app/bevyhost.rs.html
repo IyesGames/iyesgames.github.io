@@ -162,6 +162,31 @@
 <a href="#162" id="162">162</a>
 <a href="#163" id="163">163</a>
 <a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! The Bevy Host
 //!
 //! Allows offline gameplay without a server.
@@ -206,6 +231,12 @@
     EvOut: From&lt;(PlayerId, G::OutEvent)&gt; + Clone + Event,
 {
     <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, app: <span class="kw-2">&amp;mut </span>App) {
+        app.add_systems(
+            OnEnter(SessionKind::BevyHost),
+            init::&lt;G&gt;
+                .in_set(BevyHostSet::All)
+                .run_if(resource_exists::&lt;BevyHost&lt;G&gt;&gt;())
+        );
         app.add_systems(Update, (
             (
                 player_inputs::&lt;G, EvIn&gt;.in_set(BevyHostSet::EvIn),
@@ -219,32 +250,38 @@
          .run_if(in_state(AppState::InGame))
          .run_if(in_state(SessionKind::BevyHost))
          .run_if(resource_exists::&lt;BevyHost&lt;G&gt;&gt;())
-         .run_if(resource_exists::&lt;BevyGame&lt;G&gt;&gt;())
         );
     }
 }
 
 <span class="attr">#[derive(Resource)]
-</span><span class="kw">pub struct </span>BevyGame&lt;G: Game&gt;(<span class="kw">pub </span>G);
+</span><span class="kw">pub struct </span>BevyHost&lt;G: Game&gt; {
+    game: G,
+    state: BevyHostState&lt;G&gt;,
+}
 
-<span class="attr">#[derive(Resource)]
-</span><span class="kw">struct </span>BevyHost&lt;G: Game&gt; {
+<span class="kw">struct </span>BevyHostState&lt;G: Game&gt; {
     events: Vec&lt;(Plids, G::OutEvent)&gt;,
     scheds: BTreeMap&lt;Instant, G::SchedEvent&gt;,
     cancel: HashSet&lt;G::SchedEvent&gt;,
+    init_data: <span class="prelude-ty">Option</span>&lt;Box&lt;G::InitData&gt;&gt;,
 }
 
 <span class="kw">impl</span>&lt;G: Game&gt; BevyHost&lt;G&gt; {
-    <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(game: G, init_data: G::InitData) -&gt; <span class="self">Self </span>{
         BevyHost {
-            events: Vec::default(),
-            scheds: BTreeMap::default(),
-            cancel: HashSet::default(),
+            game,
+            state: BevyHostState {
+                events: Vec::default(),
+                scheds: BTreeMap::default(),
+                cancel: HashSet::default(),
+                init_data: <span class="prelude-val">Some</span>(Box::new(init_data)),
+            },
         }
     }
 }
 
-<span class="kw">impl</span>&lt;G: Game&gt; Host&lt;G&gt; <span class="kw">for </span>BevyHost&lt;G&gt; {
+<span class="kw">impl</span>&lt;G: Game&gt; Host&lt;G&gt; <span class="kw">for </span>BevyHostState&lt;G&gt; {
     <span class="kw">fn </span>msg(<span class="kw-2">&amp;mut </span><span class="self">self</span>, plids: Plids, event: G::OutEvent) {
         <span class="self">self</span>.events.push((plids, event));
     }
@@ -256,9 +293,19 @@
     }
 }
 
-<span class="kw">fn </span>player_inputs&lt;G, EvIn&gt;(
+<span class="kw">fn </span>init&lt;G&gt;(
     <span class="kw-2">mut </span>host: ResMut&lt;BevyHost&lt;G&gt;&gt;,
-    <span class="kw-2">mut </span>game: ResMut&lt;BevyGame&lt;G&gt;&gt;,
+)
+<span class="kw">where
+    </span>G: Game + Send + Sync + <span class="lifetime">&#39;static</span>,
+{
+    <span class="kw">let </span>host = host.into_inner();
+    <span class="kw">let </span>init_data = host.state.init_data.take().unwrap();
+    host.game.init(<span class="kw-2">&amp;mut </span>host.state, <span class="kw-2">*</span>init_data);
+}
+
+<span class="kw">fn </span>player_inputs&lt;G, EvIn&gt;(
+    host: ResMut&lt;BevyHost&lt;G&gt;&gt;,
     my_plid: Res&lt;PlidPlayingAs&gt;,
     <span class="kw-2">mut </span>evr: EventReader&lt;EvIn&gt;,
 )
@@ -266,28 +313,30 @@
     </span>G: Game + Send + Sync + <span class="lifetime">&#39;static</span>,
     EvIn: Into&lt;G::InputAction&gt; + Clone + Event,
 {
+    <span class="kw">let </span>host = host.into_inner();
     <span class="kw">for </span>ev <span class="kw">in </span>evr.iter() {
         <span class="kw">let </span>action = ev.clone().into();
-        game.<span class="number">0</span>.input(<span class="kw-2">&amp;mut *</span>host, my_plid.<span class="number">0</span>, action);
+        host.game.input(<span class="kw-2">&amp;mut </span>host.state, my_plid.<span class="number">0</span>, action);
     }
 }
 
 <span class="kw">fn </span>unscheds&lt;G&gt;(
     <span class="kw-2">mut </span>host: ResMut&lt;BevyHost&lt;G&gt;&gt;,
-    <span class="kw-2">mut </span>game: ResMut&lt;BevyGame&lt;G&gt;&gt;,
 )
 <span class="kw">where
     </span>G: Game + Send + Sync + <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">if </span>host.scheds.is_empty() {
+    <span class="kw">if </span>host.state.scheds.is_empty() {
         <span class="kw">return</span>;
     }
 
     <span class="kw">let </span>now = Instant::now();
-    <span class="kw">let </span><span class="kw-2">mut </span>split = host.scheds.split_off(<span class="kw-2">&amp;</span>now);
-    std::mem::swap(<span class="kw-2">&amp;mut </span>split, <span class="kw-2">&amp;mut </span>host.scheds);
+    <span class="kw">let </span><span class="kw-2">mut </span>split = host.state.scheds.split_off(<span class="kw-2">&amp;</span>now);
+    std::mem::swap(<span class="kw-2">&amp;mut </span>split, <span class="kw-2">&amp;mut </span>host.state.scheds);
+
+    <span class="kw">let </span>host = host.into_inner();
     <span class="kw">for </span>ev <span class="kw">in </span>split.into_values() {
-        game.<span class="number">0</span>.unsched(<span class="kw-2">&amp;mut *</span>host, ev);
+        host.game.unsched(<span class="kw-2">&amp;mut </span>host.state, ev);
     }
 }
 
@@ -301,14 +350,15 @@
     <span class="comment">// PERF: replace with `drain_filter` when in stable Rust
     // remove local Vec, avoid doing 2 passes
     </span>temp.clear();
-    <span class="kw">for </span>(k, ev) <span class="kw">in </span>host.scheds.iter() {
-        <span class="kw">if </span>host.cancel.contains(ev) {
+    <span class="kw">for </span>(k, ev) <span class="kw">in </span>host.state.scheds.iter() {
+        <span class="kw">if </span>host.state.cancel.contains(ev) {
             temp.push(<span class="kw-2">*</span>k);
         }
     }
     <span class="kw">for </span>k <span class="kw">in </span>temp.drain(..) {
-        host.scheds.remove(<span class="kw-2">&amp;</span>k);
+        host.state.scheds.remove(<span class="kw-2">&amp;</span>k);
     }
+    host.state.cancel.clear();
 }
 
 <span class="kw">fn </span>drain_out_events&lt;G, EvOut&gt;(
@@ -319,7 +369,7 @@
     </span>G: Game + Send + Sync + <span class="lifetime">&#39;static</span>,
     EvOut: From&lt;(PlayerId, G::OutEvent)&gt; + Event,
 {
-    <span class="kw">for </span>(plids, ev) <span class="kw">in </span>host.events.drain(..) {
+    <span class="kw">for </span>(plids, ev) <span class="kw">in </span>host.state.events.drain(..) {
         <span class="kw">for </span>plid <span class="kw">in </span>plids.iter(<span class="prelude-val">None</span>) {
             evw.send((plid, ev.clone()).into());
         }

@@ -230,10 +230,6 @@
 <a href="#230" id="230">230</a>
 <a href="#231" id="231">231</a>
 <a href="#232" id="232">232</a>
-<a href="#233" id="233">233</a>
-<a href="#234" id="234">234</a>
-<a href="#235" id="235">235</a>
-<a href="#236" id="236">236</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Per-Plid cache of game state
 //!
 //! A &quot;view&quot; is a compact representation of the game state of the entire map,
@@ -266,6 +262,7 @@
 </span><span class="kw">use </span>bevy::render::extract_resource::ExtractResource;
 <span class="kw">use </span>modular_bitfield::prelude::<span class="kw-2">*</span>;
 
+<span class="kw">use </span>mw_app::player::PlayersIndex;
 <span class="kw">use </span>mw_common::grid::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_common::plid::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_common::game::<span class="kw-2">*</span>;
@@ -307,13 +304,9 @@
 </span><span class="attr">#[derive(SystemSet, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 </span><span class="kw">pub struct </span>ViewSwitchSet;
 
-<span class="doccomment">/// Index of all the views in the current gameplay session.
-</span><span class="attr">#[derive(Resource, ExtractResource, Clone)]
-</span><span class="kw">pub struct </span>Views(Vec&lt;Entity&gt;);
-
 <span class="doccomment">/// The currently active view -- what is displayed to the user.
 </span><span class="attr">#[derive(Resource, ExtractResource, Clone)]
-</span><span class="kw">pub struct </span>PlidViewing(PlayerId);
+</span><span class="kw">pub struct </span>PlidViewing(<span class="kw">pub </span>PlayerId);
 
 <span class="doccomment">/// The per-tile data of a view.
 ///
@@ -326,7 +319,7 @@
 /// or just kept live in ECS entities and hidden (like explosion effects, etc),
 /// some can be recomputed (vis levels, roads).
 </span><span class="attr">#[bitfield]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 </span><span class="kw">pub struct </span>ViewTileData {
     <span class="kw">pub </span>owner: B4,
     <span class="kw">pub </span>digit: B3,
@@ -339,13 +332,12 @@
 
 <span class="doccomment">/// The map data of a view
 </span><span class="attr">#[derive(Component, Clone)]
-</span><span class="kw">pub struct </span>ViewMapData&lt;C: Coord&gt;(MapData&lt;C, ViewTileData&gt;);
+</span><span class="kw">pub struct </span>ViewMapData&lt;C: Coord&gt;(<span class="kw">pub </span>MapData&lt;C, ViewTileData&gt;);
 
 <span class="doccomment">/// Bundle for a view entity
 </span><span class="attr">#[derive(Bundle)]
 </span><span class="kw">pub struct </span>ViewBundle&lt;C: Coord&gt; {
-    plid: PlayerId,
-    mapdata: ViewMapData&lt;C&gt;,
+    <span class="kw">pub </span>mapdata: ViewMapData&lt;C&gt;,
 }
 
 <span class="doccomment">/// Marker for entities that should be discarded on view switch.
@@ -380,14 +372,14 @@
 
 <span class="kw">fn </span>switch_view_update_map_tiles&lt;C: Coord&gt;(
     viewing: Res&lt;PlidViewing&gt;,
-    views: Res&lt;Views&gt;,
+    players: Res&lt;PlayersIndex&gt;,
     q_view: Query&lt;<span class="kw-2">&amp;</span>ViewMapData&lt;C&gt;&gt;,
     <span class="kw-2">mut </span>q_maptile: Query&lt;(<span class="kw-2">&amp;</span>MwTilePos, <span class="kw-2">&amp;mut </span>TileKind, <span class="kw-2">&amp;mut </span>TileOwner)&gt;,
     <span class="kw-2">mut </span>evw_visrecompute: EventWriter&lt;RecomputeVisEvent&gt;,
 ) {
     evw_visrecompute.send(RecomputeVisEvent(<span class="prelude-val">None</span>));
 
-    <span class="kw">let </span>e_view = views.<span class="number">0</span>[viewing.<span class="number">0</span>.i()];
+    <span class="kw">let </span>e_view = players.<span class="number">0</span>[viewing.<span class="number">0</span>.i()];
     <span class="kw">let </span><span class="prelude-val">Ok</span>(viewdata) = q_view.get(e_view) <span class="kw">else </span>{
         <span class="macro">error!</span>(<span class="string">&quot;View for {:?} does not exist!&quot;</span>, viewing.<span class="number">0</span>);
         <span class="kw">return</span>;
@@ -402,11 +394,11 @@
 
 <span class="kw">fn </span>switch_view_update_map_digits&lt;C: Coord&gt;(
     viewing: Res&lt;PlidViewing&gt;,
-    views: Res&lt;Views&gt;,
+    players: Res&lt;PlayersIndex&gt;,
     q_view: Query&lt;<span class="kw-2">&amp;</span>ViewMapData&lt;C&gt;&gt;,
     <span class="kw-2">mut </span>q_maptile: Query&lt;(<span class="kw-2">&amp;</span>MwTilePos, <span class="kw-2">&amp;mut </span>TileDigit)&gt;,
 ) {
-    <span class="kw">let </span>e_view = views.<span class="number">0</span>[viewing.<span class="number">0</span>.i()];
+    <span class="kw">let </span>e_view = players.<span class="number">0</span>[viewing.<span class="number">0</span>.i()];
     <span class="kw">let </span><span class="prelude-val">Ok</span>(viewdata) = q_view.get(e_view) <span class="kw">else </span>{
         <span class="macro">error!</span>(<span class="string">&quot;View for {:?} does not exist!&quot;</span>, viewing.<span class="number">0</span>);
         <span class="kw">return</span>;
@@ -420,11 +412,11 @@
 
 <span class="kw">fn </span>switch_view_update_map_gents&lt;C: Coord&gt;(
     viewing: Res&lt;PlidViewing&gt;,
-    views: Res&lt;Views&gt;,
+    players: Res&lt;PlayersIndex&gt;,
     q_view: Query&lt;<span class="kw-2">&amp;</span>ViewMapData&lt;C&gt;&gt;,
     <span class="kw-2">mut </span>q_maptile: Query&lt;(<span class="kw-2">&amp;</span>MwTilePos, <span class="kw-2">&amp;mut </span>TileGent)&gt;,
 ) {
-    <span class="kw">let </span>e_view = views.<span class="number">0</span>[viewing.<span class="number">0</span>.i()];
+    <span class="kw">let </span>e_view = players.<span class="number">0</span>[viewing.<span class="number">0</span>.i()];
     <span class="kw">let </span><span class="prelude-val">Ok</span>(viewdata) = q_view.get(e_view) <span class="kw">else </span>{
         <span class="macro">error!</span>(<span class="string">&quot;View for {:?} does not exist!&quot;</span>, viewing.<span class="number">0</span>);
         <span class="kw">return</span>;
@@ -452,11 +444,11 @@
 
 <span class="kw">fn </span>switch_view_update_map_roads&lt;C: Coord&gt;(
     viewing: Res&lt;PlidViewing&gt;,
-    views: Res&lt;Views&gt;,
+    players: Res&lt;PlayersIndex&gt;,
     q_view: Query&lt;<span class="kw-2">&amp;</span>ViewMapData&lt;C&gt;&gt;,
     <span class="kw-2">mut </span>q_maptile: Query&lt;(<span class="kw-2">&amp;</span>MwTilePos, <span class="kw-2">&amp;mut </span>TileRoads)&gt;,
 ) {
-    <span class="kw">let </span>e_view = views.<span class="number">0</span>[viewing.<span class="number">0</span>.i()];
+    <span class="kw">let </span>e_view = players.<span class="number">0</span>[viewing.<span class="number">0</span>.i()];
     <span class="kw">let </span><span class="prelude-val">Ok</span>(viewdata) = q_view.get(e_view) <span class="kw">else </span>{
         <span class="macro">error!</span>(<span class="string">&quot;View for {:?} does not exist!&quot;</span>, viewing.<span class="number">0</span>);
         <span class="kw">return</span>;

@@ -290,7 +290,42 @@
 <a href="#290" id="290">290</a>
 <a href="#291" id="291">291</a>
 <a href="#292" id="292">292</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>mw_game_minesweeper::MinesweeperSettings;
+
+<span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
 <span class="kw">pub struct </span>SettingsPlugin;
 
@@ -319,6 +354,8 @@
     <span class="kw">pub </span>ui_hud: UiHudSettings,
     <span class="kw">pub </span>player_colors: PlayerPaletteSettings,
     <span class="kw">pub </span>net: NetSettings,
+    <span class="kw">pub </span>mapgen: MapGenSettings,
+    <span class="kw">pub </span>game_minesweeper: MinesweeperSettings,
 }
 
 <span class="attr">#[derive(Resource, Debug, Default, Clone, PartialEq, Eq)]
@@ -336,15 +373,6 @@
     <span class="kw">pub </span>last_host_sessionid: u32,
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>NetSettings {
-    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
-        NetSettings {
-            last_host_addr: <span class="string">&quot;127.0.0.1:13370&quot;</span>.parse().unwrap(),
-            last_host_sessionid: <span class="number">0</span>,
-        }
-    }
-}
-
 <span class="attr">#[derive(Serialize, Deserialize, Clone)]
 #[serde(default)]
 </span><span class="kw">pub struct </span>CameraSettings {
@@ -354,6 +382,69 @@
     <span class="kw">pub </span>edge_pan: bool,
     <span class="kw">pub </span>edge_pan_speed: f32,
 }
+
+<span class="attr">#[derive(Serialize, Deserialize, Clone)]
+#[serde(default)]
+</span><span class="kw">pub struct </span>GameplaySettings {
+    <span class="kw">pub </span>show_skulls: bool,
+}
+
+<span class="doccomment">/// General UI Settings
+</span><span class="attr">#[derive(Serialize, Deserialize, Clone)]
+#[serde(default)]
+</span><span class="kw">pub struct </span>UiSettings {
+    <span class="kw">pub </span>text_scale: f32,
+    <span class="kw">pub </span>underscan_ratio: f32,
+    <span class="kw">pub </span>ultrawide_use_extra_width_ratio: f32,
+    <span class="kw">pub </span>color_text: Lcha,
+    <span class="kw">pub </span>color_text_inactive: Lcha,
+    <span class="kw">pub </span>color_menu_button: Lcha,
+    <span class="kw">pub </span>color_menu_button_inactive: Lcha,
+    <span class="kw">pub </span>color_menu_button_selected: Lcha,
+}
+
+<span class="doccomment">/// Settings for the in-game UI (HUD)
+</span><span class="attr">#[derive(Serialize, Deserialize, Clone)]
+#[serde(default)]
+</span><span class="kw">pub struct </span>UiHudSettings {
+    <span class="kw">pub </span>bottom_layout_reverse: bool,
+    <span class="kw">pub </span>citylist: bool,
+    <span class="kw">pub </span>citylist_show_unowned: bool,
+}
+
+<span class="doccomment">/// The color palette to use for different players
+///
+/// Indexed by player ID (0 = neutral)
+</span><span class="attr">#[derive(Serialize, Deserialize, Clone)]
+</span><span class="kw">pub struct </span>PlayerPaletteSettings {
+    <span class="kw">pub </span>visible: [Lcha; <span class="number">8</span>],
+    <span class="kw">pub </span>fog: Lcha,
+    <span class="kw">pub </span>pending: [Lcha; <span class="number">8</span>],
+}
+
+<span class="doccomment">/// Parameters for local map generation
+</span><span class="attr">#[derive(Serialize, Deserialize, Clone)]
+</span><span class="kw">pub struct </span>MapGenSettings {
+    <span class="kw">pub </span>size: u8,
+    <span class="kw">pub </span>topology: mw_common::grid::Topology,
+    <span class="kw">pub </span>style: MapGenStyle,
+}
+
+<span class="attr">#[derive(Serialize, Deserialize, Clone, Copy, PartialEq, Eq, Hash)]
+</span><span class="kw">pub enum </span>MapGenStyle {
+    Flat,
+    MineWars,
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span>NetSettings {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        NetSettings {
+            last_host_addr: <span class="string">&quot;127.0.0.1:13370&quot;</span>.parse().unwrap(),
+            last_host_sessionid: <span class="number">0</span>,
+        }
+    }
+}
+
 
 <span class="kw">impl </span>Default <span class="kw">for </span>CameraSettings {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
@@ -367,12 +458,6 @@
     }
 }
 
-<span class="attr">#[derive(Serialize, Deserialize, Clone)]
-#[serde(default)]
-</span><span class="kw">pub struct </span>GameplaySettings {
-    <span class="kw">pub </span>show_skulls: bool,
-}
-
 <span class="kw">impl </span>Default <span class="kw">for </span>GameplaySettings {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         GameplaySettings {
@@ -381,42 +466,19 @@
     }
 }
 
-<span class="doccomment">/// General UI Settings
-</span><span class="attr">#[derive(Serialize, Deserialize, Clone)]
-#[serde(default)]
-</span><span class="kw">pub struct </span>UiSettings {
-    <span class="kw">pub </span>text_scale: f32,
-    <span class="kw">pub </span>underscan_ratio: f32,
-    <span class="kw">pub </span>ultrawide_use_extra_width_ratio: f32,
-    <span class="kw">pub </span>color_text: Color,
-    <span class="kw">pub </span>color_text_inactive: Color,
-    <span class="kw">pub </span>color_menu_button: Color,
-    <span class="kw">pub </span>color_menu_button_inactive: Color,
-    <span class="kw">pub </span>color_menu_button_selected: Color,
-}
-
 <span class="kw">impl </span>Default <span class="kw">for </span>UiSettings {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         UiSettings {
             text_scale: <span class="number">1.0</span>,
             underscan_ratio: <span class="number">1.0</span>,
             ultrawide_use_extra_width_ratio: <span class="number">0.0</span>,
-            color_text: Color::rgb(<span class="number">0.84</span>, <span class="number">0.86</span>, <span class="number">0.88</span>),
-            color_text_inactive: Color::rgb(<span class="number">0.48</span>, <span class="number">0.44</span>, <span class="number">0.42</span>),
-            color_menu_button: Color::rgb(<span class="number">0.24</span>, <span class="number">0.24</span>, <span class="number">0.25</span>),
-            color_menu_button_inactive: Color::rgb(<span class="number">0.16</span>, <span class="number">0.15</span>, <span class="number">0.15</span>),
-            color_menu_button_selected: Color::rgb(<span class="number">0.20</span>, <span class="number">0.20</span>, <span class="number">0.25</span>),
+            color_text: Lcha(<span class="number">0.96</span>, <span class="number">0.125</span>, <span class="number">80.0</span>),
+            color_text_inactive: Lcha(<span class="number">0.9</span>, <span class="number">0.125</span>, <span class="number">80.0</span>),
+            color_menu_button: Lcha(<span class="number">0.25</span>, <span class="number">0.125</span>, <span class="number">280.0</span>),
+            color_menu_button_inactive: Lcha(<span class="number">0.125</span>, <span class="number">0.125</span>, <span class="number">20.0</span>),
+            color_menu_button_selected: Lcha(<span class="number">0.2</span>, <span class="number">0.2</span>, <span class="number">280.0</span>),
         }
     }
-}
-
-<span class="doccomment">/// Settings for the in-game UI (HUD)
-</span><span class="attr">#[derive(Serialize, Deserialize, Clone)]
-#[serde(default)]
-</span><span class="kw">pub struct </span>UiHudSettings {
-    <span class="kw">pub </span>bottom_layout_reverse: bool,
-    <span class="kw">pub </span>citylist: bool,
-    <span class="kw">pub </span>citylist_show_unowned: bool,
 }
 
 <span class="kw">impl </span>Default <span class="kw">for </span>UiHudSettings {
@@ -429,7 +491,7 @@
     }
 }
 
-<span class="attr">#[derive(Serialize, Deserialize, Clone)]
+<span class="attr">#[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq)]
 </span><span class="kw">pub struct </span>Lcha(f32, f32, f32);
 
 <span class="kw">impl </span>From&lt;Color&gt; <span class="kw">for </span>Lcha {
@@ -443,21 +505,11 @@
     <span class="kw">fn </span>from(value: Lcha) -&gt; <span class="self">Self </span>{
         Color::Lcha {
             lightness: value.<span class="number">0</span>,
-            chroma: value.<span class="number">0</span>,
-            hue: value.<span class="number">0</span>,
+            chroma: value.<span class="number">1</span>,
+            hue: value.<span class="number">2</span>,
             alpha: <span class="number">1.0</span>,
         }
     }
-}
-
-<span class="doccomment">/// The color palette to use for different players
-///
-/// Indexed by player ID (0 = neutral)
-</span><span class="attr">#[derive(Serialize, Deserialize, Clone)]
-</span><span class="kw">pub struct </span>PlayerPaletteSettings {
-    <span class="kw">pub </span>visible: [Lcha; <span class="number">8</span>],
-    <span class="kw">pub </span>fog: Lcha,
-    <span class="kw">pub </span>pending: [Lcha; <span class="number">8</span>],
 }
 
 <span class="kw">impl </span>Default <span class="kw">for </span>PlayerPaletteSettings {
@@ -484,6 +536,20 @@
                 Lcha(<span class="number">0.75</span>, <span class="number">0.25</span>, <span class="number">30.0</span>),
             ],
             fog: Lcha(<span class="number">0.5</span>, <span class="number">0.0</span>, <span class="number">00.0</span>),
+        }
+    }
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span>MapGenSettings {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        MapGenSettings {
+            size: <span class="number">24</span>,
+            topology: mw_common::grid::Topology::Hex,
+            style: <span class="kw">if </span>PROPRIETARY {
+                MapGenStyle::MineWars
+            } <span class="kw">else </span>{
+                MapGenStyle::Flat
+            },
         }
     }
 }
