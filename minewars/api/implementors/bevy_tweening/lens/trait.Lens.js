@@ -1,3 +1,4 @@
 (function() {var implementors = {
-"bevy_tweening":[]
+"bevy_tweening":[],
+"minewars":[["impl <a class=\"trait\" href=\"bevy_tweening/lens/trait.Lens.html\" title=\"trait bevy_tweening::lens::Lens\">Lens</a>&lt;<a class=\"struct\" href=\"minewars/prelude/struct.OrthographicProjection.html\" title=\"struct minewars::prelude::OrthographicProjection\">OrthographicProjection</a>&gt; for <a class=\"struct\" href=\"minewars/gfx2d/camera/struct.ProjectionScaleLens.html\" title=\"struct minewars::gfx2d::camera::ProjectionScaleLens\">ProjectionScaleLens</a>"]]
 };if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

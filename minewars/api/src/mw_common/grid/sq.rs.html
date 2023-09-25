@@ -445,7 +445,7 @@
         glam::Vec2::new(<span class="self">self</span>.<span class="number">0 </span><span class="kw">as </span>f32, <span class="self">self</span>.<span class="number">1 </span><span class="kw">as </span>f32)
     }
 
-    <span class="kw">fn </span>from_f32_clamped((y, x): (f32, f32)) -&gt; <span class="self">Self </span>{
+    <span class="kw">fn </span>from_f32_clamped((x, y): (f32, f32)) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>rx = x.round();
         <span class="kw">let </span><span class="kw-2">mut </span>ry = y.round();
 

@@ -429,7 +429,7 @@
 
     <span class="kw">pub fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, c: C) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>D&gt; {
         <span class="comment">// FIXME
-        </span><span class="kw">if </span>c.ring() &gt;= <span class="self">self</span>.size {
+        </span><span class="kw">if </span>c.ring() &gt; <span class="self">self</span>.size {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
         <span class="kw">let </span>i = C::index(<span class="self">self</span>.size, c);
@@ -438,7 +438,7 @@
 
     <span class="kw">pub fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>, c: C) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>D&gt; {
         <span class="comment">// FIXME
-        </span><span class="kw">if </span>c.ring() &gt;= <span class="self">self</span>.size {
+        </span><span class="kw">if </span>c.ring() &gt; <span class="self">self</span>.size {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
         <span class="kw">let </span>i = C::index(<span class="self">self</span>.size, c);

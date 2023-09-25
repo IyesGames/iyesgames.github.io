@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["setup_base_tile","tile_kind","tile_owner"],"struct":["Gfx2dSpritesPlugin"]};
+window.SIDEBAR_ITEMS = {"fn":["cursor_sprite","setup_base_tile","setup_cursor","tile_kind","tile_owner"],"struct":["CursorSprite","CursorSpriteBundle","Gfx2dSpritesPlugin"]};

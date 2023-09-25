@@ -96,6 +96,18 @@
 <a href="#96" id="96">96</a>
 <a href="#97" id="97">97</a>
 <a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>mw_app::map::NeedsMapSet;
 
 <span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, settings::MwRenderer};
@@ -156,8 +168,8 @@
     <span class="kw">pub const </span>WIDTH6: f32 = <span class="number">112.0</span>;
     <span class="kw">pub const </span>HEIGHT6: f32 = <span class="number">128.0</span>;
 
-    <span class="kw">pub const </span>WIDTH4: f32 = <span class="number">112.0</span>;
-    <span class="kw">pub const </span>HEIGHT4: f32 = <span class="number">112.0</span>;
+    <span class="kw">pub const </span>WIDTH4: f32 = <span class="number">108.0</span>;
+    <span class="kw">pub const </span>HEIGHT4: f32 = <span class="number">108.0</span>;
 
     <span class="kw">pub const </span>STRIDE: usize = <span class="number">10</span>;
 
@@ -193,5 +205,17 @@
     <span class="kw">pub const </span>SMOKE: usize = OVERLAYS + <span class="number">2</span>;
     <span class="kw">pub const </span>STRIKE: usize = OVERLAYS + <span class="number">3</span>;
     <span class="kw">pub const </span>REVEAL: usize = OVERLAYS + <span class="number">4</span>;
+}
+
+<span class="kw">mod </span>zpos {
+    <span class="kw">pub const </span>TILE: f32 = <span class="number">1.0</span>;
+
+    <span class="kw">pub const </span>CURSOR: f32 = TILE + <span class="number">10.0</span>;
+    <span class="kw">pub const </span>OVERLAYS: f32 = TILE + <span class="number">5.0</span>;
+    <span class="kw">pub const </span>DIGIT: f32 = TILE + <span class="number">3.0</span>;
+    <span class="kw">pub const </span>GENTS: f32 = TILE + <span class="number">2.0</span>;
+    <span class="kw">pub const </span>ROAD: f32 = TILE + <span class="number">1.0</span>;
+
+    <span class="kw">pub const </span>REGHILIGHT: f32 = TILE - <span class="number">1.0</span>;
 }
 </code></pre></div></section></main></body></html>
