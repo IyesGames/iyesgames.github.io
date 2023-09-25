@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["MinesweeperEvent","MinesweeperInputAction","PlayerEvent"],"mod":["bevy_stuff"],"struct":["GameMinesweeper","MinesweeperSettings"]};
+window.SIDEBAR_ITEMS = {"enum":["MinesweeperInputAction"],"struct":["GameMinesweeper","MinesweeperSettings"]};

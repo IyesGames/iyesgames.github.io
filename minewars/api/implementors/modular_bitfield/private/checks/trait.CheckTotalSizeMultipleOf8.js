@@ -1,3 +1,3 @@
 (function() {var implementors = {
-"minewars":[["impl <a class=\"trait\" href=\"modular_bitfield/private/checks/trait.CheckTotalSizeMultipleOf8.html\" title=\"trait modular_bitfield::private::checks::CheckTotalSizeMultipleOf8\">CheckTotalSizeMultipleOf8</a> for <a class=\"struct\" href=\"minewars/view/struct.ViewTileData.html\" title=\"struct minewars::view::ViewTileData\">ViewTileData</a>"]]
+"mw_app":[["impl CheckTotalSizeMultipleOf8 for <a class=\"struct\" href=\"mw_app/view/struct.ViewTileData.html\" title=\"struct mw_app::view::ViewTileData\">ViewTileData</a>"]]
 };if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

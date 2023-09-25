@@ -187,11 +187,13 @@
 <a href="#187" id="187">187</a>
 <a href="#188" id="188">188</a>
 <a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! The Bevy Host
 //!
 //! Allows offline gameplay without a server.
 
-</span><span class="kw">use </span><span class="kw">crate</span>::player::PlidPlayingAs;
+</span><span class="kw">use </span><span class="kw">crate</span>::GameEventSet;
+<span class="kw">use </span><span class="kw">crate</span>::player::PlidPlayingAs;
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
 <span class="kw">use </span>mw_common::driver::<span class="kw-2">*</span>;
@@ -245,10 +247,10 @@
             (
                 cancel_scheds::&lt;G&gt;,
             ).in_set(BevyHostSet::PostGame),
-            drain_out_events::&lt;G, EvOut&gt;.in_set(BevyHostSet::EvOut),
+            drain_out_events::&lt;G, EvOut&gt;.in_set(BevyHostSet::EvOut).in_set(GameEventSet),
         ).in_set(BevyHostSet::All)
-         .run_if(in_state(AppState::InGame))
-         .run_if(in_state(SessionKind::BevyHost))
+         .in_set(InGameSet(<span class="prelude-val">None</span>))
+         .in_set(InStateSet(SessionKind::BevyHost))
          .run_if(resource_exists::&lt;BevyHost&lt;G&gt;&gt;())
         );
     }

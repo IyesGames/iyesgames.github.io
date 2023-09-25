@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BackgroundEv","CitEv","MapEv","MwEv","PlayerEv"],"struct":["GameEvent"]};

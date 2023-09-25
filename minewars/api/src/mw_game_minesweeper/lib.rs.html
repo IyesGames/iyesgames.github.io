@@ -127,31 +127,15 @@
 <a href="#127" id="127">127</a>
 <a href="#128" id="128">128</a>
 <a href="#129" id="129">129</a>
-<a href="#130" id="130">130</a>
-<a href="#131" id="131">131</a>
-<a href="#132" id="132">132</a>
-<a href="#133" id="133">133</a>
-<a href="#134" id="134">134</a>
-<a href="#135" id="135">135</a>
-<a href="#136" id="136">136</a>
-<a href="#137" id="137">137</a>
-<a href="#138" id="138">138</a>
-<a href="#139" id="139">139</a>
-</pre></div><pre class="rust"><code><span class="kw">mod </span>prelude {
-    <span class="kw">pub use </span>mw_common::prelude::<span class="kw-2">*</span>;
-    <span class="kw">pub use </span>mw_common::grid::<span class="kw-2">*</span>;
-    <span class="kw">pub use </span>mw_common::plid::<span class="kw-2">*</span>;
-    <span class="kw">pub use </span>mw_common::algo::<span class="kw-2">*</span>;
-}
-
-<span class="attr">#[cfg(feature = <span class="string">&quot;bevy&quot;</span>)]
-</span><span class="kw">pub mod </span>bevy_stuff;
+</pre></div><pre class="rust"><code><span class="kw">use </span>mw_common::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>mw_common::grid::<span class="kw-2">*</span>;
+<span class="kw">use </span>mw_common::plid::<span class="kw-2">*</span>;
+<span class="kw">use </span>mw_common::algo::<span class="kw-2">*</span>;
+<span class="kw">use </span>mw_common::game::<span class="kw-2">*</span>;
+<span class="kw">use </span>mw_common::game::event::<span class="kw-2">*</span>;
+<span class="kw">use </span>mw_common::driver::<span class="kw-2">*</span>;
 
 <span class="kw">use </span>modular_bitfield::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span>rand::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span>mw_common::{game::{ItemKind, TileKind}, driver::{Game, Host}};
-
-<span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// Settings that can be configured for a session of the Minesweeper game mode
 </span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize)]
@@ -181,6 +165,7 @@
 }
 
 <span class="attr">#[derive(Debug, Clone)]
+#[cfg_attr(feature = <span class="string">&quot;bevy&quot;</span>, derive(Event))]
 </span><span class="kw">pub enum </span>MinesweeperInputAction {
     ExploreTile {
         pos: Pos,
@@ -188,29 +173,6 @@
     SetFlag {
         pos: Pos,
         flag: bool,
-    },
-}
-
-<span class="attr">#[derive(Debug, Clone)]
-</span><span class="kw">pub enum </span>PlayerEvent {
-    Exploded {
-        pos: Pos,
-        lives_remain: u8,
-    },
-    Eliminated,
-}
-
-<span class="attr">#[derive(Debug, Clone)]
-</span><span class="kw">pub enum </span>MinesweeperEvent {
-    Player(PlayerEvent),
-    TileOwner {
-        pos: Pos,
-        plid: PlayerId,
-    },
-    SetFlag {
-        pos: Pos,
-        <span class="doccomment">/// Neutral means remove flag. Other values mean that the plid placed a flag.
-        </span>plid: PlayerId,
     },
 }
 
@@ -266,12 +228,30 @@
 <span class="kw">impl</span>&lt;C: Coord&gt; Game <span class="kw">for </span>GameMinesweeper&lt;C&gt; {
     <span class="kw">type </span>InitData = ();
     <span class="kw">type </span>InputAction = MinesweeperInputAction;
-    <span class="kw">type </span>OutEvent = MinesweeperEvent;
+    <span class="kw">type </span>OutEvent = MwEv;
     <span class="kw">type </span>SchedEvent = ();
 
     <span class="kw">fn </span>init&lt;H: Host&lt;<span class="self">Self</span>&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, host: <span class="kw-2">&amp;mut </span>H, initdata: <span class="self">Self</span>::InitData) {
     }
     <span class="kw">fn </span>input&lt;H: Host&lt;<span class="self">Self</span>&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, host: <span class="kw-2">&amp;mut </span>H, plid: PlayerId, action: <span class="self">Self</span>::InputAction) {
+        <span class="kw">match </span>action {
+            MinesweeperInputAction::ExploreTile { pos } =&gt; {
+                host.msg(Plids::all(<span class="bool-val">true</span>), MwEv::Map {
+                    pos,
+                    ev: MapEv::Owner {
+                        plid,
+                    }
+                });
+            }
+            MinesweeperInputAction::SetFlag { pos, flag } =&gt; {
+                host.msg(Plids::all(<span class="bool-val">true</span>), MwEv::Map {
+                    pos,
+                    ev: MapEv::Flag {
+                        plid: <span class="kw">if </span>flag { plid } <span class="kw">else </span>{ PlayerId::Neutral },
+                    }
+                });
+            }
+        }
     }
     <span class="kw">fn </span>unsched&lt;H: Host&lt;<span class="self">Self</span>&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, host: <span class="kw-2">&amp;mut </span>H, event: <span class="self">Self</span>::SchedEvent) {
     }

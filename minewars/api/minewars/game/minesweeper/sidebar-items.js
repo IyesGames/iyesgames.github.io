@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["cli_minesweeper_singleplayer","setup_minesweeper_singleplayer_flatmap"],"struct":["MinesweeperGameplayPlugin","MinesweeperOutEvent"]};
+window.SIDEBAR_ITEMS = {"fn":["cli_minesweeper_singleplayer","minesweeper_input","setup_minesweeper_singleplayer_flatmap"],"struct":["MinesweeperGameplayPlugin"]};

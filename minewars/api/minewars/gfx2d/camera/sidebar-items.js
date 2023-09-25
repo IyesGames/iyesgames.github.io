@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["camera_control_pan_mousedrag","camera_control_zoom_mousewheel","grid_cursor","setup_game_camera"],"struct":["CameraControlSet","Gfx2dCameraPlugin","GridCursor","GridCursorSet","ProjectionScaleLens"]};
+window.SIDEBAR_ITEMS = {"fn":["camera_control_pan_mousedrag","camera_control_zoom_mousewheel","grid_cursor","setup_game_camera"],"struct":["Gfx2dCameraPlugin","ProjectionScaleLens"]};

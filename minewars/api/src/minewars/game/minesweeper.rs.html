@@ -105,14 +105,25 @@
 <a href="#105" id="105">105</a>
 <a href="#106" id="106">106</a>
 <a href="#107" id="107">107</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
+<a href="#113" id="113">113</a>
+<a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::camera::GridCursor;
+<span class="kw">use </span><span class="kw">crate</span>::input::GameInputSet;
+<span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::settings::MapGenStyle;
-<span class="kw">use </span><span class="kw">crate</span>::view::PlidViewing;
-<span class="kw">use </span><span class="kw">crate</span>::view::ViewBundle;
-<span class="kw">use </span><span class="kw">crate</span>::view::ViewMapData;
-<span class="kw">use </span><span class="kw">crate</span>::view::ViewTileData;
+<span class="kw">use </span>mw_app::map::MapTileIndexCoord;
+<span class="kw">use </span>mw_app::view::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_app::bevyhost::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_app::player::<span class="kw-2">*</span>;
+<span class="kw">use </span>mw_common::game::event::GameEvent;
 <span class="kw">use </span>mw_game_minesweeper::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_common::grid::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_common::plid::<span class="kw-2">*</span>;
@@ -124,34 +135,23 @@
     <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, app: <span class="kw-2">&amp;mut </span>App) {
         app.register_clicommand_noargs(<span class="string">&quot;minesweeper_singleplayer&quot;</span>, cli_minesweeper_singleplayer);
         app.add_event::&lt;MinesweeperInputAction&gt;();
-        app.add_event::&lt;MinesweeperOutEvent&gt;();
         app.add_plugins((
             BevyMwHostPlugin::&lt;
                 GameMinesweeper&lt;Hex&gt;,
                 MinesweeperInputAction,
-                MinesweeperOutEvent,
+                GameEvent,
             &gt;::new(),
             BevyMwHostPlugin::&lt;
                 GameMinesweeper&lt;Sq&gt;,
                 MinesweeperInputAction,
-                MinesweeperOutEvent,
+                GameEvent,
             &gt;::new(),
         ));
-    }
-}
-
-<span class="attr">#[derive(Event, Debug, Clone)]
-</span><span class="kw">pub struct </span>MinesweeperOutEvent {
-    plid: PlayerId,
-    ev: MinesweeperEvent,
-}
-
-<span class="kw">impl </span>From&lt;(PlayerId, MinesweeperEvent)&gt; <span class="kw">for </span>MinesweeperOutEvent {
-    <span class="kw">fn </span>from(value: (PlayerId, MinesweeperEvent)) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{
-            plid: value.<span class="number">0</span>,
-            ev: value.<span class="number">1</span>,
-        }
+        app.add_systems(Update, (
+            minesweeper_input
+                .in_set(InGameSet(<span class="prelude-val">Some</span>(GameMode::Minesweeper)))
+                .in_set(GameInputSet),
+        ));
     }
 }
 
@@ -177,7 +177,7 @@
     </span>}
 }
 
-<span class="kw">fn </span>setup_minesweeper_singleplayer_flatmap&lt;C: Coord&gt;(world: <span class="kw-2">&amp;mut </span>World) {
+<span class="kw">fn </span>setup_minesweeper_singleplayer_flatmap&lt;C: MapTileIndexCoord&gt;(world: <span class="kw-2">&amp;mut </span>World) {
     <span class="kw">let </span><span class="kw-2">mut </span>minesweeper_settings = world.resource::&lt;AllSettings&gt;().game_minesweeper.clone();
     minesweeper_settings.n_plids = <span class="number">1</span>;
     <span class="kw">let </span>mapgen_settings = world.resource::&lt;AllSettings&gt;().mapgen.clone();
@@ -208,8 +208,28 @@
     world.insert_resource(PlidPlayingAs(<span class="number">1</span>.into()));
     world.insert_resource(PlidViewing(<span class="number">1</span>.into()));
 
+    world.resource_mut::&lt;NextState&lt;GameMode&gt;&gt;().set(GameMode::Minesweeper);
     world.resource_mut::&lt;NextState&lt;AppState&gt;&gt;().set(AppState::InGame);
     world.resource_mut::&lt;NextState&lt;SessionKind&gt;&gt;().set(SessionKind::BevyHost);
+}
+
+<span class="comment">// TODO: replace this with something more elaborate?
+</span><span class="kw">fn </span>minesweeper_input(
+    crs: Res&lt;GridCursor&gt;,
+    btn: Res&lt;Input&lt;MouseButton&gt;&gt;,
+    <span class="kw-2">mut </span>evw: EventWriter&lt;MinesweeperInputAction&gt;,
+) {
+    <span class="kw">if </span>btn.just_pressed(MouseButton::Left) {
+        evw.send(MinesweeperInputAction::ExploreTile {
+            pos: crs.<span class="number">0</span>,
+        });
+    }
+    <span class="kw">if </span>btn.just_pressed(MouseButton::Middle) {
+        evw.send(MinesweeperInputAction::SetFlag {
+            flag: <span class="bool-val">true</span>,
+            pos: crs.<span class="number">0</span>,
+        });
+    }
 }
 
 </code></pre></div></section></main></body></html>

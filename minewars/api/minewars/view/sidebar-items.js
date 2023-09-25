@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["switch_view_despawn","switch_view_showhide","switch_view_update_map_digits","switch_view_update_map_gents","switch_view_update_map_roads","switch_view_update_map_tiles"],"struct":["DespawnOnViewSwitch","GameViewPlugin","PlidViewing","ViewBundle","ViewMapData","ViewSwitchSet","ViewTileData","VisibleInView"]};

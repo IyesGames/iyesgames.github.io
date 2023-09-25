@@ -166,6 +166,8 @@
 <a href="#166" id="166">166</a>
 <a href="#167" id="167">167</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::assets::GameAssets;
+<span class="kw">use </span><span class="kw">crate</span>::camera::GridCursor;
+<span class="kw">use </span><span class="kw">crate</span>::camera::GridCursorSet;
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
 <span class="kw">use </span>mw_common::grid::<span class="kw-2">*</span>;
@@ -175,8 +177,6 @@
 <span class="kw">use </span><span class="kw">super</span>::Gfx2dSet;
 <span class="kw">use </span><span class="kw">super</span>::Gfx2dTileSetupSet;
 <span class="kw">use </span><span class="kw">super</span>::TilemapInitted;
-<span class="kw">use </span><span class="kw">super</span>::camera::GridCursor;
-<span class="kw">use </span><span class="kw">super</span>::camera::GridCursorSet;
 
 <span class="kw">pub struct </span>Gfx2dSpritesPlugin;
 
@@ -270,11 +270,11 @@
     xf.translation = Vec3::new(trans.x * width, trans.y * height, <span class="kw">super</span>::zpos::CURSOR);
 }
 
-<span class="kw">fn </span>setup_base_tile&lt;C: Coord&gt;(
+<span class="kw">fn </span>setup_base_tile&lt;C: MapTileIndexCoord&gt;(
     world: <span class="kw-2">&amp;mut </span>World,
 ) {
     <span class="kw">let </span>texture_atlas = world.resource::&lt;GameAssets&gt;().sprites.clone();
-    <span class="kw">let </span>index = world.remove_resource::&lt;MapTileIndex&lt;C&gt;&gt;().unwrap();
+    <span class="kw">let </span>index = world.remove_resource::&lt;MapTileIndex&gt;().unwrap();
     <span class="kw">let </span>(sprite_index, width, height) = <span class="kw">match </span>C::TOPOLOGY {
         Topology::Hex =&gt; (
             <span class="kw">super</span>::sprite::TILES6 + <span class="kw">super</span>::sprite::TILE_WATER,
@@ -285,7 +285,7 @@
             <span class="kw">super</span>::sprite::WIDTH4, <span class="kw">super</span>::sprite::HEIGHT4,
         ),
     };
-    <span class="kw">for </span>(c, <span class="kw-2">&amp;</span>e) <span class="kw">in </span>index.<span class="number">0</span>.iter() {
+    <span class="kw">for </span>(c, <span class="kw-2">&amp;</span>e) <span class="kw">in </span>C::get_mapdata(<span class="kw-2">&amp;</span>index).iter() {
         <span class="kw">let </span>trans = c.translation();
         world.entity_mut(e).insert(SpriteSheetBundle {
             texture_atlas: texture_atlas.clone(),

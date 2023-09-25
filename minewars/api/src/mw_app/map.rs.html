@@ -242,6 +242,68 @@
 <a href="#242" id="242">242</a>
 <a href="#243" id="243">243</a>
 <a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
+<a href="#261" id="261">261</a>
+<a href="#262" id="262">262</a>
+<a href="#263" id="263">263</a>
+<a href="#264" id="264">264</a>
+<a href="#265" id="265">265</a>
+<a href="#266" id="266">266</a>
+<a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! ECS representation of MineWars map state
 //!
 //! These are the entities that represent the map tiles of the view that
@@ -253,10 +315,13 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
+<span class="kw">mod </span>update;
+
 <span class="kw">pub struct </span>MapPlugin;
 
 <span class="kw">impl </span>Plugin <span class="kw">for </span>MapPlugin {
     <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, app: <span class="kw-2">&amp;mut </span>App) {
+        app.add_plugins(update::MapUpdatePlugin);
         app.add_event::&lt;RecomputeVisEvent&gt;();
         <span class="kw">for </span>topo <span class="kw">in </span>enum_iterator::all::&lt;Topology&gt;() {
             app.configure_set(Update, MapTopologySet(topo).run_if(map_topology_is(topo)));
@@ -277,8 +342,69 @@
 <span class="attr">#[derive(SystemSet, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 </span><span class="kw">pub struct </span>NeedsMapSet;
 
+<span class="attr">#[derive(SystemSet, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+</span><span class="kw">pub enum </span>MapUpdateSet {
+    TileKind,
+    TileOwner,
+    TileDigit,
+    TileGent,
+    TileRoads,
+}
+
 <span class="attr">#[derive(Resource)]
-</span><span class="kw">pub struct </span>MapTileIndex&lt;C: Coord&gt;(<span class="kw">pub </span>MapData&lt;C, Entity&gt;);
+</span><span class="kw">pub enum </span>MapTileIndex {
+    Hex(MapData&lt;Hex, Entity&gt;),
+    Sq(MapData&lt;Sq, Entity&gt;),
+}
+
+<span class="kw">impl </span>MapTileIndex {
+    <span class="kw">pub fn </span>get_pos(<span class="kw-2">&amp;</span><span class="self">self</span>, pos: Pos) -&gt; Entity {
+        <span class="kw">match </span><span class="self">self </span>{
+            MapTileIndex::Hex(map) =&gt; map[pos.into()],
+            MapTileIndex::Sq(map) =&gt; map[pos.into()],
+        }
+    }
+    <span class="kw">fn </span>set_e(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pos: Pos, e: Entity) {
+        <span class="kw">match </span><span class="self">self </span>{
+            MapTileIndex::Hex(map) =&gt; {
+                map[pos.into()] = e
+            },
+            MapTileIndex::Sq(map) =&gt; {
+                map[pos.into()] = e
+            },
+        }
+    }
+}
+
+<span class="kw">pub trait </span>MapTileIndexCoord: Coord {
+    <span class="kw">fn </span>new_maptileindex(size: u8) -&gt; MapTileIndex;
+    <span class="kw">fn </span>get_mapdata(index: <span class="kw-2">&amp;</span>MapTileIndex) -&gt; <span class="kw-2">&amp;</span>MapData&lt;<span class="self">Self</span>, Entity&gt;;
+}
+
+<span class="kw">impl </span>MapTileIndexCoord <span class="kw">for </span>Hex {
+    <span class="kw">fn </span>new_maptileindex(size: u8) -&gt; MapTileIndex {
+        MapTileIndex::Hex(MapData::new(size, Entity::PLACEHOLDER))
+    }
+    <span class="kw">fn </span>get_mapdata(index: <span class="kw-2">&amp;</span>MapTileIndex) -&gt; <span class="kw-2">&amp;</span>MapData&lt;<span class="self">Self</span>, Entity&gt; {
+        <span class="kw">if let </span>MapTileIndex::Hex(data) = index {
+            <span class="kw-2">&amp;</span>data
+        } <span class="kw">else </span>{
+            <span class="macro">panic!</span>(<span class="string">&quot;MapTileIndex is not Hex&quot;</span>);
+        }
+    }
+}
+<span class="kw">impl </span>MapTileIndexCoord <span class="kw">for </span>Sq {
+    <span class="kw">fn </span>new_maptileindex(size: u8) -&gt; MapTileIndex {
+        MapTileIndex::Sq(MapData::new(size, Entity::PLACEHOLDER))
+    }
+    <span class="kw">fn </span>get_mapdata(index: <span class="kw-2">&amp;</span>MapTileIndex) -&gt; <span class="kw-2">&amp;</span>MapData&lt;<span class="self">Self</span>, Entity&gt; {
+        <span class="kw">if let </span>MapTileIndex::Sq(data) = index {
+            <span class="kw-2">&amp;</span>data
+        } <span class="kw">else </span>{
+            <span class="macro">panic!</span>(<span class="string">&quot;MapTileIndex is not Sq&quot;</span>);
+        }
+    }
+}
 
 <span class="attr">#[derive(Resource)]
 </span><span class="kw">pub struct </span>ItemIndex(<span class="kw">pub </span>HashMap&lt;Pos, Entity&gt;);
@@ -409,16 +535,14 @@
 /// This is not a standalone system, because we can have map data
 /// that comes from different sources (server, file, procgen) and
 /// we want to be able to initialize the tilemap from any of them.
-</span><span class="kw">pub fn </span>setup_map&lt;C: Coord, D&gt;(
+</span><span class="kw">pub fn </span>setup_map&lt;C: Coord + MapTileIndexCoord, D&gt;(
     world: <span class="kw-2">&amp;mut </span>World,
     mapdata: <span class="kw-2">&amp;</span>MapData&lt;C, D&gt;,
     cits: <span class="kw-2">&amp;</span>[Pos],
     f_tilekind: <span class="kw">impl </span>Fn(<span class="kw-2">&amp;</span>D) -&gt; TileKind,
     f_regid: <span class="kw">impl </span>Fn(<span class="kw-2">&amp;</span>D) -&gt; u8,
 ) {
-    <span class="kw">let </span><span class="kw-2">mut </span>tile_index = MapTileIndex::&lt;C&gt;(
-        MapData::new(mapdata.size(), Entity::PLACEHOLDER)
-    );
+    <span class="kw">let </span><span class="kw-2">mut </span>tile_index = C::new_maptileindex(mapdata.size());
 
     <span class="kw">let </span><span class="kw-2">mut </span>cit_index = CitIndex {
         by_id: Vec::with_capacity(cits.len()),
@@ -457,7 +581,7 @@
         } <span class="kw">else </span>{
             world.spawn(b_base).id()
         };
-        tile_index.<span class="number">0</span>[c] = e_tile;
+        tile_index.set_e(c.into(), e_tile);
     }
 
     <span class="kw">for </span>(i, cit_pos) <span class="kw">in </span>cits.iter().enumerate() {
@@ -474,7 +598,7 @@
         ).id();
         cit_index.by_id.push(e_cit);
         cit_index.by_pos.insert(<span class="kw-2">*</span>cit_pos, e_cit);
-        world.entity_mut(tile_index.<span class="number">0</span>[(<span class="kw-2">*</span>cit_pos).into()])
+        world.entity_mut(tile_index.get_pos(<span class="kw-2">*</span>cit_pos))
             .insert(TileGent::Cit(i <span class="kw">as </span>u8));
     }
 

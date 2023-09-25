@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["AppState","SessionKind"],"struct":["AppStatesPlugin","StateDespawnMarker"]};
+window.SIDEBAR_ITEMS = {"enum":["AppState","GameMode","SessionKind"],"struct":["AppStatesPlugin","InGameSet","InStateSet","StateDespawnMarker"]};
