@@ -120,12 +120,19 @@
 <a href="#120" id="120">120</a>
 <a href="#121" id="121">121</a>
 <a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::camera::GridCursor;
 <span class="kw">use </span><span class="kw">crate</span>::input::GameInputSet;
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::settings::MapGenStyle;
 <span class="kw">use </span>mw_app::map::MapTileIndex;
-<span class="kw">use </span>mw_app::map::MapTileIndexCoord;
 <span class="kw">use </span>mw_app::view::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_app::bevyhost::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_app::player::<span class="kw-2">*</span>;
@@ -140,6 +147,7 @@
 <span class="kw">impl </span>Plugin <span class="kw">for </span>MinesweeperGameplayPlugin {
     <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, app: <span class="kw-2">&amp;mut </span>App) {
         app.register_clicommand_noargs(<span class="string">&quot;minesweeper_singleplayer&quot;</span>, cli_minesweeper_singleplayer);
+        app.register_clicommand_noargs(<span class="string">&quot;minesweeper_playground&quot;</span>, cli_minesweeper_playground);
         app.add_event::&lt;MinesweeperInputAction&gt;();
         app.add_plugins((
             BevyMwHostPlugin::&lt;
@@ -160,38 +168,40 @@
         ));
     }
 }
-
 <span class="kw">fn </span>cli_minesweeper_singleplayer(world: <span class="kw-2">&amp;mut </span>World) {
-    <span class="kw">let </span><span class="kw-2">mut </span>minesweeper_settings = world.resource::&lt;AllSettings&gt;().game_minesweeper.clone();
-    minesweeper_settings.n_plids = <span class="number">1</span>;
+    world.resource_mut::&lt;AllSettings&gt;().game_minesweeper.n_plids = <span class="number">1</span>;
+    cli_minesweeper_playground(world);
+}
+
+<span class="kw">fn </span>cli_minesweeper_playground(world: <span class="kw-2">&amp;mut </span>World) {
+    <span class="kw">let </span>minesweeper_settings = world.resource::&lt;AllSettings&gt;().game_minesweeper.clone();
     <span class="kw">let </span>mapgen_settings = world.resource::&lt;AllSettings&gt;().mapgen.clone();
     <span class="kw">match </span>(PROPRIETARY, mapgen_settings.style) {
         (<span class="bool-val">false</span>, <span class="kw">_</span>) | (<span class="kw">_</span>, MapGenStyle::Flat) =&gt; {
             <span class="kw">match </span>mapgen_settings.topology {
                 Topology::Hex =&gt; {
-                    setup_minesweeper_singleplayer_flatmap::&lt;Hex&gt;(world, minesweeper_settings, mapgen_settings.size);
+                    setup_minesweeper_playground_flatmap::&lt;Hex&gt;(world, minesweeper_settings, mapgen_settings.size);
                 }
                 Topology::Sq =&gt; {
-                    setup_minesweeper_singleplayer_flatmap::&lt;Sq&gt;(world, minesweeper_settings, mapgen_settings.size);
+                    setup_minesweeper_playground_flatmap::&lt;Sq&gt;(world, minesweeper_settings, mapgen_settings.size);
                 }
             }
         }
         (<span class="bool-val">true</span>, MapGenStyle::MineWars) =&gt; {
             <span class="attr">#[cfg(feature = <span class="string">&quot;proprietary&quot;</span>)]
-            </span>mw_proprietary_client::setup_minesweeper_singleplayer_mwmap(
+            </span>mw_proprietary_client::setup_minesweeper_playground_mwmap(
                 world, minesweeper_settings, mapgen_settings.size, mapgen_settings.seed,
             );
         }
     }
 }
 
-<span class="kw">fn </span>setup_minesweeper_singleplayer_flatmap&lt;C: MapTileIndexCoord&gt;(
+<span class="kw">fn </span>setup_minesweeper_playground_flatmap&lt;C: Coord&gt;(
     world: <span class="kw-2">&amp;mut </span>World,
-    <span class="kw-2">mut </span>minesweeper_settings: MinesweeperSettings,
+    minesweeper_settings: MinesweeperSettings,
     map_size: u8
 ) {
-    minesweeper_settings.n_plids = <span class="number">1</span>;
-
+    <span class="kw">let </span>n_plids = minesweeper_settings.n_plids;
     <span class="kw">let </span>dummy_map = MapData::&lt;C, ()&gt;::new(map_size, ());
     mw_app::map::setup_map(world, <span class="kw-2">&amp;</span>dummy_map, <span class="kw-2">&amp;</span>[], |<span class="kw">_</span>| TileKind::Regular, |<span class="kw">_</span>| <span class="number">0</span>);
     <span class="kw">let </span>game = GameMinesweeper::&lt;C&gt;::new(minesweeper_settings, <span class="kw-2">&amp;</span>dummy_map, |<span class="kw">_</span>| TileKind::Regular);
@@ -205,16 +215,22 @@
     viewtile.set_has_structure(<span class="bool-val">false</span>);
 
     <span class="kw">let </span>e_plid0 = world.spawn(SpectatorPlidBundle::default()).id();
-    <span class="kw">let </span>e_plid1 = world.spawn((
-        PlayerBundle {
-            plid: PlayerPlid(<span class="number">1</span>.into()),
-            state: PlayerState::Alive,
-        },
-        ViewBundle {
-            mapdata: ViewMapData(MapData::&lt;C, <span class="kw">_</span>&gt;::new(map_size, viewtile)),
-        },
-    )).id();
-    world.insert_resource(PlayersIndex(<span class="macro">vec!</span>[e_plid0, e_plid1]));
+    <span class="kw">let </span><span class="kw-2">mut </span>players_index = PlayersIndex(<span class="macro">vec!</span>[e_plid0]);
+        <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..n_plids {
+        <span class="kw">let </span>plid = PlayerId::from(i+<span class="number">1</span>);
+        <span class="kw">let </span>e_plid = world.spawn((
+            PlayerBundle {
+                plid: PlayerPlid(plid),
+                state: PlayerState::Alive,
+            },
+            ViewBundle {
+                mapdata: ViewMapData(MapData::&lt;C, <span class="kw">_</span>&gt;::new(map_size, viewtile)),
+            },
+            PlidPlayable,
+        )).id();
+        players_index.<span class="number">0</span>.push(e_plid);
+    }
+    world.insert_resource(players_index);
     world.insert_resource(PlidPlayingAs(<span class="number">1</span>.into()));
     world.insert_resource(PlidViewing(<span class="number">1</span>.into()));
 

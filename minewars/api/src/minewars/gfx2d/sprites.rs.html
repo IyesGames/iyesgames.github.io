@@ -188,16 +188,14 @@
 <a href="#188" id="188">188</a>
 <a href="#189" id="189">189</a>
 <a href="#190" id="190">190</a>
-<a href="#191" id="191">191</a>
-<a href="#192" id="192">192</a>
-<a href="#193" id="193">193</a>
-<a href="#194" id="194">194</a>
-<a href="#195" id="195">195</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::assets::GameAssets;
 <span class="kw">use </span><span class="kw">crate</span>::camera::GridCursor;
 <span class="kw">use </span><span class="kw">crate</span>::camera::GridCursorSet;
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
+<span class="kw">use </span>mw_app::player::PlayersIndex;
+<span class="kw">use </span>mw_app::view::PlidViewing;
+<span class="kw">use </span>mw_app::view::ViewMapData;
 <span class="kw">use </span>mw_common::grid::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_common::game::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_app::map::<span class="kw-2">*</span>;
@@ -221,7 +219,10 @@
                 .in_set(Gfx2dTileSetupSet)
                 .run_if(not(resource_exists::&lt;TilemapInitted&gt;())),
             (
-                tile_kind,
+                tile_kind::&lt;Hex&gt;
+                    .in_set(MapTopologySet(Topology::Hex)),
+                tile_kind::&lt;Sq&gt;
+                    .in_set(MapTopologySet(Topology::Sq)),
                 tile_owner,
             )
                 .run_if(resource_exists::&lt;TilemapInitted&gt;()),
@@ -299,11 +300,11 @@
     xf.translation = Vec3::new(trans.x * width, trans.y * height, <span class="kw">super</span>::zpos::CURSOR);
 }
 
-<span class="kw">fn </span>setup_base_tile&lt;C: MapTileIndexCoord&gt;(
+<span class="kw">fn </span>setup_base_tile&lt;C: Coord&gt;(
     world: <span class="kw-2">&amp;mut </span>World,
 ) {
     <span class="kw">let </span>texture_atlas = world.resource::&lt;GameAssets&gt;().sprites.clone();
-    <span class="kw">let </span>index = world.remove_resource::&lt;MapTileIndex&gt;().unwrap();
+    <span class="kw">let </span>index = world.remove_resource::&lt;MapTileIndex&lt;C&gt;&gt;().unwrap();
     <span class="kw">let </span>(sprite_index, width, height) = <span class="kw">match </span>C::TOPOLOGY {
         Topology::Hex =&gt; (
             <span class="kw">super</span>::sprite::TILES6 + <span class="kw">super</span>::sprite::TILE_WATER,
@@ -314,7 +315,7 @@
             <span class="kw">super</span>::sprite::WIDTH4, <span class="kw">super</span>::sprite::HEIGHT4,
         ),
     };
-    <span class="kw">for </span>(c, <span class="kw-2">&amp;</span>e) <span class="kw">in </span>C::get_mapdata(<span class="kw-2">&amp;</span>index).iter() {
+    <span class="kw">for </span>(c, <span class="kw-2">&amp;</span>e) <span class="kw">in </span>index.<span class="number">0</span>.iter() {
         <span class="kw">let </span>trans = c.translation();
         world.entity_mut(e).insert(SpriteSheetBundle {
             texture_atlas: texture_atlas.clone(),
@@ -331,13 +332,13 @@
     world.insert_resource(TilemapInitted);
 }
 
-<span class="kw">fn </span>tile_kind(
-    desc: Res&lt;MapDescriptor&gt;,
+<span class="kw">fn </span>tile_kind&lt;C: Coord&gt;(
     <span class="kw-2">mut </span>q: Query&lt;(<span class="kw-2">&amp;mut </span>TextureAtlasSprite, <span class="kw-2">&amp;</span>TileKind, <span class="kw-2">&amp;</span>MwTilePos), Changed&lt;TileKind&gt;&gt;,
-    q_pos: Query&lt;<span class="kw-2">&amp;</span>TileKind&gt;,
-    index: Res&lt;MapTileIndex&gt;,
+    plids: Res&lt;PlayersIndex&gt;,
+    viewing: Res&lt;PlidViewing&gt;,
+    q_view: Query&lt;<span class="kw-2">&amp;</span>ViewMapData&lt;C&gt;&gt;,
 ) {
-    <span class="kw">let </span>i_base = <span class="kw">match </span>desc.topology {
+    <span class="kw">let </span>i_base = <span class="kw">match </span>C::TOPOLOGY {
         Topology::Hex =&gt; <span class="kw">super</span>::sprite::TILES6,
         Topology::Sq =&gt; <span class="kw">super</span>::sprite::TILES4,
     };
@@ -353,26 +354,15 @@
             TileKind::Destroyed =&gt; <span class="kw">super</span>::sprite::TILE_DEAD,
         };
         <span class="kw">if </span><span class="kw-2">*</span>kind == TileKind::Water {
-            <span class="kw">let </span>a = <span class="kw">match </span>desc.topology {
-                <span class="comment">// PERF: getting the tile kind via an ECS query is very slow
-                // this should probably get its data from the View instead
-                </span>Topology::Hex =&gt; fancytint(
-                    desc.size,
-                    Hex::from(pos.<span class="number">0</span>),
-                    |c| q_pos
-                        .get(index.get_pos(c))
-                        .map(|d| <span class="kw-2">*</span>d)
-                        .unwrap_or(TileKind::Water)
-                ),
-                Topology::Sq =&gt; fancytint(
-                    desc.size,
-                    Sq::from(pos.<span class="number">0</span>),
-                    |c| q_pos
-                        .get(index.get_pos(c))
-                        .map(|d| <span class="kw-2">*</span>d)
-                        .unwrap_or(TileKind::Water)
-                ),
-            };
+            <span class="kw">let </span>e_plid = plids.<span class="number">0</span>.get(viewing.<span class="number">0</span>.i())
+                .expect(<span class="string">&quot;Plid has no entity??&quot;</span>);
+            <span class="kw">let </span>view = q_view.get(<span class="kw-2">*</span>e_plid)
+                .expect(<span class="string">&quot;Plid has no view??&quot;</span>);
+            <span class="kw">let </span>a =  fancytint(
+                view.<span class="number">0</span>.size(),
+                C::from(pos.<span class="number">0</span>),
+                |c| view.<span class="number">0</span>[c].kind()
+            );
             spr.color.set_a(a);
         } <span class="kw">else </span>{
             spr.color.set_a(<span class="number">1.0</span>);

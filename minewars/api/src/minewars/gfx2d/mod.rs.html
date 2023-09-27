@@ -201,7 +201,7 @@
 }
 
 <span class="doccomment">/// Generate fancy alpha values for water
-</span><span class="kw">fn </span>fancytint&lt;C: Coord&gt;(map_size: u8, c: C, f_kind: <span class="kw">impl </span>Fn(Pos) -&gt; TileKind) -&gt; f32 {
+</span><span class="kw">fn </span>fancytint&lt;C: Coord&gt;(map_size: u8, c: C, f_kind: <span class="kw">impl </span>Fn(C) -&gt; TileKind) -&gt; f32 {
     <span class="kw">let </span><span class="kw-2">mut </span>d_edge = <span class="number">0</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>d_land = <span class="number">0</span>;
 
@@ -214,7 +214,7 @@
                 <span class="kw">if </span>d_land != <span class="number">0 </span>{
                     <span class="kw">break </span><span class="lifetime">&#39;outer</span>;
                 }
-            } <span class="kw">else if </span>f_kind(c2.into()) != TileKind::Water {
+            } <span class="kw">else if </span>f_kind(c2) != TileKind::Water {
                 <span class="kw">if </span>d_land == <span class="number">0 </span>{
                     d_land = r;
                 }

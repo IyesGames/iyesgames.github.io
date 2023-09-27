@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["DespawnOnViewSwitch","GameViewPlugin","PlidViewing","ViewBundle","ViewMapData","ViewSwitchSet","ViewTileData","VisibleInView"]};
+window.SIDEBAR_ITEMS = {"struct":["DespawnOnViewSwitch","GameViewPlugin","PlidViewing","ViewBundle","ViewMapData","ViewSwitchSet","ViewTileData","ViewUpdateSet","VisibleInView"]};
