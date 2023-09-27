@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["setup_hud","spawn_cityentry_owned","spawn_cityentry_unowned","spawn_playericon"],"struct":["HudPlugin"]};
+window.SIDEBAR_ITEMS = {"fn":["minimap_image_scale_fixme","setup_hud","spawn_cityentry_owned","spawn_cityentry_unowned","spawn_playericon"],"struct":["HudPlugin","MinimapImageNode"]};

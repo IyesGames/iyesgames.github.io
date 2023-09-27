@@ -321,6 +321,7 @@
 <a href="#321" id="321">321</a>
 <a href="#322" id="322">322</a>
 <a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::ui::tooltip::InfoAreaText;
 <span class="kw">use </span><span class="kw">crate</span>::ui::{UiCamera, UiRoot};
@@ -547,7 +548,8 @@
         <span class="kw-2">&amp;*</span>settings,
         OnClick::new(),
         <span class="string">&quot;menu-button-play-official&quot;</span>,
-        <span class="string">&quot;menu-tooltip-play-official&quot;</span>,
+        <span class="kw">if </span>PROPRIETARY { <span class="string">&quot;menu-tooltip-play-official&quot; </span>}
+        <span class="kw">else </span>{ <span class="string">&quot;tooltip-unavailable-proprietary&quot; </span>},
         PROPRIETARY,
     );
     <span class="kw">let </span>butt_watch = spawn_menu_butt(

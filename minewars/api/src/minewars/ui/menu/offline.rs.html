@@ -103,6 +103,8 @@
 <a href="#103" id="103">103</a>
 <a href="#104" id="104">104</a>
 <a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::assets::UiAssets;
 
@@ -158,7 +160,8 @@
         <span class="kw-2">&amp;*</span>settings,
         OnClick::new(),
         <span class="string">&quot;menu-button-play-tutorial&quot;</span>,
-        <span class="string">&quot;menu-tooltip-play-tutorial&quot;</span>,
+        <span class="kw">if </span>PROPRIETARY { <span class="string">&quot;menu-tooltip-play-tutorial&quot; </span>}
+        <span class="kw">else </span>{ <span class="string">&quot;tooltip-unavailable-proprietary&quot; </span>},
         PROPRIETARY,
     );
     <span class="kw">let </span>butt_playground = spawn_menu_butt(
@@ -167,7 +170,8 @@
         <span class="kw-2">&amp;*</span>settings,
         OnClick::new().cli(<span class="string">&quot;offline_playground&quot;</span>),
         <span class="string">&quot;menu-button-playground&quot;</span>,
-        <span class="string">&quot;menu-tooltip-playground&quot;</span>,
+        <span class="kw">if </span>PROPRIETARY { <span class="string">&quot;menu-tooltip-playground&quot; </span>}
+        <span class="kw">else </span>{ <span class="string">&quot;tooltip-unavailable-proprietary&quot; </span>},
         PROPRIETARY,
     );
     <span class="kw">let </span>butt_replay = spawn_menu_butt(

@@ -681,15 +681,81 @@
 <a href="#681" id="681">681</a>
 <a href="#682" id="682">682</a>
 <a href="#683" id="683">683</a>
-</pre></div><pre class="rust"><code><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, assets::UiAssets, ui};
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
+<a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+<a href="#692" id="692">692</a>
+<a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
+<a href="#708" id="708">708</a>
+<a href="#709" id="709">709</a>
+<a href="#710" id="710">710</a>
+<a href="#711" id="711">711</a>
+<a href="#712" id="712">712</a>
+<a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
+<a href="#716" id="716">716</a>
+<a href="#717" id="717">717</a>
+<a href="#718" id="718">718</a>
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
+<a href="#721" id="721">721</a>
+<a href="#722" id="722">722</a>
+<a href="#723" id="723">723</a>
+<a href="#724" id="724">724</a>
+<a href="#725" id="725">725</a>
+<a href="#726" id="726">726</a>
+<a href="#727" id="727">727</a>
+<a href="#728" id="728">728</a>
+<a href="#729" id="729">729</a>
+<a href="#730" id="730">730</a>
+<a href="#731" id="731">731</a>
+<a href="#732" id="732">732</a>
+<a href="#733" id="733">733</a>
+<a href="#734" id="734">734</a>
+<a href="#735" id="735">735</a>
+<a href="#736" id="736">736</a>
+<a href="#737" id="737">737</a>
+<a href="#738" id="738">738</a>
+<a href="#739" id="739">739</a>
+<a href="#740" id="740">740</a>
+<a href="#741" id="741">741</a>
+<a href="#742" id="742">742</a>
+<a href="#743" id="743">743</a>
+<a href="#744" id="744">744</a>
+<a href="#745" id="745">745</a>
+<a href="#746" id="746">746</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>bevy::window::PrimaryWindow;
 
-<span class="kw">use </span><span class="kw">super</span>::tooltip::InfoAreaText;
+<span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, assets::UiAssets, ui, minimap::MinimapImage};
+
+<span class="kw">use super</span>::{tooltip::InfoAreaText, UiRoot};
 
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>HudPlugin;
 
 <span class="kw">impl </span>Plugin <span class="kw">for </span>HudPlugin {
     <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, app: <span class="kw-2">&amp;mut </span>App) {
         app.add_systems(OnEnter(AppState::InGame), setup_hud);
+        app.add_systems(Update, minimap_image_scale_fixme.run_if(resource_exists::&lt;MinimapImage&gt;()));
     }
 }
 
@@ -965,7 +1031,27 @@
 <span class="kw">fn </span>setup_hud(
     <span class="kw-2">mut </span>commands: Commands,
     uiassets: Res&lt;UiAssets&gt;,
+    minimap_image: Res&lt;MinimapImage&gt;,
 ) {
+    <span class="kw">let </span>root = commands.spawn((
+        StateDespawnMarker,
+        UiRoot,
+        NodeBundle {
+            style: Style {
+                position_type: PositionType::Absolute,
+                left: Val::Px(<span class="number">0.0</span>),
+                right: Val::Px(<span class="number">0.0</span>),
+                top: Val::Px(<span class="number">0.0</span>),
+                bottom: Val::Px(<span class="number">0.0</span>),
+                flex_direction: FlexDirection::Column,
+                justify_content: JustifyContent::SpaceBetween,
+                align_items: AlignItems::Stretch,
+                ..Default::default()
+            },
+            ..Default::default()
+        },
+    )).id();
+
     <span class="kw">let </span>topcenter = commands.spawn((
         NodeBundle {
             style: Style {
@@ -1000,51 +1086,51 @@
             ..Default::default()
         },
     )).id();
-    <span class="kw">let </span>citylist = commands.spawn((
-        NodeBundle {
-            style: Style {
-                position_type: PositionType::Absolute,
-                bottom: Val::Auto,
-                left: Val::Px(<span class="number">0.0</span>),
-                right: Val::Auto,
-                top: Val::Px(<span class="number">0.0</span>),
-                flex_direction: FlexDirection::Column,
-                align_items: AlignItems::Stretch,
-                justify_content: JustifyContent::Start,
-                ..Default::default()
-            },
-            background_color: BackgroundColor(Color::rgb(<span class="number">0.3</span>, <span class="number">0.2</span>, <span class="number">0.0</span>)),
-            z_index: ZIndex::Global(<span class="number">2</span>),
-            ..Default::default()
-        },
-    )).id();
-    <span class="kw">let </span>citylist_owned = commands.spawn((
-        NodeBundle {
-            style: Style {
-                flex_direction: FlexDirection::Column,
-                align_items: AlignItems::Stretch,
-                justify_content: JustifyContent::Start,
-                ..Default::default()
-            },
-            background_color: BackgroundColor(Color::rgb(<span class="number">0.2</span>, <span class="number">0.4</span>, <span class="number">0.0</span>)),
-            ..Default::default()
-        },
-    )).id();
-    <span class="kw">let </span>citylist_unowned = commands.spawn((
-        NodeBundle {
-            style: Style {
-                flex_direction: FlexDirection::Row,
-                align_items: AlignItems::Start,
-                justify_content: JustifyContent::Start,
-                flex_wrap: FlexWrap::Wrap,
-                align_content: AlignContent::Start,
-                ..Default::default()
-            },
-            background_color: BackgroundColor(Color::rgb(<span class="number">0.2</span>, <span class="number">0.5</span>, <span class="number">0.0</span>)),
-            ..Default::default()
-        },
-    )).id();
-    <span class="kw">let </span>playerbar = commands.spawn((
+    <span class="comment">// let citylist = commands.spawn((
+    //     NodeBundle {
+    //         style: Style {
+    //             position_type: PositionType::Absolute,
+    //             bottom: Val::Auto,
+    //             left: Val::Px(0.0),
+    //             right: Val::Auto,
+    //             top: Val::Px(0.0),
+    //             flex_direction: FlexDirection::Column,
+    //             align_items: AlignItems::Stretch,
+    //             justify_content: JustifyContent::Start,
+    //             ..Default::default()
+    //         },
+    //         background_color: BackgroundColor(Color::rgb(0.3, 0.2, 0.0)),
+    //         z_index: ZIndex::Global(2),
+    //         ..Default::default()
+    //     },
+    // )).id();
+    // let citylist_owned = commands.spawn((
+    //     NodeBundle {
+    //         style: Style {
+    //             flex_direction: FlexDirection::Column,
+    //             align_items: AlignItems::Stretch,
+    //             justify_content: JustifyContent::Start,
+    //             ..Default::default()
+    //         },
+    //         background_color: BackgroundColor(Color::rgb(0.2, 0.4, 0.0)),
+    //         ..Default::default()
+    //     },
+    // )).id();
+    // let citylist_unowned = commands.spawn((
+    //     NodeBundle {
+    //         style: Style {
+    //             flex_direction: FlexDirection::Row,
+    //             align_items: AlignItems::Start,
+    //             justify_content: JustifyContent::Start,
+    //             flex_wrap: FlexWrap::Wrap,
+    //             align_content: AlignContent::Start,
+    //             ..Default::default()
+    //         },
+    //         background_color: BackgroundColor(Color::rgb(0.2, 0.5, 0.0)),
+    //         ..Default::default()
+    //     },
+    // )).id();
+    </span><span class="kw">let </span>playerbar = commands.spawn((
         NodeBundle {
             style: Style {
                 flex_direction: FlexDirection::Row,
@@ -1100,134 +1186,143 @@
                 flex_direction: FlexDirection::Column,
                 align_items: AlignItems::Center,
                 justify_content: JustifyContent::Center,
-                width: Val::Px(<span class="number">240.0</span>),
-                height: Val::Px(<span class="number">240.0</span>),
-                ..Default::default()
-            },
-            background_color: BackgroundColor(Color::rgb(<span class="number">0.0</span>, <span class="number">0.3</span>, <span class="number">0.0</span>)),
-            ..Default::default()
-        },
-    )).id();
-    <span class="kw">let </span>inventory = commands.spawn((
-        NodeBundle {
-            style: Style {
-                flex_direction: FlexDirection::Column,
-                align_items: AlignItems::Center,
-                justify_content: JustifyContent::SpaceBetween,
-                width: Val::Px(<span class="number">200.0</span>),
-                height: Val::Px(<span class="number">140.0</span>),
                 padding: UiRect::all(Val::Px(<span class="number">4.0</span>)),
                 ..Default::default()
             },
-            background_color: BackgroundColor(Color::rgb(<span class="number">0.0</span>, <span class="number">0.3</span>, <span class="number">0.3</span>)),
+            background_color: BackgroundColor(Color::rgb(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>)),
             ..Default::default()
         },
     )).id();
-    <span class="kw">let </span>inventory_text = commands.spawn((
-        <span class="comment">// L10nKey(String::new()),
-        </span>TextBundle {
-            text: Text::from_section(
-                <span class="string">&quot;INVENTORY&quot;</span>,
-                TextStyle {
-                    font: uiassets.font_bold.clone(),
-                    font_size: <span class="number">32.0</span>,
-                    color: Color::WHITE,
-                },
-            ),
-            ..Default::default()
-        },
-    )).id();
-    <span class="kw">let </span>inventory_contents = commands.spawn((
-        NodeBundle {
-            style: Style {
-                flex_direction: FlexDirection::Row,
-                align_items: AlignItems::Center,
-                justify_content: JustifyContent::SpaceEvenly,
-                width: Val::Percent(<span class="number">100.0</span>),
-                height: Val::Auto,
+    <span class="kw">let </span>minimap_image = commands.spawn((
+        ImageBundle {
+            image: UiImage {
+                texture: minimap_image.<span class="number">0</span>.clone(),
                 ..Default::default()
             },
-            background_color: BackgroundColor(Color::rgb(<span class="number">0.0</span>, <span class="number">0.4</span>, <span class="number">0.3</span>)),
             ..Default::default()
         },
+        MinimapImageNode,
     )).id();
-    <span class="kw">let </span>inventory_mines = commands.spawn((
-        NodeBundle {
-            style: Style {
-                flex_direction: FlexDirection::Column,
-                align_items: AlignItems::Center,
-                justify_content: JustifyContent::Center,
-                ..Default::default()
-            },
-            background_color: BackgroundColor(Color::rgb(<span class="number">0.0</span>, <span class="number">0.5</span>, <span class="number">0.3</span>)),
-            ..Default::default()
-        },
-    )).id();
-    <span class="kw">let </span>inventory_mines_icon = commands.spawn((
-        NodeBundle {
-            style: Style {
-                align_items: AlignItems::Center,
-                justify_content: JustifyContent::Center,
-                width: Val::Px(<span class="number">64.0</span>),
-                height: Val::Px(<span class="number">64.0</span>),
-                ..Default::default()
-            },
-            background_color: BackgroundColor(Color::rgb(<span class="number">0.5</span>, <span class="number">0.3</span>, <span class="number">0.0</span>)),
-            ..Default::default()
-        },
-    )).id();
-    <span class="kw">let </span>inventory_mines_text = commands.spawn((
-        TextBundle {
-            text: Text::from_section(
-                <span class="string">&quot;999&quot;</span>,
-                TextStyle {
-                    font: uiassets.font.clone(),
-                    font_size: <span class="number">32.0</span>,
-                    color: Color::WHITE,
-                },
-            ),
-            ..Default::default()
-        },
-    )).id();
-    <span class="kw">let </span>inventory_decoys = commands.spawn((
-        NodeBundle {
-            style: Style {
-                flex_direction: FlexDirection::Column,
-                align_items: AlignItems::Center,
-                justify_content: JustifyContent::Center,
-                ..Default::default()
-            },
-            background_color: BackgroundColor(Color::rgb(<span class="number">0.0</span>, <span class="number">0.3</span>, <span class="number">0.5</span>)),
-            ..Default::default()
-        },
-    )).id();
-    <span class="kw">let </span>inventory_decoys_icon = commands.spawn((
-        NodeBundle {
-            style: Style {
-                align_items: AlignItems::Center,
-                justify_content: JustifyContent::Center,
-                width: Val::Px(<span class="number">64.0</span>),
-                height: Val::Px(<span class="number">64.0</span>),
-                ..Default::default()
-            },
-            background_color: BackgroundColor(Color::rgb(<span class="number">0.5</span>, <span class="number">0.3</span>, <span class="number">0.0</span>)),
-            ..Default::default()
-        },
-    )).id();
-    <span class="kw">let </span>inventory_decoys_text = commands.spawn((
-        TextBundle {
-            text: Text::from_section(
-                <span class="string">&quot;999&quot;</span>,
-                TextStyle {
-                    font: uiassets.font.clone(),
-                    font_size: <span class="number">32.0</span>,
-                    color: Color::WHITE,
-                },
-            ),
-            ..Default::default()
-        },
-    )).id();
-    <span class="kw">let </span>bot_midarea = commands.spawn((
+    <span class="comment">// let inventory = commands.spawn((
+    //     NodeBundle {
+    //         style: Style {
+    //             flex_direction: FlexDirection::Column,
+    //             align_items: AlignItems::Center,
+    //             justify_content: JustifyContent::SpaceBetween,
+    //             width: Val::Px(200.0),
+    //             height: Val::Px(140.0),
+    //             padding: UiRect::all(Val::Px(4.0)),
+    //             ..Default::default()
+    //         },
+    //         background_color: BackgroundColor(Color::rgb(0.0, 0.3, 0.3)),
+    //         ..Default::default()
+    //     },
+    // )).id();
+    // let inventory_text = commands.spawn((
+    //     // L10nKey(String::new()),
+    //     TextBundle {
+    //         text: Text::from_section(
+    //             &quot;INVENTORY&quot;,
+    //             TextStyle {
+    //                 font: uiassets.font_bold.clone(),
+    //                 font_size: 32.0,
+    //                 color: Color::WHITE,
+    //             },
+    //         ),
+    //         ..Default::default()
+    //     },
+    // )).id();
+    // let inventory_contents = commands.spawn((
+    //     NodeBundle {
+    //         style: Style {
+    //             flex_direction: FlexDirection::Row,
+    //             align_items: AlignItems::Center,
+    //             justify_content: JustifyContent::SpaceEvenly,
+    //             width: Val::Percent(100.0),
+    //             height: Val::Auto,
+    //             ..Default::default()
+    //         },
+    //         background_color: BackgroundColor(Color::rgb(0.0, 0.4, 0.3)),
+    //         ..Default::default()
+    //     },
+    // )).id();
+    // let inventory_mines = commands.spawn((
+    //     NodeBundle {
+    //         style: Style {
+    //             flex_direction: FlexDirection::Column,
+    //             align_items: AlignItems::Center,
+    //             justify_content: JustifyContent::Center,
+    //             ..Default::default()
+    //         },
+    //         background_color: BackgroundColor(Color::rgb(0.0, 0.5, 0.3)),
+    //         ..Default::default()
+    //     },
+    // )).id();
+    // let inventory_mines_icon = commands.spawn((
+    //     NodeBundle {
+    //         style: Style {
+    //             align_items: AlignItems::Center,
+    //             justify_content: JustifyContent::Center,
+    //             width: Val::Px(64.0),
+    //             height: Val::Px(64.0),
+    //             ..Default::default()
+    //         },
+    //         background_color: BackgroundColor(Color::rgb(0.5, 0.3, 0.0)),
+    //         ..Default::default()
+    //     },
+    // )).id();
+    // let inventory_mines_text = commands.spawn((
+    //     TextBundle {
+    //         text: Text::from_section(
+    //             &quot;999&quot;,
+    //             TextStyle {
+    //                 font: uiassets.font.clone(),
+    //                 font_size: 32.0,
+    //                 color: Color::WHITE,
+    //             },
+    //         ),
+    //         ..Default::default()
+    //     },
+    // )).id();
+    // let inventory_decoys = commands.spawn((
+    //     NodeBundle {
+    //         style: Style {
+    //             flex_direction: FlexDirection::Column,
+    //             align_items: AlignItems::Center,
+    //             justify_content: JustifyContent::Center,
+    //             ..Default::default()
+    //         },
+    //         background_color: BackgroundColor(Color::rgb(0.0, 0.3, 0.5)),
+    //         ..Default::default()
+    //     },
+    // )).id();
+    // let inventory_decoys_icon = commands.spawn((
+    //     NodeBundle {
+    //         style: Style {
+    //             align_items: AlignItems::Center,
+    //             justify_content: JustifyContent::Center,
+    //             width: Val::Px(64.0),
+    //             height: Val::Px(64.0),
+    //             ..Default::default()
+    //         },
+    //         background_color: BackgroundColor(Color::rgb(0.5, 0.3, 0.0)),
+    //         ..Default::default()
+    //     },
+    // )).id();
+    // let inventory_decoys_text = commands.spawn((
+    //     TextBundle {
+    //         text: Text::from_section(
+    //             &quot;999&quot;,
+    //             TextStyle {
+    //                 font: uiassets.font.clone(),
+    //                 font_size: 32.0,
+    //                 color: Color::WHITE,
+    //             },
+    //         ),
+    //         ..Default::default()
+    //     },
+    // )).id();
+    </span><span class="kw">let </span>bot_midarea = commands.spawn((
         NodeBundle {
             style: Style {
                 flex_direction: FlexDirection::ColumnReverse,
@@ -1339,29 +1434,60 @@
         },
     )).id();
 
-    <span class="kw">let </span>city1 = spawn_cityentry_unowned(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>uiassets, <span class="number">1</span>);
-    <span class="kw">let </span>city2 = spawn_cityentry_owned(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>uiassets, <span class="number">2</span>);
-    <span class="kw">let </span>city3 = spawn_cityentry_owned(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>uiassets, <span class="number">3</span>);
-    <span class="kw">let </span>city4 = spawn_cityentry_unowned(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>uiassets, <span class="number">4</span>);
-    <span class="kw">let </span>city5 = spawn_cityentry_owned(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>uiassets, <span class="number">5</span>);
-    <span class="kw">let </span>city6 = spawn_cityentry_owned(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>uiassets, <span class="number">6</span>);
-    <span class="kw">let </span>city7 = spawn_cityentry_unowned(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>uiassets, <span class="number">7</span>);
-    <span class="kw">let </span>city8 = spawn_cityentry_unowned(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>uiassets, <span class="number">8</span>);
-    <span class="kw">let </span>city9 = spawn_cityentry_unowned(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>uiassets, <span class="number">9</span>);
-    <span class="kw">let </span>city10 = spawn_cityentry_unowned(<span class="kw-2">&amp;mut </span>commands, <span class="kw-2">&amp;</span>uiassets, <span class="number">10</span>);
-    commands.entity(citylist_owned).push_children(<span class="kw-2">&amp;</span>[city2, city3, city5, city6]);
-    commands.entity(citylist_unowned).push_children(<span class="kw-2">&amp;</span>[city1, city4, city7, city8, city9, city10]);
-    commands.entity(citylist).push_children(<span class="kw-2">&amp;</span>[citylist_owned, citylist_unowned]);
-    commands.entity(topcenter).push_children(<span class="kw-2">&amp;</span>[playerbar]);
+    <span class="comment">// let city1 = spawn_cityentry_unowned(&amp;mut commands, &amp;uiassets, 1);
+    // let city2 = spawn_cityentry_owned(&amp;mut commands, &amp;uiassets, 2);
+    // let city3 = spawn_cityentry_owned(&amp;mut commands, &amp;uiassets, 3);
+    // let city4 = spawn_cityentry_unowned(&amp;mut commands, &amp;uiassets, 4);
+    // let city5 = spawn_cityentry_owned(&amp;mut commands, &amp;uiassets, 5);
+    // let city6 = spawn_cityentry_owned(&amp;mut commands, &amp;uiassets, 6);
+    // let city7 = spawn_cityentry_unowned(&amp;mut commands, &amp;uiassets, 7);
+    // let city8 = spawn_cityentry_unowned(&amp;mut commands, &amp;uiassets, 8);
+    // let city9 = spawn_cityentry_unowned(&amp;mut commands, &amp;uiassets, 9);
+    // let city10 = spawn_cityentry_unowned(&amp;mut commands, &amp;uiassets, 10);
+    // commands.entity(citylist_owned).push_children(&amp;[city2, city3, city5, city6]);
+    // commands.entity(citylist_unowned).push_children(&amp;[city1, city4, city7, city8, city9, city10]);
+    // commands.entity(citylist).push_children(&amp;[citylist_owned, citylist_unowned]);
+    </span>commands.entity(topcenter).push_children(<span class="kw-2">&amp;</span>[playerbar]);
     commands.entity(playerbar).push_children(<span class="kw-2">&amp;</span>[player1, player2, player3, player4, player5, player6]);
     commands.entity(notify_area).push_children(<span class="kw-2">&amp;</span>[notify_text]);
-    commands.entity(bottom).push_children(<span class="kw-2">&amp;</span>[inventory, bot_midarea, minimap]);
+    commands.entity(minimap).push_children(<span class="kw-2">&amp;</span>[minimap_image]);
+    commands.entity(bottom).push_children(<span class="kw-2">&amp;</span>[<span class="comment">/*inventory, */</span>minimap, bot_midarea]);
     commands.entity(bot_midarea).push_children(<span class="kw-2">&amp;</span>[info_area, toolbar]);
     commands.entity(info_area).push_children(<span class="kw-2">&amp;</span>[info_text]);
     commands.entity(toolbar).push_children(<span class="kw-2">&amp;</span>[tool1, tool2, tool3, tool4]);
-    commands.entity(inventory).push_children(<span class="kw-2">&amp;</span>[inventory_text, inventory_contents]);
-    commands.entity(inventory_contents).push_children(<span class="kw-2">&amp;</span>[inventory_mines, inventory_decoys]);
-    commands.entity(inventory_mines).push_children(<span class="kw-2">&amp;</span>[inventory_mines_icon, inventory_mines_text]);
-    commands.entity(inventory_decoys).push_children(<span class="kw-2">&amp;</span>[inventory_decoys_icon, inventory_decoys_text]);
+    <span class="comment">// commands.entity(inventory).push_children(&amp;[inventory_text, inventory_contents]);
+    // commands.entity(inventory_contents).push_children(&amp;[inventory_mines, inventory_decoys]);
+    // commands.entity(inventory_mines).push_children(&amp;[inventory_mines_icon, inventory_mines_text]);
+    // commands.entity(inventory_decoys).push_children(&amp;[inventory_decoys_icon, inventory_decoys_text]);
+    </span>commands.entity(root).push_children(<span class="kw-2">&amp;</span>[<span class="comment">/*citylist, */</span>topcenter, notify_area, bottom]);
+}
+
+<span class="attr">#[derive(Component)]
+</span><span class="kw">struct </span>MinimapImageNode;
+
+<span class="kw">fn </span>minimap_image_scale_fixme(
+    <span class="kw-2">mut </span>q: Query&lt;<span class="kw-2">&amp;mut </span>Style, With&lt;MinimapImageNode&gt;&gt;,
+    minimap_image: Res&lt;MinimapImage&gt;,
+    <span class="kw-2">mut </span>evr: EventReader&lt;AssetEvent&lt;Image&gt;&gt;,
+    ass_image: Res&lt;Assets&lt;Image&gt;&gt;,
+    uiscale: Res&lt;UiScale&gt;,
+    q_wnd: Query&lt;<span class="kw-2">&amp;</span>Window, With&lt;PrimaryWindow&gt;&gt;,
+) {
+    <span class="kw">for </span>ev <span class="kw">in </span>evr.iter() {
+        <span class="kw">if let </span>AssetEvent::Modified { handle } = ev {
+            <span class="kw">if </span>handle == <span class="kw-2">&amp;</span>minimap_image.<span class="number">0 </span>{
+                <span class="kw">let </span>img = ass_image.get(<span class="kw-2">&amp;</span>handle).unwrap();
+                <span class="kw">let </span>wndscale = q_wnd.single().scale_factor();
+                <span class="kw">let </span>w = img.texture_descriptor.size.width <span class="kw">as </span>f64;
+                <span class="kw">let </span>h = img.texture_descriptor.size.height <span class="kw">as </span>f64;
+                <span class="kw">let </span>w = w / uiscale.scale / wndscale;
+                <span class="kw">let </span>h = h / uiscale.scale / wndscale;
+                <span class="kw">for </span><span class="kw-2">mut </span>style <span class="kw">in </span><span class="kw-2">&amp;mut </span>q {
+                    style.width = Val::Px(w <span class="kw">as </span>f32);
+                    style.height = Val::Px(h <span class="kw">as </span>f32);
+                }
+            }
+        }
+    }
 }
 </code></pre></div></section></main></body></html>
