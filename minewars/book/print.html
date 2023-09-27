@@ -643,7 +643,7 @@ to the city, regardless of any owned tiles in the region.</p>
 <p>Players may *<em>harvest</em> tiles (one tile at a time) to instantly claim a large sum
 of resources. They are awarded to the city of the region the tile belongs to.</p>
 <p>This is a one-time action. After harvesting, the tile is converted to
-<strong>Destroyed Land</strong> and produces no more resources for the remainder of the game.</p>
+<strong>Foundation</strong> and produces no more resources for the remainder of the game.</p>
 <p>The player must own both the tile and the city whose region it belongs to.</p>
 <p>The change in tile kind is not visible to other players behind fog of war. When
 players gain visibility of the tile, that is when they will get the update.</p>
@@ -656,7 +656,7 @@ from the map's geography.</p>
 <ul>
 <li><strong>Regular Land</strong>: <strong>100</strong> Res</li>
 <li><strong>Fertile Land</strong>: <strong>250</strong> Res</li>
-<li><strong>Destroyed Land</strong> and <strong>Foundation</strong>: <strong>0</strong> Res</li>
+<li><strong>Destroyed Land</strong> and <strong>Foundation</strong>: not harvestable (<strong>0</strong> Res)</li>
 <li><strong>Forest</strong>: <strong>420</strong> Res</li>
 <li><strong>Mountain</strong>: <strong>600</strong> Res</li>
 </ul>
@@ -855,7 +855,9 @@ between multiple cities, if there are active road connections.</p>
 Delay: <strong>0.0 sec</strong>.</p>
 <p>Place a <strong>Structure</strong> on a tile that is owned by the player.</p>
 <p>The player must own the city of the region.</p>
-<p>The tile kind is immediately changed to <strong>Foundation</strong>.</p>
+<p>The tile is immediately <strong>harvested</strong>. The harvest resource bounty is counted
+towards the construction progress points. The tile kind is immediately changed
+to <strong>Foundation</strong>.</p>
 <p>The Structure is not ready immediately. When placed, it is in &quot;pending&quot;
 mode, and the city is set to &quot;construction&quot; mode.</p>
 <p>While a structure is &quot;pending&quot;, it will not perform its intended effects.
@@ -876,9 +878,8 @@ Delay: <strong>2.0 sec</strong>.</p>
 <p>Instatly claim a sum of resources (counted either towards income or
 construction, based on the current state of the region's city).</p>
 <p>The player must own the region's city.</p>
-<p>The tile kind is changed to <strong>Destroyed Land</strong>.</p>
 <p>The amount gained depends on the tile kind.</p>
-<p>The tile is converted to <strong>Destroyed Land</strong>, meaning it will have no resources
+<p>The tile kind is changed to <strong>Foundation</strong>, meaning it will give no resources
 for the rest of the game.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="items-1"><a class="header" href="#items-1">Items</a></h1>
 <p>Items are defensive things that you can <strong>deploy</strong> onto <strong>land</strong> tiles that you own.
