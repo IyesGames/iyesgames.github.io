@@ -363,16 +363,16 @@
             switch_view_despawn,
             switch_view_showhide,
             (
-                switch_view_update_map_tiles::&lt;Hex&gt;,
-                switch_view_update_map_digits::&lt;Hex&gt;,
-                switch_view_update_map_gents::&lt;Hex&gt;,
-                switch_view_update_map_roads::&lt;Hex&gt;,
+                switch_view_update_map_tiles::&lt;Hex&gt;.in_set(MapUpdateSet::TileKind).in_set(MapUpdateSet::TileOwner),
+                switch_view_update_map_digits::&lt;Hex&gt;.in_set(MapUpdateSet::TileDigit),
+                switch_view_update_map_gents::&lt;Hex&gt;.in_set(MapUpdateSet::TileGent),
+                switch_view_update_map_roads::&lt;Hex&gt;.in_set(MapUpdateSet::TileRoads),
             ).in_set(MapTopologySet(Topology::Hex)),
             (
-                switch_view_update_map_tiles::&lt;Sq&gt;,
-                switch_view_update_map_digits::&lt;Sq&gt;,
-                switch_view_update_map_gents::&lt;Sq&gt;,
-                switch_view_update_map_roads::&lt;Sq&gt;,
+                switch_view_update_map_tiles::&lt;Sq&gt;.in_set(MapUpdateSet::TileKind).in_set(MapUpdateSet::TileOwner),
+                switch_view_update_map_digits::&lt;Sq&gt;.in_set(MapUpdateSet::TileDigit),
+                switch_view_update_map_gents::&lt;Sq&gt;.in_set(MapUpdateSet::TileGent),
+                switch_view_update_map_roads::&lt;Sq&gt;.in_set(MapUpdateSet::TileRoads),
             ).in_set(MapTopologySet(Topology::Sq)),
         ).in_set(ViewSwitchSet));
     }
@@ -431,7 +431,7 @@
 
 <span class="doccomment">/// Marker for entities that should be shown in a specific view and hidden in other views.
 </span><span class="attr">#[derive(Component)]
-</span><span class="kw">pub struct </span>VisibleInView(PlayerId);
+</span><span class="kw">pub struct </span>VisibleInView(<span class="kw">pub </span>PlayerId);
 
 <span class="kw">fn </span>switch_view_despawn(
     <span class="kw-2">mut </span>commands: Commands,
@@ -491,7 +491,7 @@
     <span class="kw">for </span>(pos, <span class="kw-2">mut </span>digit) <span class="kw">in </span>q_maptile.iter_mut() {
         <span class="kw">let </span>c: C = pos.<span class="number">0</span>.into();
         <span class="kw">let </span>tiledata = <span class="kw-2">&amp;</span>viewdata.<span class="number">0</span>[c];
-        digit.<span class="number">0 </span>= tiledata.owner().into();
+        digit.<span class="number">0 </span>= tiledata.digit().into();
     }
 }
 

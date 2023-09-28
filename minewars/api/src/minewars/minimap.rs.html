@@ -143,8 +143,17 @@
 <a href="#143" id="143">143</a>
 <a href="#144" id="144">144</a>
 <a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
-<span class="kw">use </span>mw_app::map::{MwTilePos, TileOwner, NeedsMapSet, MapUpdateSet};
+<span class="kw">use </span>mw_app::map::{MwTilePos, TileOwner, NeedsMapSet, MapUpdateSet, TileAlert};
 <span class="kw">use </span>mw_common::{game::{MapDescriptor, TileKind}, grid::Topology};
 
 <span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, settings::NeedsSettingsSet};
@@ -186,8 +195,8 @@
     <span class="kw-2">mut </span>ass_image: ResMut&lt;Assets&lt;Image&gt;&gt;,
     desc: Res&lt;MapDescriptor&gt;,
     q_tile: Query&lt;
-        (<span class="kw-2">&amp;</span>MwTilePos, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>TileOwner&gt;, <span class="kw-2">&amp;</span>TileKind),
-        Or&lt;(Changed&lt;TileOwner&gt;, Changed&lt;TileKind&gt;)&gt;
+        (<span class="kw-2">&amp;</span>MwTilePos, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>TileOwner&gt;, <span class="kw-2">&amp;</span>TileKind, <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>TileAlert&gt;),
+        Or&lt;(Changed&lt;TileOwner&gt;, Changed&lt;TileKind&gt;, With&lt;TileAlert&gt;)&gt;
     &gt;,
 ) {
     <span class="kw">if </span>desc.is_changed() || settings.is_changed() {
@@ -222,15 +231,24 @@
         );
     }
 
-    <span class="kw">for </span>(pos, owner, kind) <span class="kw">in </span><span class="kw-2">&amp;</span>q_tile {
+    <span class="kw">for </span>(pos, owner, kind, alert) <span class="kw">in </span><span class="kw-2">&amp;</span>q_tile {
         <span class="kw">let </span>minimap_image = ass_image.get_mut(<span class="kw-2">&amp;</span>minimap_handle.<span class="number">0</span>)
             .expect(<span class="string">&quot;minimap image must exist&quot;</span>);
         <span class="kw">let </span>w = minimap_image.texture_descriptor.size.width <span class="kw">as </span>i32;
         <span class="kw">let </span>h = minimap_image.texture_descriptor.size.height <span class="kw">as </span>i32;
 
-        <span class="kw">let </span>rgba = owner
+        <span class="kw">let </span><span class="kw-2">mut </span>rgba = owner
             .map(|o| Color::from(settings.player_colors.visible[o.<span class="number">0</span>.i()]).as_rgba_u8())
             .unwrap_or([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]);
+
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(alert) = alert {
+            <span class="comment">// FIXME: this can get stuck on white
+            // if the last frame before the TileAlert component was removed
+            // triggers this
+            </span><span class="kw">if </span>alert.<span class="number">0</span>.elapsed_secs().rem_euclid(<span class="number">0.26</span>) &lt; <span class="number">0.125 </span>{
+                rgba = [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>];
+            }
+        }
         <span class="kw">match </span>desc.topology {
             Topology::Hex =&gt; {
                 <span class="kw">let </span>tile_size = settings.ui_hud.minimap_scale.max(<span class="number">2</span>) <span class="kw">as </span>i32;

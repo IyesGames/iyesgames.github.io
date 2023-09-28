@@ -143,6 +143,19 @@
 <a href="#143" id="143">143</a>
 <a href="#144" id="144">144</a>
 <a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>mw_app::map::NeedsMapSet;
 <span class="kw">use </span>mw_common::{game::TileKind, grid::<span class="kw-2">*</span>};
 
@@ -181,6 +194,19 @@
 
 <span class="attr">#[derive(Resource)]
 </span><span class="kw">pub struct </span>TilemapInitted;
+
+<span class="attr">#[derive(Component)]
+</span><span class="kw">struct </span>CursorSprite;
+<span class="attr">#[derive(Component)]
+</span><span class="kw">struct </span>BaseSprite;
+<span class="attr">#[derive(Component)]
+</span><span class="kw">struct </span>DigitSprite;
+<span class="attr">#[derive(Component)]
+</span><span class="kw">struct </span>GentSprite;
+<span class="attr">#[derive(Component)]
+</span><span class="kw">struct </span>ExplosionSprite {
+    timer: Timer,
+}
 
 <span class="kw">fn </span>rc_gfx2d_any(
     settings: <span class="prelude-ty">Option</span>&lt;Res&lt;AllSettings&gt;&gt;,
