@@ -1475,31 +1475,36 @@ bit sequences are matched first.</p>
 </div>
 <p>The next byte:</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
-<tr><td><code>xxxx----</code></td><td>PlayerId</td></tr>
-<tr><td><code>----xxxx</code></td><td>Status</td></tr>
+<tr><td><code>----xxxx</code></td><td>PlayerId</td></tr>
+<tr><td><code>xxxx----</code></td><td>PlayerSubId</td></tr>
 </tbody></table>
 </div>
-<p>PlayerId must not be zero.</p>
-<p>The Status frield specifies what happened:</p>
-<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
-<tr><td><code>0000</code></td><td>Joined</td></tr>
-<tr><td><code>0001</code></td><td>(reserved)</td></tr>
-<tr><td><code>0010</code></td><td>Stunned/Killed</td></tr>
-<tr><td><code>0011</code></td><td>Un-Stunned</td></tr>
-<tr><td><code>0100</code></td><td>Blinded</td></tr>
-<tr><td><code>0101</code></td><td>Un-Blinded</td></tr>
-<tr><td><code>0110</code></td><td>Protected</td></tr>
-<tr><td><code>0111</code></td><td>Un-Protected</td></tr>
-<tr><td><code>1000</code></td><td>Eliminated</td></tr>
-<tr><td><code>1001</code></td><td>Surrendered</td></tr>
-<tr><td><code>1010</code></td><td>Disconnected</td></tr>
-<tr><td><code>1011</code></td><td>Kicked</td></tr>
-<tr><td><code>1100</code></td><td>(reserved)</td></tr>
-<tr><td><code>1101</code></td><td>(reserved)</td></tr>
-<tr><td><code>1110</code></td><td>Friendly-Chat</td></tr>
-<tr><td><code>1111</code></td><td>All-Chat</td></tr>
+<p>PlayerId is the gameplay plid (view) that is affected.</p>
+<p>PlayerSubId is the individual user/client, in game modes where multiple people
+can control a single in-game plid.</p>
+<p>Some message kinds ignore PlayerSubId. See the &quot;Granularity&quot; column in the table below.</p>
+<p>The next byte specifies the message kind (what happened):</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th><th>Granularity</th></tr></thead><tbody>
+<tr><td><code>00000000</code></td><td>Joined</td><td>PlayerSubId</td></tr>
+<tr><td><code>00000001</code></td><td>Ping/RTT Info</td><td>PlayerSubId</td></tr>
+<tr><td><code>00000010</code></td><td>Stunned/Killed</td><td>PlayerId</td></tr>
+<tr><td><code>00000011</code></td><td>Un-Stunned</td><td>PlayerId</td></tr>
+<tr><td><code>00000100</code></td><td>Blinded</td><td>PlayerId</td></tr>
+<tr><td><code>00000101</code></td><td>Un-Blinded</td><td>PlayerId</td></tr>
+<tr><td><code>00000110</code></td><td>Protected</td><td>PlayerId</td></tr>
+<tr><td><code>00000111</code></td><td>Un-Protected</td><td>PlayerId</td></tr>
+<tr><td><code>00001000</code></td><td>Eliminated</td><td>PlayerId</td></tr>
+<tr><td><code>00001001</code></td><td>Surrendered</td><td>PlayerId</td></tr>
+<tr><td><code>00001010</code></td><td>Disconnected</td><td>PlayerSubId</td></tr>
+<tr><td><code>00001011</code></td><td>Kicked</td><td>PlayerSubId</td></tr>
+<tr><td><code>00001100</code></td><td>Initiate Vote</td><td>PlayerSubId</td></tr>
+<tr><td><code>00001101</code></td><td>Vote</td><td>PlayerSubId</td></tr>
+<tr><td><code>00001110</code></td><td>Friendly-Chat</td><td>PlayerSubId</td></tr>
+<tr><td><code>00001111</code></td><td>All-Chat</td><td>PlayerSubId</td></tr>
+<tr><td>...</td><td>(reserved)</td><td></td></tr>
 </tbody></table>
 </div>
+<p>Then follows the data payload for the given message kind.</p>
 <h4 id="tremor"><a class="header" href="#tremor">Tremor</a></h4>
 <p>Some explosion occurred at an unknown location. Client should shake the screen lightly.</p>
 <p>Assembly:</p>
