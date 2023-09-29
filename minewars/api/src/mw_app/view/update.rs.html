@@ -66,6 +66,7 @@
 <a href="#66" id="66">66</a>
 <a href="#67" id="67">67</a>
 <a href="#68" id="68">68</a>
+<a href="#69" id="69">69</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>mw_common::game::event::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_common::grid::<span class="kw-2">*</span>;
 
@@ -115,10 +116,11 @@
                     tile.set_item(<span class="kw-2">*</span>kind);
                 },
                 MapEv::Flag { plid } =&gt; {
-                    <span class="comment">// we currently dont store flags in view
-                    // TODO: should we?
-                </span>},
+                    tile.set_flag(u8::from(<span class="kw-2">*</span>plid));
+                },
                 MapEv::Explode =&gt; {
+                    <span class="comment">// clear any item from the tile
+                    </span>tile.set_item(ItemKind::Safe);
                     <span class="comment">// explosions should be managed with entity visibility
                 </span>},
                 MapEv::Smoke { state } =&gt; {

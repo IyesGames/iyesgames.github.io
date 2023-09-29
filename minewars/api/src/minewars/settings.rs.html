@@ -327,6 +327,24 @@
 <a href="#327" id="327">327</a>
 <a href="#328" id="328">328</a>
 <a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>mw_game_minesweeper::MinesweeperSettings;
 
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
@@ -360,6 +378,7 @@
     <span class="kw">pub </span>net: NetSettings,
     <span class="kw">pub </span>mapgen: MapGenSettings,
     <span class="kw">pub </span>game_minesweeper: MinesweeperSettings,
+    <span class="kw">pub </span>input: InputSettings,
 }
 
 <span class="attr">#[derive(Resource, Debug, Default, Clone, PartialEq, Eq)]
@@ -375,6 +394,12 @@
 </span><span class="kw">pub struct </span>NetSettings {
     <span class="kw">pub </span>last_host_addr: SocketAddr,
     <span class="kw">pub </span>last_host_sessionid: u32,
+}
+
+<span class="attr">#[derive(Serialize, Deserialize, Clone)]
+#[serde(default)]
+</span><span class="kw">pub struct </span>InputSettings {
+    <span class="kw">pub </span>millis_click: u16,
 }
 
 <span class="attr">#[derive(Serialize, Deserialize, Clone)]
@@ -421,7 +446,9 @@
 ///
 /// Indexed by player ID (0 = neutral)
 </span><span class="attr">#[derive(Serialize, Deserialize, Clone)]
+#[serde(default)]
 </span><span class="kw">pub struct </span>PlayerPaletteSettings {
+    <span class="kw">pub </span>flag_style: u8,
     <span class="kw">pub </span>visible: [Lcha; <span class="number">8</span>],
     <span class="kw">pub </span>fog: Lcha,
     <span class="kw">pub </span>pending: [Lcha; <span class="number">8</span>],
@@ -429,6 +456,7 @@
 
 <span class="doccomment">/// Parameters for local map generation
 </span><span class="attr">#[derive(Serialize, Deserialize, Clone)]
+#[serde(default)]
 </span><span class="kw">pub struct </span>MapGenSettings {
     <span class="kw">pub </span>size: u8,
     <span class="kw">pub </span>topology: mw_common::grid::Topology,
@@ -451,6 +479,13 @@
     }
 }
 
+<span class="kw">impl </span>Default <span class="kw">for </span>InputSettings {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        InputSettings {
+            millis_click: <span class="number">250</span>,
+        }
+    }
+}
 
 <span class="kw">impl </span>Default <span class="kw">for </span>CameraSettings {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
@@ -522,6 +557,7 @@
 <span class="kw">impl </span>Default <span class="kw">for </span>PlayerPaletteSettings {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         PlayerPaletteSettings {
+            flag_style: <span class="number">0</span>,
             visible: [
                 Lcha(<span class="number">0.75</span>, <span class="number">0.0</span>, <span class="number">0.0</span>),
                 Lcha(<span class="number">0.75</span>, <span class="number">0.5</span>, <span class="number">0.0</span>),

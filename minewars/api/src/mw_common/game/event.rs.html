@@ -126,6 +126,9 @@
 <a href="#126" id="126">126</a>
 <a href="#127" id="127">127</a>
 <a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use crate</span>::{plid::PlayerId, grid::Pos, game::{ItemKind, StructureKind, TileKind}};
 
@@ -187,6 +190,9 @@
     FlashFinished,
     LivesRemain {
         lives: u8,
+    },
+    MatchTimeRemain {
+        secs: u16,
     },
     FriendlyChat(String),
     AllChat(String),

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["MinesweeperInputAction"],"struct":["GameMinesweeper","MinesweeperSettings"]};
+window.SIDEBAR_ITEMS = {"enum":["MinesweeperInputAction","MinesweeperSchedEvent"],"struct":["GameMinesweeper","MinesweeperSettings","PlayerData"]};
