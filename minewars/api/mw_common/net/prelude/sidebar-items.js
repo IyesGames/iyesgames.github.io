@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["RxBroadcast","RxMpsc","RxMpscU","RxOneshot","TxBroadcast","TxMpsc","TxMpscU","TxOneshot"]};
