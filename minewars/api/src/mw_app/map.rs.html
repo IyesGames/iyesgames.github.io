@@ -281,6 +281,7 @@
 <a href="#281" id="281">281</a>
 <a href="#282" id="282">282</a>
 <a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! ECS representation of MineWars map state
 //!
 //! These are the entities that represent the map tiles of the view that
@@ -489,7 +490,7 @@
 </span><span class="kw">pub fn </span>setup_map&lt;C: Coord, D&gt;(
     world: <span class="kw-2">&amp;mut </span>World,
     mapdata: <span class="kw-2">&amp;</span>MapData&lt;C, D&gt;,
-    cits: <span class="kw-2">&amp;</span>[Pos],
+    cits: <span class="kw-2">&amp;</span>[C],
     f_tilekind: <span class="kw">impl </span>Fn(<span class="kw-2">&amp;</span>D) -&gt; TileKind,
     f_regid: <span class="kw">impl </span>Fn(<span class="kw-2">&amp;</span>D) -&gt; u8,
 ) {
@@ -539,6 +540,7 @@
     }
 
     <span class="kw">for </span>(i, cit_pos) <span class="kw">in </span>cits.iter().enumerate() {
+        <span class="kw">let </span>cit_pos = (<span class="kw-2">*</span>cit_pos).into();
         <span class="kw">let </span>e_cit = world.spawn(
             CitBundle {
                 regid: CitRegion(i <span class="kw">as </span>u8),
@@ -551,8 +553,8 @@
             },
         ).id();
         cit_index.by_id.push(e_cit);
-        cit_index.by_pos.insert(<span class="kw-2">*</span>cit_pos, e_cit);
-        world.entity_mut(tile_index.<span class="number">0</span>[(<span class="kw-2">*</span>cit_pos).into()])
+        cit_index.by_pos.insert(cit_pos, e_cit);
+        world.entity_mut(tile_index.<span class="number">0</span>[(cit_pos).into()])
             .insert(TileGent::Cit(i <span class="kw">as </span>u8));
     }
 
