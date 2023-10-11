@@ -111,10 +111,6 @@
 <a href="#111" id="111">111</a>
 <a href="#112" id="112">112</a>
 <a href="#113" id="113">113</a>
-<a href="#114" id="114">114</a>
-<a href="#115" id="115">115</a>
-<a href="#116" id="116">116</a>
-<a href="#117" id="117">117</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/// Convenience, to be imported in every file in the crate
 </span><span class="kw">mod </span>prelude {
     <span class="kw">pub use </span>bevy::prelude::<span class="kw-2">*</span>;
@@ -127,11 +123,7 @@
     <span class="kw">pub use </span>iyes_ui::prelude::<span class="kw-2">*</span>;
     <span class="kw">pub use </span>mw_common::prelude::<span class="kw-2">*</span>;
     <span class="kw">pub use </span>mw_app::prelude::<span class="kw-2">*</span>;
-    <span class="kw">pub use </span><span class="kw">crate</span>::settings::AllSettings;
-    <span class="kw">pub use </span><span class="kw">crate</span>::PROPRIETARY;
 }
-
-<span class="kw">pub const </span>PROPRIETARY: bool = <span class="macro">cfg!</span>(feature = <span class="string">&quot;proprietary&quot;</span>);
 
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 

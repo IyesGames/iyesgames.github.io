@@ -270,7 +270,7 @@
 
 <span class="doccomment">/// Bitmask to mux player IDs: can support a game with up to 15 players
 </span><span class="attr">#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
-</span><span class="kw">pub struct </span>Plids(u16);
+</span><span class="kw">pub struct </span>Plids(<span class="kw">pub </span>u16);
 
 <span class="kw">impl </span>Plids {
     <span class="kw">const </span>MAX_PLID: u8 = <span class="number">15</span>;

@@ -176,10 +176,12 @@
 <a href="#176" id="176">176</a>
 <a href="#177" id="177">177</a>
 <a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>mw_common::net::{load_client_crypto, setup_quic_client};
 
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::settings::NetWorkerConfig;
+
+<span class="kw">use </span>mw_app::settings::NetWorkerConfig;
 
 <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
@@ -299,7 +301,7 @@
                         <span class="kw">match </span>connect_host(<span class="kw-2">&amp;</span>state.endpoint, <span class="kw-2">&amp;</span>config).<span class="kw">await </span>{
                             <span class="prelude-val">Ok</span>(session) =&gt; {
                                 channels.tx_status.send(NetWorkerStatus::HostConnected).ok();
-                                <span class="macro">info!</span>(<span class="string">&quot;Connected to Host Server!&quot;</span>).ok();
+                                <span class="macro">info!</span>(<span class="string">&quot;Connected to Host Server!&quot;</span>);
                                 host_session(<span class="kw-2">&amp;mut </span>state, channels.clone(), session).<span class="kw">await</span>;
                             }
                             <span class="prelude-val">Err</span>(e) =&gt; {
@@ -325,7 +327,7 @@
                 <span class="kw">match </span>e {
                     quinn::ConnectionError::ApplicationClosed(<span class="kw">_</span>) =&gt; {}
                     <span class="kw">_ </span>=&gt; {
-                        channels.tx_status.send(NetWorkerStatus::NetError(e.into()));
+                        channels.tx_status.send(NetWorkerStatus::NetError(e.into())).ok();
                     }
                 }
                 <span class="kw">break</span>;

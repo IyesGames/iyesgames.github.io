@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["appstate","bevyhost","map","player","prelude","view"],"struct":["GameEventSet","MwCommonPlugin"]};
+window.SIDEBAR_ITEMS = {"constant":["PROPRIETARY"],"mod":["appstate","bevyhost","map","player","prelude","settings","view"],"struct":["GameEventSet","MwCommonPlugin"]};

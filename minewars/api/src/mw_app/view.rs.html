@@ -344,6 +344,14 @@
 <a href="#344" id="344">344</a>
 <a href="#345" id="345">345</a>
 <a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Per-Plid cache of game state
 //!
 //! A &quot;view&quot; is a compact representation of the game state of the entire map,
@@ -478,6 +486,14 @@
 <span class="doccomment">/// Marker for entities that should be shown in a specific view and hidden in other views.
 </span><span class="attr">#[derive(Component)]
 </span><span class="kw">pub struct </span>VisibleInView(<span class="kw">pub </span>PlayerId);
+
+<span class="kw">impl </span>ViewTileData {
+    <span class="kw">pub fn </span>from_kind(kind: TileKind) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>t = <span class="self">Self</span>::default();
+        t.set_kind(kind);
+        t
+    }
+}
 
 <span class="kw">fn </span>switch_view_despawn(
     <span class="kw-2">mut </span>commands: Commands,

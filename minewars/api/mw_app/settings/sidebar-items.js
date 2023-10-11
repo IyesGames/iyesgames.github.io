@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["MapGenStyle","MwRenderer"],"struct":["AllSettings","CameraSettings","GameplaySettings","InputSettings","Lcha","MapGenSettings","MinewarsGameSettings","NeedsSettingsSet","NetSettings","NetWorkerConfig","PlayerPaletteSettings","SettingsPlugin","UiHudSettings","UiSettings"]};

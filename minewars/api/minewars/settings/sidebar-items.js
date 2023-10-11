@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["MapGenStyle","MwRenderer"],"fn":["do_write_settings","load_or_init_settings","loadscreen_wait_settings","write_settings"],"struct":["AllSettings","CameraSettings","GameplaySettings","InputSettings","Lcha","MapGenSettings","NeedsSettingsSet","NetSettings","NetWorkerConfig","PlayerPaletteSettings","SettingsLoaded","SettingsPlugin","UiHudSettings","UiSettings"]};
+window.SIDEBAR_ITEMS = {"fn":["do_write_settings","load_or_init_settings","loadscreen_wait_settings","write_settings"],"struct":["SettingsLoaded","SettingsPlugin"]};
