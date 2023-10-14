@@ -332,25 +332,6 @@
 <a href="#332" id="332">332</a>
 <a href="#333" id="333">333</a>
 <a href="#334" id="334">334</a>
-<a href="#335" id="335">335</a>
-<a href="#336" id="336">336</a>
-<a href="#337" id="337">337</a>
-<a href="#338" id="338">338</a>
-<a href="#339" id="339">339</a>
-<a href="#340" id="340">340</a>
-<a href="#341" id="341">341</a>
-<a href="#342" id="342">342</a>
-<a href="#343" id="343">343</a>
-<a href="#344" id="344">344</a>
-<a href="#345" id="345">345</a>
-<a href="#346" id="346">346</a>
-<a href="#347" id="347">347</a>
-<a href="#348" id="348">348</a>
-<a href="#349" id="349">349</a>
-<a href="#350" id="350">350</a>
-<a href="#351" id="351">351</a>
-<a href="#352" id="352">352</a>
-<a href="#353" id="353">353</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Per-Plid cache of game state
 //!
 //! A &quot;view&quot; is a compact representation of the game state of the entire map,
@@ -413,7 +394,6 @@
             (
                 switch_view_update_map_tilekind::&lt;Hex&gt;.in_set(MapUpdateSet::TileKind),
                 switch_view_update_map_owners::&lt;Hex&gt;.in_set(MapUpdateSet::TileOwner),
-                switch_view_update_map_flags::&lt;Hex&gt;.in_set(MapUpdateSet::TileFlag),
                 switch_view_update_map_digits::&lt;Hex&gt;.in_set(MapUpdateSet::TileDigit),
                 switch_view_update_map_gents::&lt;Hex&gt;.in_set(MapUpdateSet::TileGent),
                 switch_view_update_map_roads::&lt;Hex&gt;.in_set(MapUpdateSet::TileRoads),
@@ -421,7 +401,6 @@
             (
                 switch_view_update_map_tilekind::&lt;Sq&gt;.in_set(MapUpdateSet::TileKind),
                 switch_view_update_map_owners::&lt;Sq&gt;.in_set(MapUpdateSet::TileOwner),
-                switch_view_update_map_flags::&lt;Sq&gt;.in_set(MapUpdateSet::TileFlag),
                 switch_view_update_map_digits::&lt;Sq&gt;.in_set(MapUpdateSet::TileDigit),
                 switch_view_update_map_gents::&lt;Sq&gt;.in_set(MapUpdateSet::TileGent),
                 switch_view_update_map_roads::&lt;Sq&gt;.in_set(MapUpdateSet::TileRoads),
@@ -574,24 +553,6 @@
     }
 }
 
-<span class="kw">fn </span>switch_view_update_map_flags&lt;C: Coord&gt;(
-    viewing: Res&lt;PlidViewing&gt;,
-    players: Res&lt;PlayersIndex&gt;,
-    q_view: Query&lt;<span class="kw-2">&amp;</span>ViewMapData&lt;C&gt;&gt;,
-    <span class="kw-2">mut </span>q_maptile: Query&lt;(<span class="kw-2">&amp;</span>MwTilePos, <span class="kw-2">&amp;mut </span>TileFlag)&gt;,
-) {
-    <span class="kw">let </span>e_view = players.<span class="number">0</span>[viewing.<span class="number">0</span>.i()];
-    <span class="kw">let </span><span class="prelude-val">Ok</span>(viewdata) = q_view.get(e_view) <span class="kw">else </span>{
-        <span class="macro">error!</span>(<span class="string">&quot;View for {:?} does not exist!&quot;</span>, viewing.<span class="number">0</span>);
-        <span class="kw">return</span>;
-    };
-    <span class="kw">for </span>(pos, <span class="kw-2">mut </span>flag) <span class="kw">in </span>q_maptile.iter_mut() {
-        <span class="kw">let </span>c: C = pos.<span class="number">0</span>.into();
-        <span class="kw">let </span>tiledata = <span class="kw-2">&amp;</span>viewdata.<span class="number">0</span>[c];
-        flag.<span class="number">0 </span>= tiledata.flag().into();
-    }
-}
-
 <span class="kw">fn </span>switch_view_update_map_gents&lt;C: Coord&gt;(
     viewing: Res&lt;PlidViewing&gt;,
     players: Res&lt;PlayersIndex&gt;,
@@ -610,15 +571,16 @@
         </span><span class="kw">if let </span>TileGent::Cit(<span class="kw">_</span>) = <span class="kw-2">*</span>gent {
             <span class="kw">continue</span>;
         }
+        <span class="kw">let </span>item = tiledata.item();
+        <span class="kw">let </span>flag = PlayerId::from(tiledata.flag());
         <span class="kw-2">*</span>gent = <span class="kw">if </span>tiledata.has_structure() {
             TileGent::Structure(tiledata.structure())
+        } <span class="kw">else if </span>flag != PlayerId::Neutral {
+            TileGent::Flag(flag)
+        } <span class="kw">else if </span>item != ItemKind::Safe {
+            TileGent::Item(item)
         } <span class="kw">else </span>{
-            <span class="kw">let </span>item = tiledata.item();
-            <span class="kw">if </span>item != ItemKind::Safe {
-                TileGent::Item(item)
-            } <span class="kw">else </span>{
-                TileGent::Empty
-            }
+            TileGent::Empty
         };
     }
 }

@@ -210,11 +210,15 @@
 <a href="#210" id="210">210</a>
 <a href="#211" id="211">211</a>
 <a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! The Bevy Host
 //!
 //! Allows offline gameplay without a server.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::GameEventSet;
+<span class="kw">use </span><span class="kw">crate</span>::player::PlayersIndex;
 <span class="kw">use </span><span class="kw">crate</span>::player::PlidPlayingAs;
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
@@ -397,14 +401,16 @@
 
 <span class="kw">fn </span>drain_out_events&lt;G, EvOut&gt;(
     <span class="kw-2">mut </span>host: ResMut&lt;BevyHost&lt;G&gt;&gt;,
+    players: <span class="prelude-ty">Option</span>&lt;Res&lt;PlayersIndex&gt;&gt;,
     <span class="kw-2">mut </span>evw: EventWriter&lt;EvOut&gt;,
 )
 <span class="kw">where
     </span>G: Game + Send + Sync + <span class="lifetime">&#39;static</span>,
     EvOut: From&lt;(PlayerId, G::OutEvent)&gt; + Event,
 {
+    <span class="kw">let </span>n_plids = players.map(|p| p.<span class="number">0</span>.len() <span class="kw">as </span>u8 - <span class="number">1</span>);
     <span class="kw">for </span>(plids, ev) <span class="kw">in </span>host.state.events.drain(..) {
-        <span class="kw">for </span>plid <span class="kw">in </span>plids.iter(<span class="prelude-val">None</span>) {
+        <span class="kw">for </span>plid <span class="kw">in </span>plids.iter(n_plids) {
             evw.send((plid, ev.clone()).into());
         }
     }

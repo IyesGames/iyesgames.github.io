@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["Gfx2dTilemapPlugin"]};
+window.SIDEBAR_ITEMS = {"fn":["digit_tilemap_mgr","gent_tilemap_mgr","overlay_tilemap_mgr","prealloc_tilemap","setup_tilemap","tile_kind","tile_owner"],"struct":["BaseTilemap","DigitTilemap","GentTilemap","Gfx2dTilemapPlugin","OverlayTilemap","RegHighlightTilemap","RoadTilemap","TileDigitEntity","TileGentEntity","Tilemaps"]};
