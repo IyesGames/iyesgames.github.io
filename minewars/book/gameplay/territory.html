@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../foss.html"><strong aria-hidden="true">2.</strong> Open-Source Builds</a></li><li class="chapter-item expanded "><a href="../game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="../gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gameplay/map.html"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="../gameplay/territory.html" class="active"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="../gameplay/economy.html"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="../gameplay/pvp.html"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="../gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="../gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="../gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="../ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="../gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li></ol></li><li class="chapter-item expanded "><a href="../mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li><li class="chapter-item expanded "><a href="../achievements.html"><strong aria-hidden="true">4.3.</strong> Achievement Ideas</a></li></ol></li><li class="chapter-item expanded "><a href="../tech.html"><strong aria-hidden="true">5.</strong> Technical Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech/dataformat-player.html"><strong aria-hidden="true">5.1.</strong> Player Stream Format</a></li><li class="chapter-item expanded "><a href="../tech/dataformat-spectator.html"><strong aria-hidden="true">5.2.</strong> Spectator/Replay Stream Format</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../foss.html"><strong aria-hidden="true">2.</strong> Open-Source Builds</a></li><li class="chapter-item expanded "><a href="../game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="../gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gameplay/map.html"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="../gameplay/territory.html" class="active"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="../gameplay/economy.html"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="../gameplay/pvp.html"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="../gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="../gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="../gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="../ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="../gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li></ol></li><li class="chapter-item expanded "><a href="../mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li><li class="chapter-item expanded "><a href="../achievements.html"><strong aria-hidden="true">4.3.</strong> Achievement Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/philosophy.html"><strong aria-hidden="true">4.4.</strong> Notes / Philosophy</a></li></ol></li><li class="chapter-item expanded "><a href="../tech.html"><strong aria-hidden="true">5.</strong> Technical Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech/dataformat-player.html"><strong aria-hidden="true">5.1.</strong> Player Stream Format</a></li><li class="chapter-item expanded "><a href="../tech/dataformat-spectator.html"><strong aria-hidden="true">5.2.</strong> Spectator/Replay Stream Format</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -179,33 +179,22 @@ progress through the game.</p>
 player can see <strong>3</strong> tiles away from tiles they own.</p>
 <p>The entire map's geography is shown to all players at all times, there are no
 areas that are completely &quot;black&quot;. Fog of war simply means that the player does
-not get updates on the status of the tile / any gameplay that happens there.</p>
-<p>Any changes to the tile kind behind fog of war are not revealed, so a player's
-view of the map geography can be outdated.</p>
-<p>Previous ownership is not shown behind fog of war. Tiles should have a neutral
-color.</p>
+not know the ownership (which player controls the tile).</p>
 <p>Mountain tiles are always treated as a cluster. If you can see one tile of
 the cluster, you see them all.</p>
-<p>There are technically 3 levels of visibility, showing increasing amounts of info:</p>
-<ul>
-<li>Fog: any tile further than the visibility radius away from a player-owned tile</li>
-<li>Limited: any tile not owned by the player, within the visibility radius</li>
-<li>Full: tiles owned by the player, tiles within the range of a <strong>Watch Tower</strong>, tiles where a <strong>City</strong> is located</li>
-</ul>
-<p>Within &quot;Fog Visibility&quot; tiles, the player sees:</p>
-<ul>
-<li>Last known tile kind / geography (may be outdated)</li>
-<li>Skulls</li>
-</ul>
-<p>Within &quot;Limited Visibility&quot; tiles, the player also sees:</p>
+<p>Within fog-of-war tiles, the player sees:</p>
 <ul>
 <li>Current tile kind (if changed due to harvesting, explosions, etc.)</li>
-<li>The ownership of the tile (displayed using the owner's color)</li>
-<li>Completed Structures</li>
-<li>Smokes</li>
+<li>Completed Structures (incl Roads)</li>
 <li>Explosions</li>
+<li>Skulls</li>
 </ul>
-<p>Within &quot;Full Visibility&quot; tiles, the player also sees:</p>
+<p>Within visible tiles, the player also sees:</p>
+<ul>
+<li>The ownership of the tile (displayed using the owner's color)</li>
+<li>Smokes</li>
+</ul>
+<p>On a player's own territory, the player also sees:</p>
 <ul>
 <li>Items</li>
 <li>Pending Structures</li>
@@ -222,8 +211,8 @@ with, if the player owns the city.</p>
 <p>On owned <strong>Land</strong>, the player gets:</p>
 <ul>
 <li>the ability to deploy <strong>Items</strong> on the tile</li>
-<li>the ability to perform <strong>offensive actions</strong> on adjacent unowned tiles</li>
-<li>the ability to <strong>build structures</strong>, if the player owns the region's city</li>
+<li>the ability to perform various <strong>actions</strong> on the tile and on adjacent unowned tiles</li>
+<li>the ability to <strong>build structures</strong></li>
 <li>the ability to <strong>Harvest</strong> the tile, if the player owns the region's city</li>
 <li>visibility of surrounding tiles</li>
 <li>a digit (like Minesweeper) indicating how many (if any) items exist on adjacent unowned tiles</li>
@@ -244,14 +233,19 @@ a risk to the player.</p>
 <p>If the tile contains any <strong>Items</strong>, their respective effects will be triggered
 when the player attempts to capture the tile (see their respective docs for more detail):</p>
 <ul>
-<li><strong>Mines</strong> will <strong>explode</strong>, causing the player to be <strong>stunned</strong></li>
+<li><strong>Mines</strong> will <strong>explode</strong>, giving the player a Death timeout</li>
 <li><strong>Decoys</strong> will <strong>break</strong> / do nothing, and the tile will be captured as if it was empty</li>
-<li><strong>Flashbang Traps</strong> will &quot;blind&quot; the player</li>
+<li><strong>Smoke Traps</strong> will &quot;blind&quot; the player</li>
 </ul>
 <p>Player strategy: if they think the tile is empty or a decoy, they should capture
 it, breaking any decoy. If they think the tile contains a dangerous item, they
 can either <strong>Strike the tile</strong> to destroy it, or try to safely surround and
 <strong>capture the item</strong>.</p>
+<h4 id="autoexpand"><a class="header" href="#autoexpand">Autoexpand</a></h4>
+<p>When land is known safe, the server should auto-claim it for you. The game should
+be designed to reduce any tedious clicking around. This should be recursive and
+happen instantly.</p>
+<p>It can account for player flags, to mark tiles to avoid.</p>
 <h3 id="clusters"><a class="header" href="#clusters">Clusters</a></h3>
 <p><strong>Mountains</strong> and <strong>Forests</strong> are always owned as a cluster. If there are multiple
 adjacent tiles of one of these types, the player cannot own them individually;
@@ -281,7 +275,8 @@ carefully and taking the time to treat foreign items as a puzzle to be solved,
 rather than simply striking the tiles to destroy the items. Striking is quick and
 easy, but costs money, and destroys the land's resources. Capturing the items
 is time-consuming and requires mental effort to solve the minesweeper digits
-puzzle, but rewards the player with money and keeps the land intact.</p>
+puzzle, but rewards the player with money and keeps the land intact. If the digits
+are ambiguous, you can use Reveal, or Strike.</p>
 <h3 id="cities"><a class="header" href="#cities">Cities</a></h3>
 <p>To capture a city, the player must surround the city, by capturing every land
 tile adjacent to the city's tile. The player must then hold all adjacent tiles
@@ -292,7 +287,7 @@ for a duration of <strong>5.0 sec</strong>.</p>
 <h3 id="structures"><a class="header" href="#structures">Structures</a></h3>
 <h4 id="roads"><a class="header" href="#roads">Roads</a></h4>
 <p>Road tiles are treated as land tiles for the purpose of capturing.</p>
-<p>However, note that cities only count as connected, if there is a path
+<p>However, note that cities only count as connected if there is a path
 that is fully owned by the player. Upon losing even a single tile,
 the connection is broken.</p>
 <h4 id="barricades"><a class="header" href="#barricades">Barricades</a></h4>

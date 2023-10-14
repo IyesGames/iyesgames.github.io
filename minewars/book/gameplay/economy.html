@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../foss.html"><strong aria-hidden="true">2.</strong> Open-Source Builds</a></li><li class="chapter-item expanded "><a href="../game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="../gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gameplay/map.html"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="../gameplay/territory.html"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="../gameplay/economy.html" class="active"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="../gameplay/pvp.html"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="../gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="../gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="../gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="../ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="../gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li></ol></li><li class="chapter-item expanded "><a href="../mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li><li class="chapter-item expanded "><a href="../achievements.html"><strong aria-hidden="true">4.3.</strong> Achievement Ideas</a></li></ol></li><li class="chapter-item expanded "><a href="../tech.html"><strong aria-hidden="true">5.</strong> Technical Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech/dataformat-player.html"><strong aria-hidden="true">5.1.</strong> Player Stream Format</a></li><li class="chapter-item expanded "><a href="../tech/dataformat-spectator.html"><strong aria-hidden="true">5.2.</strong> Spectator/Replay Stream Format</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../foss.html"><strong aria-hidden="true">2.</strong> Open-Source Builds</a></li><li class="chapter-item expanded "><a href="../game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="../gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gameplay/map.html"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="../gameplay/territory.html"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="../gameplay/economy.html" class="active"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="../gameplay/pvp.html"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="../gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="../gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="../gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="../ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="../gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li></ol></li><li class="chapter-item expanded "><a href="../mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li><li class="chapter-item expanded "><a href="../achievements.html"><strong aria-hidden="true">4.3.</strong> Achievement Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/philosophy.html"><strong aria-hidden="true">4.4.</strong> Notes / Philosophy</a></li></ol></li><li class="chapter-item expanded "><a href="../tech.html"><strong aria-hidden="true">5.</strong> Technical Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech/dataformat-player.html"><strong aria-hidden="true">5.1.</strong> Player Stream Format</a></li><li class="chapter-item expanded "><a href="../tech/dataformat-spectator.html"><strong aria-hidden="true">5.2.</strong> Spectator/Replay Stream Format</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -180,26 +180,23 @@ the player, which can be spent to perform gameplay actions.</p>
 <ul>
 <li>Build structures</li>
 <li>Deploy items</li>
-<li>Perform offensive actions</li>
+<li>Perform actions</li>
 </ul>
 <p>The actions are funded by the city of the region of the tile where the action
 takes place.</p>
 <p>In foreign regions (where the player does not own the local city), actions
-are funded by the nearest city by distance and have their cost multiplied by <strong>1.25</strong>.</p>
+are funded by the nearest city by distance.</p>
 <p>If a city has <em>active road connections</em> to other cities, then they will fund the
 actions collectively. The cost of the actions is split between all connected
 neighboring cities, proportionally to the total amount of money each city has in
 its bank. The local city's contribution is weighted double.</p>
-<p>If a city is captured by another player, <strong>75%</strong> of the city's money will be
-distributed between your remaining cities. <strong>25%</strong> of the money will stay in the
-city and be usable by the new owner.</p>
+<p>If a city is captured by another player, <strong>50%</strong> of the money will stay in the
+city and be usable by the new owner, and the remainder will be lost.</p>
 <h3 id="income"><a class="header" href="#income">Income</a></h3>
 <p>Each city constantly generates/accumulates money. The rate of income is determined
 by the total <strong>resources</strong> owned by the city; that is, the sum of the resources
-of each owned tile within the city's region.</p>
-<p>If a structure is currently being built, the city does not generate income until
-it is completed. Instead, the resources are counted towards the rate of
-construction progress on the structure.</p>
+of each owned tile within the city's region. It can be reduced due to ongoing
+construction. It can be affected by <strong>Policy</strong>.</p>
 <p>Neutral cities (not owned by any player) do not generate any income.</p>
 <h3 id="resources"><a class="header" href="#resources">Resources</a></h3>
 <p>Each tile provides a certain number of resource points, counted towards the
@@ -210,19 +207,26 @@ city and the tile.</p>
 <li><strong>Regular Land</strong>: <strong>1</strong> Res/sec</li>
 <li><strong>Fertile Land</strong>: <strong>2</strong> Res/sec</li>
 <li><strong>Destroyed Land</strong> and <strong>Foundation</strong>: <strong>0</strong> Res/sec</li>
-<li><strong>Forest</strong>: <strong>3</strong> Res/sec</li>
-<li><strong>Mountain</strong>: <strong>5</strong> Res/sec</li>
+<li><strong>Forest</strong>: <strong>5</strong> Res/sec</li>
+<li><strong>Mountain</strong>: <strong>7</strong> Res/sec</li>
 </ul>
-<p>Further, each city has <strong>50</strong> Base Res: the minimum amount of resources inherent
+<p>Further, each city has <strong>25</strong> Base Res: the minimum amount of resources inherent
 to the city, regardless of any owned tiles in the region.</p>
+<h3 id="policy"><a class="header" href="#policy">Policy</a></h3>
+<p>Players may tune a few different parameters that affect the resources of a city
+and their usage:</p>
+<ul>
+<li>Construction Rate: What % of resources goes towards any in-progress structures,
+instead of generating Income.</li>
+<li>Export Rate: How much do we help (% of max) connected cities with their spending.</li>
+<li>Import Rate: How much help (% of max) do we accept from connected cities.</li>
+</ul>
 <h3 id="harvesting-tiles"><a class="header" href="#harvesting-tiles">Harvesting Tiles</a></h3>
 <p>Players may *<em>harvest</em> tiles (one tile at a time) to instantly claim a large sum
 of resources. They are awarded to the city of the region the tile belongs to.</p>
 <p>This is a one-time action. After harvesting, the tile is converted to
 <strong>Foundation</strong> and produces no more resources for the remainder of the game.</p>
 <p>The player must own both the tile and the city whose region it belongs to.</p>
-<p>The change in tile kind is not visible to other players behind fog of war. When
-players gain visibility of the tile, that is when they will get the update.</p>
 <p>This mechanic exists to give players more options for survival in tense
 situations. They can accelerate their current production one-time, at the cost
 of foregoing all the potential resources they could have accumulated from the
@@ -230,11 +234,19 @@ tile over time and also potentially worsening the natural protection they get
 from the map's geography.</p>
 <p>Harvest bounties (resource given when harvesting a tile):</p>
 <ul>
+<li><strong>Destroyed Land</strong> and <strong>Foundation</strong>: not harvestable (<strong>0</strong> Res)</li>
 <li><strong>Regular Land</strong>: <strong>100</strong> Res</li>
 <li><strong>Fertile Land</strong>: <strong>250</strong> Res</li>
-<li><strong>Destroyed Land</strong> and <strong>Foundation</strong>: not harvestable (<strong>0</strong> Res)</li>
 <li><strong>Forest</strong>: <strong>420</strong> Res</li>
 <li><strong>Mountain</strong>: <strong>600</strong> Res</li>
+</ul>
+<p>Harvest delay:</p>
+<ul>
+<li><strong>Destroyed Land</strong> and <strong>Foundation</strong>: not harvestable (<strong>0</strong> Res)</li>
+<li><strong>Regular Land</strong>: <strong>5</strong> sec</li>
+<li><strong>Fertile Land</strong>: <strong>5</strong> sec</li>
+<li><strong>Forest</strong>: <strong>15</strong> sec</li>
+<li><strong>Mountain</strong>: <strong>30</strong> sec</li>
 </ul>
 <h3 id="constructing-structures"><a class="header" href="#constructing-structures">Constructing Structures</a></h3>
 <p>The player may construct infrastructure on land that they own, if they own the
@@ -245,12 +257,17 @@ until construction is complete.</p>
 resources are instantly reclaimed and the remaining resources are lost.</p>
 <h3 id="bulldozing-structures"><a class="header" href="#bulldozing-structures">Bulldozing Structures</a></h3>
 <p>Any structures on land owned by the player can be bulldozed. This returns
-<strong>25%</strong> of the resource cost of the structure back to the player as income.</p>
+<strong>25%</strong> of the resource cost of the structure back to the player.</p>
 <p>The reward is counted towards the city of the tile's region, if owned by the
 player, or the nearest city by distance otherwise.</p>
 <h3 id="capturing-foreign-items"><a class="header" href="#capturing-foreign-items">Capturing Foreign Items</a></h3>
 <p>If a player captures a tile that contains an item, the item is instantly sold,
-giving the player <strong>75%</strong> of the usual cost of the item.</p>
+giving the player:</p>
+<ul>
+<li>Mine: 75% of the usual cost</li>
+<li>Decoy: 50% of the usual cost</li>
+<li>Smoke Trap: 0% of the usual cost</li>
+</ul>
 <p>The reward is counted towards the city of the tile's region, if owned by the
 player, or the nearest city by distance otherwise.</p>
 <h3 id="costs"><a class="header" href="#costs">Costs</a></h3>
@@ -270,20 +287,20 @@ get in a given game session, and is calculated as follows:</p>
 <ul>
 <li>Decoy: 2.0</li>
 <li>Mine: 3.0</li>
-<li>Mine (upgrade from decoy): 2.5</li>
-<li>Flashbang: 4.0</li>
+<li>Mine (upgrade from decoy): 3.0</li>
+<li>Flashbang: 8.0</li>
 </ul>
 <p>Structures:</p>
 <ul>
 <li>Road: 1.5</li>
 <li>Barricade: 20.0</li>
-<li>WatchTower: 50.0</li>
-<li>Bridge: 8.0</li>
+<li>WatchTower: 30.0</li>
+<li>Bridge: 5.0</li>
 </ul>
 <p>Actions:</p>
 <ul>
-<li>Strike: 0.5 + 1.0 * NTiles</li>
-<li>Reveal: 3.0</li>
+<li>Strike: 1.0 + 2.0 * NTiles</li>
+<li>Reveal: 5.0</li>
 <li>Smoke: 0.5</li>
 </ul>
 <p>Starting money:</p>

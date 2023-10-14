@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../foss.html"><strong aria-hidden="true">2.</strong> Open-Source Builds</a></li><li class="chapter-item expanded "><a href="../game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="../gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gameplay/map.html" class="active"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="../gameplay/territory.html"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="../gameplay/economy.html"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="../gameplay/pvp.html"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="../gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="../gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="../gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="../ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="../gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li></ol></li><li class="chapter-item expanded "><a href="../mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li><li class="chapter-item expanded "><a href="../achievements.html"><strong aria-hidden="true">4.3.</strong> Achievement Ideas</a></li></ol></li><li class="chapter-item expanded "><a href="../tech.html"><strong aria-hidden="true">5.</strong> Technical Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech/dataformat-player.html"><strong aria-hidden="true">5.1.</strong> Player Stream Format</a></li><li class="chapter-item expanded "><a href="../tech/dataformat-spectator.html"><strong aria-hidden="true">5.2.</strong> Spectator/Replay Stream Format</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../foss.html"><strong aria-hidden="true">2.</strong> Open-Source Builds</a></li><li class="chapter-item expanded "><a href="../game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="../gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gameplay/map.html" class="active"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="../gameplay/territory.html"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="../gameplay/economy.html"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="../gameplay/pvp.html"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="../gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="../gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="../gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="../ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="../gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li></ol></li><li class="chapter-item expanded "><a href="../mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li><li class="chapter-item expanded "><a href="../achievements.html"><strong aria-hidden="true">4.3.</strong> Achievement Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/philosophy.html"><strong aria-hidden="true">4.4.</strong> Notes / Philosophy</a></li></ol></li><li class="chapter-item expanded "><a href="../tech.html"><strong aria-hidden="true">5.</strong> Technical Documentation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tech/dataformat-player.html"><strong aria-hidden="true">5.1.</strong> Player Stream Format</a></li><li class="chapter-item expanded "><a href="../tech/dataformat-spectator.html"><strong aria-hidden="true">5.2.</strong> Spectator/Replay Stream Format</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -175,28 +175,23 @@
 <p>Every game session/match happens on a new, procedurally-generated map.</p>
 <h2 id="map-geography"><a class="header" href="#map-geography">Map Geography</a></h2>
 <p>The game map is a procedurally-generated fully-contiguous island/continent.</p>
-<p>There are 4 types of tiles (geographical features):</p>
+<p>There are several types of tiles:</p>
 <p><strong>Water</strong> is everything outside of the playable area. Non-interactive.</p>
 <p><strong>Land</strong> is an interactive tile, forming the playable area.</p>
-<p><strong>Fertile Land</strong> gives extra resources. Besides the resources, this tile behaves
-identically to <strong>Land</strong>.</p>
-<p><strong>Destroyed Land</strong> is a tile where a destructive player action has occured,
-such as a mine explosion, or resource harvesting. Once a tile is converted
-into destroyed land, it generates no resources for the remainder of the game.
-Besides the resources, this tile behaves identically to <strong>Land</strong>.</p>
+<p><strong>Fertile Land</strong> gives extra resources. Otherwise, it plays like <strong>Land</strong>.</p>
+<p><strong>Foundation</strong> is a land tile that has been used up by the player (via
+harvesting or construction).  This tile generates no resources. Otherwise, it
+plays like <strong>Land</strong>.</p>
+<p><strong>Destroyed Land</strong> is a tile where an explosion has occured (from a mine or strike).
+Once a tile is converted into destroyed land, it generates no resources for the
+remainder of the game.  Otherwise, it plays like <strong>Land</strong>.</p>
 <p><strong>Mountains</strong> and <strong>Forests</strong> are generated in random clusters of multiple
 adjacent tiles. They can only be captured as an entire cluster. They give large
 amounts of resources when owned by players. No gameplay actions can happen on
 these tiles, and they do not display digits.</p>
-<p><strong>Foundation</strong> is a land tile with a building/structure on it. This tile
-generates no resources.</p>
 <h3 id="generation"><a class="header" href="#generation">Generation</a></h3>
-<p>A biased algorithm (which may include techniques such as different probability
-distributions, floodfill or pathfinding, pattern substitution, ...) generates
-the general (irregular) shape of the playable area. The whole playable area must
-be contiguous. Everything outside of the playable area is Water. The playable area
-is Land.</p>
-<p>The Land can then be populated with various geographical features.</p>
+<p>The whole playable area must be contiguous. Everything outside of the playable
+area is Water.</p>
 <p>Rivers can be generated by tracing a path of water tiles, starting from a random
 location, going outwards to be joined into the water that surrounds the playable
 area.</p>
@@ -210,9 +205,12 @@ with a large distance between cities.</p>
 <p>All tiles adjacent to the city tile must be playable <strong>land</strong>, cities cannot
 be located next to <strong>mountains</strong>, <strong>forests</strong>, or <strong>water</strong>.</p>
 <p>The location of cities, and a visualization of the extents of their regions, is
-always visible to all players, even behind fog of war. Players know who owns
-which cities (and how many cities each player owns) at all times -- it is
-important to judge the progression of the game and to plan strategies.</p>
+always visible to all players, even behind fog of war. Everyone knows how many
+cities each player owns at all times -- it is important to judge the progression
+of the game and to plan strategies. The exact cities (who owns what cities) is
+not known, except for neighboring regions.</p>
+<p>Every player knows the <strong>owner</strong> and an estimation of the <strong>money</strong> of foreign
+cities in regions neighboring the regions that are controlled by the player.</p>
 <h3 id="starting-cities"><a class="header" href="#starting-cities">Starting Cities</a></h3>
 <p>Given the random nature of the map, it is important that players are not left
 feeling like they (or another player) got an unfair spawn location.</p>
@@ -237,12 +235,14 @@ is the city's &quot;area of responsibility&quot;.</p>
 <p>The city's resource points are accumulated from all the tiles in its region that
 are owned by the same player that owns the city. The city generates <strong>income</strong>
 for the player, based on the amount of available resources.</p>
-<p>If a player wants to construct structures on a given tile, the player must
-own both the city of that region, and the tile to build on. While a structure
-is being built, the city's resources will go towards construction progress,
-instead of producing <strong>income</strong> for the player.</p>
 <p>Regions are generated with the map, ahead of time, and cannot change during the
 course of a game.</p>
+<h3 id="out-of-region-vs-in-region-gameplay"><a class="header" href="#out-of-region-vs-in-region-gameplay">Out-of-region vs. In-region gameplay</a></h3>
+<p>In foreign regions (where the player does not own the city):</p>
+<ul>
+<li>owned tiles do not generate resources</li>
+<li>disconnected (non-contiguous) land ownership is not allowed</li>
+</ul>
 <h3 id="generation-1"><a class="header" href="#generation-1">Generation</a></h3>
 <p>Due to the randomness and geographical diversity of the map, some cities will
 naturally be considered more attractive to players, which could lead to power
