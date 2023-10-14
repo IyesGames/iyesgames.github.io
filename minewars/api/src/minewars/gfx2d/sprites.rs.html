@@ -423,6 +423,7 @@
 <a href="#423" id="423">423</a>
 <a href="#424" id="424">424</a>
 <a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::assets::GameAssets;
 <span class="kw">use </span><span class="kw">crate</span>::camera::GridCursor;
 <span class="kw">use </span><span class="kw">crate</span>::camera::GridCursorSet;
@@ -444,9 +445,9 @@
     <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, app: <span class="kw-2">&amp;mut </span>App) {
         app.add_systems(Update, (
             (
-                setup_base_tile::&lt;Hex&gt;
+                setup_tilemap::&lt;Hex&gt;
                     .in_set(MapTopologySet(Topology::Hex)),
-                setup_base_tile::&lt;Sq&gt;
+                setup_tilemap::&lt;Sq&gt;
                     .in_set(MapTopologySet(Topology::Sq)),
             )
                 .in_set(Gfx2dTileSetupSet)
@@ -466,7 +467,7 @@
         ).in_set(Gfx2dSet::Sprites));
         app.add_systems(OnEnter(AppState::InGame), (
             setup_cursor,
-        ));
+        ).in_set(Gfx2dSet::Any));
         app.add_systems(Update, (
             (
                 cursor_sprite::&lt;Hex&gt;
@@ -546,7 +547,7 @@
     xf.translation = Vec3::new(trans.x * width, trans.y * height, <span class="kw">super</span>::zpos::CURSOR);
 }
 
-<span class="kw">fn </span>setup_base_tile&lt;C: Coord&gt;(
+<span class="kw">fn </span>setup_tilemap&lt;C: Coord&gt;(
     world: <span class="kw-2">&amp;mut </span>World,
 ) {
     <span class="kw">let </span>texture_atlas = world.resource::&lt;GameAssets&gt;().sprites.clone();
@@ -579,6 +580,7 @@
     }
     world.insert_resource(index);
     world.insert_resource(TilemapInitted);
+    <span class="macro">debug!</span>(<span class="string">&quot;Initialized map using Sprites renderer.&quot;</span>);
 }
 
 <span class="kw">fn </span>tile_kind&lt;C: Coord&gt;(

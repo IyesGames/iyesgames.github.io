@@ -285,6 +285,8 @@
 <a href="#285" id="285">285</a>
 <a href="#286" id="286">286</a>
 <a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>mw_game_minesweeper::MinesweeperSettings;
 
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
@@ -399,6 +401,7 @@
     <span class="kw">pub </span>topology: mw_common::grid::Topology,
     <span class="kw">pub </span>style: MapGenStyle,
     <span class="kw">pub </span>seed: <span class="prelude-ty">Option</span>&lt;u64&gt;,
+    <span class="kw">pub </span>land_bias: u8,
 }
 
 <span class="doccomment">/// Parameters for hosting MineWars games
@@ -568,6 +571,7 @@
             } <span class="kw">else </span>{
                 MapGenStyle::Flat
             },
+            land_bias: <span class="number">48</span>,
             seed: <span class="prelude-val">None</span>,
         }
     }

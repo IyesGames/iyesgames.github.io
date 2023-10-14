@@ -383,6 +383,13 @@
 <a href="#383" id="383">383</a>
 <a href="#384" id="384">384</a>
 <a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>derive_more::<span class="kw-2">*</span>;
 
 <span class="kw">use </span>std::iter::FusedIterator;
@@ -425,6 +432,13 @@
     <span class="kw">fn </span>origin() -&gt; <span class="self">Self </span>{
         Sq(<span class="number">0</span>, <span class="number">0</span>)
     }
+
+    <span class="kw">fn </span>x(<span class="self">self</span>) -&gt; i8 {
+        <span class="self">self</span>.<span class="number">1
+    </span>}
+    <span class="kw">fn </span>y(<span class="self">self</span>) -&gt; i8 {
+        <span class="self">self</span>.<span class="number">0
+    </span>}
 
     <span class="kw">fn </span>distance(<span class="self">self</span>, other: <span class="self">Self</span>) -&gt; u16 {
         <span class="kw">let </span>dy = (<span class="self">self</span>.<span class="number">0 </span><span class="kw">as </span>i16 - other.<span class="number">0 </span><span class="kw">as </span>i16).abs() <span class="kw">as </span>u16;

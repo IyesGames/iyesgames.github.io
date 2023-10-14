@@ -190,7 +190,7 @@
         (<span class="bool-val">true</span>, MapGenStyle::MineWars) =&gt; {
             <span class="attr">#[cfg(feature = <span class="string">&quot;proprietary&quot;</span>)]
             </span>mw_proprietary_client::setup_minesweeper_playground_mwmap(
-                world, minesweeper_settings, mapgen_settings.size, mapgen_settings.seed,
+                world, minesweeper_settings, <span class="kw-2">&amp;</span>mapgen_settings,
             );
         }
     }

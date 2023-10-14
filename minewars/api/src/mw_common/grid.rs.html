@@ -107,6 +107,8 @@
 <a href="#107" id="107">107</a>
 <a href="#108" id="108">108</a>
 <a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! IyesGames 2D Grid Library
 //!
 //! Library for working with small 2D grid-based game worlds.
@@ -192,6 +194,8 @@
     <span class="kw">type </span>IterCoords: Iterator&lt;Item = <span class="self">Self</span>&gt;;
 
     <span class="kw">fn </span>origin() -&gt; <span class="self">Self</span>;
+    <span class="kw">fn </span>x(<span class="self">self</span>) -&gt; i8;
+    <span class="kw">fn </span>y(<span class="self">self</span>) -&gt; i8;
     <span class="kw">fn </span>distance(<span class="self">self</span>, other: <span class="self">Self</span>) -&gt; u16;
     <span class="kw">fn </span>ring(<span class="self">self</span>) -&gt; u8;
     <span class="kw">fn </span>ring_len(r: u8) -&gt; usize;
