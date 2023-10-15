@@ -92,12 +92,15 @@
 <a href="#92" id="92">92</a>
 <a href="#93" id="93">93</a>
 <a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
 <span class="kw">mod </span>console;
 <span class="kw">mod </span>hud;
 <span class="kw">mod </span>menu;
 <span class="kw">mod </span>notify;
+<span class="kw">mod </span>perf;
 <span class="kw">mod </span>tooltip;
 <span class="kw">mod </span>widget;
 
@@ -110,6 +113,7 @@
             <span class="self">self</span>::hud::HudPlugin,
             <span class="self">self</span>::menu::MenuPlugin,
             <span class="self">self</span>::notify::NotifyPlugin,
+            <span class="self">self</span>::perf::PerfUiPlugin,
             <span class="self">self</span>::tooltip::TooltipPlugin,
             <span class="self">self</span>::widget::WidgetsPlugin,
         ));

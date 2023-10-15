@@ -366,7 +366,7 @@
 </span><span class="kw">pub struct </span>ItemIndex(<span class="kw">pub </span>HashMap&lt;Pos, Entity&gt;);
 
 <span class="attr">#[derive(Resource)]
-</span><span class="kw">struct </span>CitIndex {
+</span><span class="kw">pub struct </span>CitIndex {
     <span class="kw">pub </span>by_pos: HashMap&lt;Pos, Entity&gt;,
     <span class="kw">pub </span>by_id: Vec&lt;Entity&gt;,
 }
@@ -487,7 +487,7 @@
 </span><span class="attr">#[derive(Event)]
 </span><span class="kw">pub struct </span>RecomputeVisEvent(<span class="kw">pub </span><span class="prelude-ty">Option</span>&lt;Pos&gt;);
 
-<span class="attr">#[derive(Component)]
+<span class="attr">#[derive(Bundle)]
 </span><span class="kw">pub struct </span>CitBundle {
     <span class="kw">pub </span>regid: CitRegion,
     <span class="kw">pub </span>owner: CitOwner,

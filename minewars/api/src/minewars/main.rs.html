@@ -109,6 +109,8 @@
 <a href="#109" id="109">109</a>
 <a href="#110" id="110">110</a>
 <a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
+<a href="#113" id="113">113</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/// Convenience, to be imported in every file in the crate
 </span><span class="kw">mod </span>prelude {
     <span class="kw">pub use </span>bevy::prelude::<span class="kw-2">*</span>;
@@ -181,6 +183,8 @@
         level: bevy::log::Level::INFO,
     });
     app.add_plugins(bevy_plugins);
+
+    app.add_plugins(bevy::diagnostic::FrameTimeDiagnosticsPlugin::default());
 
     app.add_plugins(mw_app::MwCommonPlugin);
 

@@ -514,7 +514,7 @@
 }
 
 <span class="attr">#[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq)]
-</span><span class="kw">pub struct </span>Lcha(f32, f32, f32);
+</span><span class="kw">pub struct </span>Lcha(<span class="kw">pub </span>f32, <span class="kw">pub </span>f32, <span class="kw">pub </span>f32);
 
 <span class="kw">impl </span>From&lt;Color&gt; <span class="kw">for </span>Lcha {
     <span class="kw">fn </span>from(value: Color) -&gt; <span class="self">Self </span>{

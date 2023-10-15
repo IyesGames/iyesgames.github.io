@@ -555,6 +555,21 @@
 <a href="#555" id="555">555</a>
 <a href="#556" id="556">556</a>
 <a href="#557" id="557">557</a>
+<a href="#558" id="558">558</a>
+<a href="#559" id="559">559</a>
+<a href="#560" id="560">560</a>
+<a href="#561" id="561">561</a>
+<a href="#562" id="562">562</a>
+<a href="#563" id="563">563</a>
+<a href="#564" id="564">564</a>
+<a href="#565" id="565">565</a>
+<a href="#566" id="566">566</a>
+<a href="#567" id="567">567</a>
+<a href="#568" id="568">568</a>
+<a href="#569" id="569">569</a>
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::assets::GameAssets;
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
@@ -1057,11 +1072,14 @@
 
 <span class="kw">fn </span>tilemap_reghighlight(
     <span class="kw-2">mut </span>commands: Commands,
+    settings: Res&lt;AllSettings&gt;,
     mapdesc: Res&lt;MapDescriptor&gt;,
+    cits: Res&lt;CitIndex&gt;,
     cursor_tile: Res&lt;GridCursorTileEntity&gt;,
     q_highlight: Query&lt;Entity, With&lt;RegHighlightSprite&gt;&gt;,
     q_tile: Query&lt;(<span class="kw-2">&amp;</span>TilePos, <span class="kw-2">&amp;</span>TileRegion), With&lt;BaseSprite&gt;&gt;,
     <span class="kw-2">mut </span>q_tm: Query&lt;(Entity, <span class="kw-2">&amp;</span>TilemapSize, <span class="kw-2">&amp;mut </span>TileStorage), With&lt;RegHighlightTilemap&gt;&gt;,
+    q_cit: Query&lt;<span class="kw-2">&amp;</span>CitOwner&gt;,
     <span class="kw-2">mut </span>last_region: Local&lt;<span class="prelude-ty">Option</span>&lt;u8&gt;&gt;,
 ) {
     <span class="kw">if let </span><span class="prelude-val">Some</span>(e_tile) = cursor_tile.<span class="number">0 </span>{
@@ -1081,8 +1099,20 @@
             }
             <span class="comment">// create new
             </span><span class="kw">let </span>i = <span class="kw">match </span>mapdesc.topology {
-                Topology::Hex =&gt; <span class="kw">super</span>::sprite::TILES6 + <span class="kw">super</span>::sprite::TILE_CURSOR,
-                Topology::Sq =&gt; <span class="kw">super</span>::sprite::TILES4 + <span class="kw">super</span>::sprite::TILE_CURSOR,
+                Topology::Hex =&gt; <span class="kw">super</span>::sprite::TILES6 + <span class="kw">super</span>::sprite::TILE_HIGHLIGHT,
+                Topology::Sq =&gt; <span class="kw">super</span>::sprite::TILES4 + <span class="kw">super</span>::sprite::TILE_HIGHLIGHT,
+            };
+            <span class="kw">let </span>color = <span class="kw">if let </span><span class="prelude-val">Some</span>(e_cit) = cits.by_id.get(region <span class="kw">as </span>usize) {
+                <span class="kw">let </span>owner = q_cit.get(<span class="kw-2">*</span>e_cit).unwrap().<span class="number">0</span>;
+                <span class="kw">let </span><span class="kw-2">mut </span>lcha = settings.player_colors.visible[owner.i()];
+                lcha.<span class="number">0 </span><span class="kw-2">*</span>= <span class="number">0.75</span>;
+                lcha.<span class="number">1 </span><span class="kw-2">*</span>= <span class="number">0.75</span>;
+                <span class="kw">let </span>color = Color::from(lcha);
+                <span class="comment">// FIXME: this is to work around bevy_ecs_tilemap broken sRGB
+                </span><span class="kw">let </span>rgba = color.as_linear_rgba_f32();
+                Color::rgba(rgba[<span class="number">0</span>], rgba[<span class="number">1</span>], rgba[<span class="number">2</span>], rgba[<span class="number">3</span>])
+            } <span class="kw">else </span>{
+                <span class="kw">return</span>;
             };
             <span class="kw">let </span>(e_tm, <span class="kw">_</span>, <span class="kw-2">mut </span>ts) = q_tm.single_mut();
             <span class="kw">for </span>(tilepos, tile_region) <span class="kw">in </span><span class="kw-2">&amp;</span>q_tile {
@@ -1094,7 +1124,7 @@
                             texture_index: TileTextureIndex(i <span class="kw">as </span>u32),
                             tilemap_id: TilemapId(e_tm),
                             visible: TileVisible(<span class="bool-val">true</span>),
-                            color: TileColor(Color::WHITE.with_a(<span class="number">0.25</span>)),
+                            color: TileColor(color),
                             ..Default::default()
                         }
                     )).id();

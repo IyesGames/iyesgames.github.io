@@ -424,6 +424,18 @@
 <a href="#424" id="424">424</a>
 <a href="#425" id="425">425</a>
 <a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
+<a href="#437" id="437">437</a>
+<a href="#438" id="438">438</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::assets::GameAssets;
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
@@ -801,11 +813,14 @@
 
 <span class="kw">fn </span>sprites_reghighlight(
     <span class="kw-2">mut </span>commands: Commands,
+    settings: Res&lt;AllSettings&gt;,
     assets: Res&lt;GameAssets&gt;,
     mapdesc: Res&lt;MapDescriptor&gt;,
+    cits: Res&lt;CitIndex&gt;,
     cursor_tile: Res&lt;GridCursorTileEntity&gt;,
     q_highlight: Query&lt;Entity, With&lt;RegHighlightSprite&gt;&gt;,
     q_tile: Query&lt;(<span class="kw-2">&amp;</span>Transform, <span class="kw-2">&amp;</span>TileRegion), With&lt;BaseSprite&gt;&gt;,
+    q_cit: Query&lt;<span class="kw-2">&amp;</span>CitOwner&gt;,
     <span class="kw-2">mut </span>last_region: Local&lt;<span class="prelude-ty">Option</span>&lt;u8&gt;&gt;,
 ) {
     <span class="kw">if let </span><span class="prelude-val">Some</span>(e_tile) = cursor_tile.<span class="number">0 </span>{
@@ -821,26 +836,35 @@
             }
             <span class="comment">// create new
             </span><span class="kw">let </span>index = <span class="kw">match </span>mapdesc.topology {
-                Topology::Hex =&gt; <span class="kw">super</span>::sprite::TILES6 + <span class="kw">super</span>::sprite::TILE_CURSOR,
-                Topology::Sq =&gt; <span class="kw">super</span>::sprite::TILES4 + <span class="kw">super</span>::sprite::TILE_CURSOR,
+                Topology::Hex =&gt; <span class="kw">super</span>::sprite::TILES6 + <span class="kw">super</span>::sprite::TILE_HIGHLIGHT,
+                Topology::Sq =&gt; <span class="kw">super</span>::sprite::TILES4 + <span class="kw">super</span>::sprite::TILE_HIGHLIGHT,
+            };
+            <span class="kw">let </span>color = <span class="kw">if let </span><span class="prelude-val">Some</span>(e_cit) = cits.by_id.get(region <span class="kw">as </span>usize) {
+                <span class="kw">let </span>owner = q_cit.get(<span class="kw-2">*</span>e_cit).unwrap().<span class="number">0</span>;
+                <span class="kw">let </span><span class="kw-2">mut </span>lcha = settings.player_colors.visible[owner.i()];
+                lcha.<span class="number">0 </span><span class="kw-2">*</span>= <span class="number">0.75</span>;
+                lcha.<span class="number">1 </span><span class="kw-2">*</span>= <span class="number">0.75</span>;
+                Color::from(lcha)
+            } <span class="kw">else </span>{
+                <span class="kw">return</span>;
             };
             <span class="kw">for </span>(xf, tile_region) <span class="kw">in </span><span class="kw-2">&amp;</span>q_tile {
                 <span class="kw">let </span><span class="kw-2">mut </span>trans = xf.translation;
                 trans.z = zpos::REGHILIGHT;
                 <span class="kw">if </span>tile_region.<span class="number">0 </span>== region {
-                    <span class="kw">let </span>e_tile = commands.spawn((
+                    commands.spawn((
                         RegHighlightSprite,
                         SpriteSheetBundle {
                             sprite: TextureAtlasSprite {
                                 index,
-                                color: Color::WHITE.with_a(<span class="number">0.25</span>),
+                                color,
                                 ..Default::default()
                             },
                             texture_atlas: assets.sprites.clone(),
                             transform: Transform::from_translation(trans),
                             ..Default::default()
                         },
-                    )).id();
+                    ));
                 }
             }
         }

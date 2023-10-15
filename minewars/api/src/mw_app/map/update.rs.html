@@ -171,6 +171,12 @@
 <a href="#171" id="171">171</a>
 <a href="#172" id="172">172</a>
 <a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>mw_common::game::event::<span class="kw-2">*</span>;
 
 <span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, GameEventSet};
@@ -228,7 +234,9 @@
     <span class="kw-2">mut </span>evr: EventReader&lt;GameEvent&gt;,
     viewing: Res&lt;PlidViewing&gt;,
     index: Res&lt;MapTileIndex&lt;C&gt;&gt;,
+    cits: Res&lt;CitIndex&gt;,
     <span class="kw-2">mut </span>q_tile: Query&lt;<span class="kw-2">&amp;mut </span>TileOwner&gt;,
+    <span class="kw-2">mut </span>q_cit: Query&lt;<span class="kw-2">&amp;mut </span>CitOwner&gt;,
 ) {
     <span class="kw">for </span>ev <span class="kw">in </span>evr.iter() {
         <span class="kw">if </span>ev.plid != viewing.<span class="number">0 </span>{
@@ -243,6 +251,10 @@
                     );
                 }
                 owner.<span class="number">0 </span>= plid;
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(e_cit) = cits.by_pos.get(<span class="kw-2">&amp;</span>pos) {
+                    <span class="kw">let </span><span class="kw-2">mut </span>citowner = q_cit.get_mut(<span class="kw-2">*</span>e_cit).unwrap();
+                    citowner.<span class="number">0 </span>= plid;
+                }
             }
         }
     }

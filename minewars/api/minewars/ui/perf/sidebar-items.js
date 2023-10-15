@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["fps_text_update_system","setup_perfui"],"struct":["FpsText","PerfUiPlugin"]};
