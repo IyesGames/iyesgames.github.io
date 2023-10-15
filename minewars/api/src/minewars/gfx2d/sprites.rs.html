@@ -374,11 +374,61 @@
 <a href="#374" id="374">374</a>
 <a href="#375" id="375">375</a>
 <a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
+<a href="#408" id="408">408</a>
+<a href="#409" id="409">409</a>
+<a href="#410" id="410">410</a>
+<a href="#411" id="411">411</a>
+<a href="#412" id="412">412</a>
+<a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
+<a href="#415" id="415">415</a>
+<a href="#416" id="416">416</a>
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::assets::GameAssets;
-<span class="kw">use </span><span class="kw">crate</span>::camera::GridCursor;
-<span class="kw">use </span><span class="kw">crate</span>::camera::GridCursorSet;
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
+<span class="kw">use </span>mw_app::camera::GridCursor;
+<span class="kw">use </span>mw_app::camera::GridCursorChangedSet;
 <span class="kw">use </span>mw_app::player::PlayersIndex;
 <span class="kw">use </span>mw_app::view::PlidViewing;
 <span class="kw">use </span>mw_app::view::ViewMapData;
@@ -411,6 +461,7 @@
                 tile_digit_sprite_mgr.after(MapUpdateSet::TileDigit),
                 tile_gent_sprite_mgr.after(MapUpdateSet::TileGent),
                 explosion_sprite_mgr,
+                sprites_reghighlight,
             )
                 .run_if(resource_exists::&lt;TilemapInitted&gt;()),
         ).in_set(Gfx2dSet::Sprites));
@@ -424,7 +475,7 @@
                 cursor_sprite::&lt;Sq&gt;
                     .in_set(MapTopologySet(Topology::Sq)),
             )
-                .after(GridCursorSet),
+                .in_set(GridCursorChangedSet),
         ).in_set(Gfx2dSet::Any));
     }
 }
@@ -473,9 +524,6 @@
     <span class="kw-2">mut </span>q: Query&lt;(<span class="kw-2">&amp;mut </span>Transform, <span class="kw-2">&amp;mut </span>MwTilePos), With&lt;CursorSprite&gt;&gt;,
     crs: Res&lt;GridCursor&gt;,
 ) {
-    <span class="kw">if </span>!crs.is_changed() {
-        <span class="kw">return</span>;
-    }
     <span class="kw">let </span><span class="prelude-val">Ok</span>((<span class="kw-2">mut </span>xf, <span class="kw-2">mut </span>pos)) = q.get_single_mut() <span class="kw">else </span>{
         <span class="kw">return</span>;
     };
@@ -590,7 +638,7 @@
 ) {
     <span class="kw">for </span>(e, coord, digit, xf, spr_digit) <span class="kw">in </span>q_tile.iter() {
         <span class="kw">let </span><span class="kw-2">mut </span>trans = xf.translation;
-        trans.z += zpos::DIGIT;
+        trans.z = zpos::DIGIT;
 
         <span class="kw">let </span>i_dig = <span class="kw">if </span>digit.<span class="number">1 </span>{
             <span class="kw">super</span>::sprite::DIGSTAR + digit.<span class="number">0 </span><span class="kw">as </span>usize
@@ -641,7 +689,7 @@
 ) {
     <span class="kw">for </span>(e, coord, gent, xf, spr_gent) <span class="kw">in </span>q_tile.iter() {
         <span class="kw">let </span><span class="kw-2">mut </span>trans = xf.translation;
-        trans.z += zpos::DIGIT;
+        trans.z = zpos::GENTS;
 
         <span class="kw">let </span>(i_gent, clr_gent) = <span class="kw">match </span>gent {
             TileGent::Empty |
@@ -728,7 +776,7 @@
             <span class="comment">// we have an entity with no sprite, set up the sprite
             </span><span class="kw">let </span>xf = q_tile.get(expl.<span class="number">0</span>).unwrap();
             <span class="kw">let </span><span class="kw-2">mut </span>trans = xf.translation;
-            trans.z += zpos::OVERLAYS;
+            trans.z = zpos::OVERLAYS;
             <span class="kw">let </span>i_expl = <span class="kw">match </span>expl.<span class="number">1 </span>{
                 TileExplosionKind::Normal =&gt; <span class="kw">super</span>::sprite::EXPLOSION_MINE,
                 TileExplosionKind::Decoy =&gt; <span class="kw">super</span>::sprite::EXPLOSION_DECOY,
@@ -747,6 +795,58 @@
                     ..Default::default()
                 },
             ));
+        }
+    }
+}
+
+<span class="kw">fn </span>sprites_reghighlight(
+    <span class="kw-2">mut </span>commands: Commands,
+    assets: Res&lt;GameAssets&gt;,
+    mapdesc: Res&lt;MapDescriptor&gt;,
+    cursor_tile: Res&lt;GridCursorTileEntity&gt;,
+    q_highlight: Query&lt;Entity, With&lt;RegHighlightSprite&gt;&gt;,
+    q_tile: Query&lt;(<span class="kw-2">&amp;</span>Transform, <span class="kw-2">&amp;</span>TileRegion), With&lt;BaseSprite&gt;&gt;,
+    <span class="kw-2">mut </span>last_region: Local&lt;<span class="prelude-ty">Option</span>&lt;u8&gt;&gt;,
+) {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(e_tile) = cursor_tile.<span class="number">0 </span>{
+        <span class="kw">let </span><span class="prelude-val">Ok</span>(region) = q_tile.get(e_tile) <span class="kw">else </span>{
+            <span class="kw">return</span>;
+        };
+        <span class="kw">let </span>region = region.<span class="number">1.0</span>;
+        <span class="kw">if </span><span class="kw-2">*</span>last_region != <span class="prelude-val">Some</span>(region) {
+            <span class="kw-2">*</span>last_region = <span class="prelude-val">Some</span>(region);
+            <span class="comment">// clear old
+            </span><span class="kw">for </span>e <span class="kw">in </span><span class="kw-2">&amp;</span>q_highlight {
+                commands.entity(e).despawn_recursive();
+            }
+            <span class="comment">// create new
+            </span><span class="kw">let </span>index = <span class="kw">match </span>mapdesc.topology {
+                Topology::Hex =&gt; <span class="kw">super</span>::sprite::TILES6 + <span class="kw">super</span>::sprite::TILE_CURSOR,
+                Topology::Sq =&gt; <span class="kw">super</span>::sprite::TILES4 + <span class="kw">super</span>::sprite::TILE_CURSOR,
+            };
+            <span class="kw">for </span>(xf, tile_region) <span class="kw">in </span><span class="kw-2">&amp;</span>q_tile {
+                <span class="kw">let </span><span class="kw-2">mut </span>trans = xf.translation;
+                trans.z = zpos::REGHILIGHT;
+                <span class="kw">if </span>tile_region.<span class="number">0 </span>== region {
+                    <span class="kw">let </span>e_tile = commands.spawn((
+                        RegHighlightSprite,
+                        SpriteSheetBundle {
+                            sprite: TextureAtlasSprite {
+                                index,
+                                color: Color::WHITE.with_a(<span class="number">0.25</span>),
+                                ..Default::default()
+                            },
+                            texture_atlas: assets.sprites.clone(),
+                            transform: Transform::from_translation(trans),
+                            ..Default::default()
+                        },
+                    )).id();
+                }
+            }
+        }
+    } <span class="kw">else </span>{
+        <span class="kw">for </span>e <span class="kw">in </span><span class="kw-2">&amp;</span>q_highlight {
+            commands.entity(e).despawn_recursive();
         }
     }
 }

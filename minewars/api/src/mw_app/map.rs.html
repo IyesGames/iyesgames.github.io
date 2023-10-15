@@ -277,6 +277,27 @@
 <a href="#277" id="277">277</a>
 <a href="#278" id="278">278</a>
 <a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! ECS representation of MineWars map state
 //!
 //! These are the entities that represent the map tiles of the view that
@@ -286,6 +307,8 @@
 <span class="kw">use </span>mw_common::plid::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_common::game::<span class="kw-2">*</span>;
 
+<span class="kw">use </span><span class="kw">crate</span>::camera::GridCursor;
+<span class="kw">use </span><span class="kw">crate</span>::camera::GridCursorChangedSet;
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::view::VisibleInView;
 
@@ -297,10 +320,15 @@
     <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, app: <span class="kw-2">&amp;mut </span>App) {
         app.add_plugins(update::MapUpdatePlugin);
         app.add_event::&lt;RecomputeVisEvent&gt;();
+        app.init_resource::&lt;GridCursorTileEntity&gt;();
         <span class="kw">for </span>topo <span class="kw">in </span>enum_iterator::all::&lt;Topology&gt;() {
             app.configure_set(Update, MapTopologySet(topo).run_if(map_topology_is(topo)));
             app.configure_set(Update, NeedsMapSet.run_if(resource_exists::&lt;MapDescriptor&gt;()));
         }
+        app.add_systems(Update, (
+            grid_cursor_map_tile::&lt;Hex&gt;.in_set(MapTopologySet(Topology::Hex)),
+            grid_cursor_map_tile::&lt;Sq&gt;.in_set(MapTopologySet(Topology::Sq)),
+        ).in_set(GridCursorTileSet).in_set(GridCursorChangedSet));
     }
 }
 
@@ -324,6 +352,12 @@
     TileGent,
     TileRoads,
 }
+
+<span class="attr">#[derive(SystemSet, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+</span><span class="kw">pub struct </span>GridCursorTileSet;
+
+<span class="attr">#[derive(Resource, Default)]
+</span><span class="kw">pub struct </span>GridCursorTileEntity(<span class="kw">pub </span><span class="prelude-ty">Option</span>&lt;Entity&gt;);
 
 <span class="attr">#[derive(Resource)]
 </span><span class="kw">pub struct </span>MapTileIndex&lt;C: Coord&gt;(<span class="kw">pub </span>MapData&lt;C, Entity&gt;);
@@ -471,6 +505,14 @@
     <span class="kw">pub </span>money: u32,
     <span class="kw">pub </span>income: u16,
     <span class="kw">pub </span>res: u16,
+}
+
+<span class="kw">fn </span>grid_cursor_map_tile&lt;C: Coord&gt;(
+    cursor: Res&lt;GridCursor&gt;,
+    index: <span class="prelude-ty">Option</span>&lt;Res&lt;MapTileIndex&lt;C&gt;&gt;&gt;,
+    <span class="kw-2">mut </span>cursor_tile: ResMut&lt;GridCursorTileEntity&gt;,
+) {
+    cursor_tile.<span class="number">0 </span>= index.and_then(|inner| inner.<span class="number">0</span>.get(cursor.<span class="number">0</span>.into()).cloned());
 }
 
 <span class="doccomment">/// Helper code to setup all the map-related ECS stuff.

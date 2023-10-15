@@ -186,11 +186,19 @@
 <a href="#186" id="186">186</a>
 <a href="#187" id="187">187</a>
 <a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>bevy::{input::mouse::{MouseMotion, MouseWheel, MouseScrollUnit}, window::PrimaryWindow};
 <span class="kw">use </span>bevy_tweening::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_common::{game::MapDescriptor, grid::<span class="kw-2">*</span>};
+<span class="kw">use </span>mw_app::camera::<span class="kw-2">*</span>;
 
-<span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, camera::<span class="kw-2">*</span>};
+<span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
 <span class="kw">use </span><span class="kw">super</span>::Gfx2dSet;
 
@@ -242,7 +250,10 @@
             <span class="kw">let </span>grid = conv * crs_in.pos;
             <span class="kw">let </span>new = Hex::from_f32_clamped(grid.into());
             <span class="kw">if </span>new.ring() &lt;= mapdesc.size {
-                crs_out.<span class="number">0 </span>= new.into();
+                <span class="kw">let </span>new_pos = Pos::from(new);
+                <span class="kw">if </span>crs_out.<span class="number">0 </span>!= new_pos {
+                    crs_out.<span class="number">0 </span>= new_pos;
+                }
             }
         }
         Topology::Sq =&gt; {
@@ -250,7 +261,10 @@
             <span class="kw">let </span>adj = crs_in.pos / tdim;
             <span class="kw">let </span>new = Sq::from_f32_clamped(adj.into());
             <span class="kw">if </span>new.ring() &lt;= mapdesc.size {
-                crs_out.<span class="number">0 </span>= new.into();
+                <span class="kw">let </span>new_pos = Pos::from(new);
+                <span class="kw">if </span>crs_out.<span class="number">0 </span>!= new_pos {
+                    crs_out.<span class="number">0 </span>= new_pos;
+                }
             }
         }
     };

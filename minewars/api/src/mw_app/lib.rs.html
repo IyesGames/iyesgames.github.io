@@ -35,6 +35,7 @@
 <a href="#35" id="35">35</a>
 <a href="#36" id="36">36</a>
 <a href="#37" id="37">37</a>
+<a href="#38" id="38">38</a>
 </pre></div><pre class="rust"><code><span class="kw">pub mod </span>prelude {
     <span class="kw">pub use </span>mw_common::prelude::<span class="kw-2">*</span>;
     <span class="kw">pub use </span>iyes_bevy_extras::prelude::<span class="kw-2">*</span>;
@@ -46,7 +47,7 @@
 <span class="kw">pub const </span>PROPRIETARY: bool = <span class="macro">cfg!</span>(feature = <span class="string">&quot;proprietary&quot;</span>);
 
 <span class="kw">pub mod </span>appstate;
-
+<span class="kw">pub mod </span>camera;
 <span class="kw">pub mod </span>map;
 <span class="kw">pub mod </span>player;
 <span class="kw">pub mod </span>view;
@@ -66,6 +67,7 @@
         app.add_event::&lt;mw_common::game::event::GameEvent&gt;();
         app.add_plugins((
             appstate::AppStatesPlugin,
+            camera::MwCameraPlugin,
             settings::SettingsPlugin,
             map::MapPlugin,
             view::GameViewPlugin,

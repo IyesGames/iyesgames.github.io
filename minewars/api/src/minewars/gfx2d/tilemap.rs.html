@@ -466,9 +466,99 @@
 <a href="#466" id="466">466</a>
 <a href="#467" id="467">467</a>
 <a href="#468" id="468">468</a>
+<a href="#469" id="469">469</a>
+<a href="#470" id="470">470</a>
+<a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a>
+<a href="#473" id="473">473</a>
+<a href="#474" id="474">474</a>
+<a href="#475" id="475">475</a>
+<a href="#476" id="476">476</a>
+<a href="#477" id="477">477</a>
+<a href="#478" id="478">478</a>
+<a href="#479" id="479">479</a>
+<a href="#480" id="480">480</a>
+<a href="#481" id="481">481</a>
+<a href="#482" id="482">482</a>
+<a href="#483" id="483">483</a>
+<a href="#484" id="484">484</a>
+<a href="#485" id="485">485</a>
+<a href="#486" id="486">486</a>
+<a href="#487" id="487">487</a>
+<a href="#488" id="488">488</a>
+<a href="#489" id="489">489</a>
+<a href="#490" id="490">490</a>
+<a href="#491" id="491">491</a>
+<a href="#492" id="492">492</a>
+<a href="#493" id="493">493</a>
+<a href="#494" id="494">494</a>
+<a href="#495" id="495">495</a>
+<a href="#496" id="496">496</a>
+<a href="#497" id="497">497</a>
+<a href="#498" id="498">498</a>
+<a href="#499" id="499">499</a>
+<a href="#500" id="500">500</a>
+<a href="#501" id="501">501</a>
+<a href="#502" id="502">502</a>
+<a href="#503" id="503">503</a>
+<a href="#504" id="504">504</a>
+<a href="#505" id="505">505</a>
+<a href="#506" id="506">506</a>
+<a href="#507" id="507">507</a>
+<a href="#508" id="508">508</a>
+<a href="#509" id="509">509</a>
+<a href="#510" id="510">510</a>
+<a href="#511" id="511">511</a>
+<a href="#512" id="512">512</a>
+<a href="#513" id="513">513</a>
+<a href="#514" id="514">514</a>
+<a href="#515" id="515">515</a>
+<a href="#516" id="516">516</a>
+<a href="#517" id="517">517</a>
+<a href="#518" id="518">518</a>
+<a href="#519" id="519">519</a>
+<a href="#520" id="520">520</a>
+<a href="#521" id="521">521</a>
+<a href="#522" id="522">522</a>
+<a href="#523" id="523">523</a>
+<a href="#524" id="524">524</a>
+<a href="#525" id="525">525</a>
+<a href="#526" id="526">526</a>
+<a href="#527" id="527">527</a>
+<a href="#528" id="528">528</a>
+<a href="#529" id="529">529</a>
+<a href="#530" id="530">530</a>
+<a href="#531" id="531">531</a>
+<a href="#532" id="532">532</a>
+<a href="#533" id="533">533</a>
+<a href="#534" id="534">534</a>
+<a href="#535" id="535">535</a>
+<a href="#536" id="536">536</a>
+<a href="#537" id="537">537</a>
+<a href="#538" id="538">538</a>
+<a href="#539" id="539">539</a>
+<a href="#540" id="540">540</a>
+<a href="#541" id="541">541</a>
+<a href="#542" id="542">542</a>
+<a href="#543" id="543">543</a>
+<a href="#544" id="544">544</a>
+<a href="#545" id="545">545</a>
+<a href="#546" id="546">546</a>
+<a href="#547" id="547">547</a>
+<a href="#548" id="548">548</a>
+<a href="#549" id="549">549</a>
+<a href="#550" id="550">550</a>
+<a href="#551" id="551">551</a>
+<a href="#552" id="552">552</a>
+<a href="#553" id="553">553</a>
+<a href="#554" id="554">554</a>
+<a href="#555" id="555">555</a>
+<a href="#556" id="556">556</a>
+<a href="#557" id="557">557</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::assets::GameAssets;
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
+<span class="kw">use </span>bevy::render::render_resource::FilterMode;
 <span class="kw">use </span>mw_app::player::PlayersIndex;
 <span class="kw">use </span>mw_app::view::PlidViewing;
 <span class="kw">use </span>mw_app::view::ViewMapData;
@@ -484,6 +574,7 @@
 <span class="kw">impl </span>Plugin <span class="kw">for </span>Gfx2dTilemapPlugin {
     <span class="kw">fn </span>build(<span class="kw-2">&amp;</span><span class="self">self</span>, app: <span class="kw-2">&amp;mut </span>App) {
         app.add_systems(Startup, prealloc_tilemap);
+        app.add_systems(OnExit(AppState::AssetsLoading), preprocess_tilemap_assets);
         app.add_systems(Update, (
             (
                 setup_tilemap::&lt;Hex&gt;
@@ -502,6 +593,7 @@
                 digit_tilemap_mgr.after(MapUpdateSet::TileDigit),
                 gent_tilemap_mgr.after(MapUpdateSet::TileGent),
                 overlay_tilemap_mgr,
+                tilemap_reghighlight.run_if(resource_changed::&lt;GridCursorTileEntity&gt;()),
             )
                 .run_if(resource_exists::&lt;TilemapInitted&gt;()),
         ).in_set(Gfx2dSet::Tilemap));
@@ -552,6 +644,40 @@
     world.insert_resource(Tilemaps {
         base, digit, road, gent, overlay, reghighlight,
     })
+}
+
+<span class="kw">fn </span>preprocess_tilemap_assets(
+    gas: Res&lt;GameAssets&gt;,
+    ast: Res&lt;Assets&lt;TextureAtlas&gt;&gt;,
+    proc: ResMut&lt;ArrayTextureLoader&gt;,
+) {
+    <span class="kw">let </span>tile_size = TilemapTileSize {
+        x: <span class="number">128.0</span>, y: <span class="number">128.0</span>,
+    };
+    proc.add(TilemapArrayTexture {
+        texture: TilemapTexture::Single(
+            ast.get(<span class="kw-2">&amp;</span>gas.sprites).unwrap().texture.clone(),
+        ),
+        tile_size,
+        filter: <span class="prelude-val">Some</span>(FilterMode::Linear),
+        ..Default::default()
+    });
+    proc.add(TilemapArrayTexture {
+        texture: TilemapTexture::Single(
+            ast.get(<span class="kw-2">&amp;</span>gas.roads6).unwrap().texture.clone(),
+        ),
+        tile_size,
+        filter: <span class="prelude-val">Some</span>(FilterMode::Linear),
+        ..Default::default()
+    });
+    proc.add(TilemapArrayTexture {
+        texture: TilemapTexture::Single(
+            ast.get(<span class="kw-2">&amp;</span>gas.roads4).unwrap().texture.clone(),
+        ),
+        tile_size,
+        filter: <span class="prelude-val">Some</span>(FilterMode::Linear),
+        ..Default::default()
+    });
 }
 
 <span class="kw">fn </span>setup_tilemap&lt;C: Coord&gt;(
@@ -681,13 +807,7 @@
         ..Default::default()
     });
 
-    <span class="comment">// world.resource_mut::&lt;ArrayTextureLoader&gt;().add(TilemapArrayTexture {
-    //     texture: TilemapTexture::Single(atlas_img.clone()),
-    //     tile_size,
-    //     ..Default::default()
-    // });
-
-    </span>world.insert_resource(index);
+    world.insert_resource(index);
 
     <span class="macro">debug!</span>(<span class="string">&quot;Initialized map using Tilemap renderer.&quot;</span>);
     world.insert_resource(TilemapInitted);
@@ -931,6 +1051,64 @@
                 },
             ));
             ts_overlay.set(<span class="kw-2">&amp;</span>tilepos, e);
+        }
+    }
+}
+
+<span class="kw">fn </span>tilemap_reghighlight(
+    <span class="kw-2">mut </span>commands: Commands,
+    mapdesc: Res&lt;MapDescriptor&gt;,
+    cursor_tile: Res&lt;GridCursorTileEntity&gt;,
+    q_highlight: Query&lt;Entity, With&lt;RegHighlightSprite&gt;&gt;,
+    q_tile: Query&lt;(<span class="kw-2">&amp;</span>TilePos, <span class="kw-2">&amp;</span>TileRegion), With&lt;BaseSprite&gt;&gt;,
+    <span class="kw-2">mut </span>q_tm: Query&lt;(Entity, <span class="kw-2">&amp;</span>TilemapSize, <span class="kw-2">&amp;mut </span>TileStorage), With&lt;RegHighlightTilemap&gt;&gt;,
+    <span class="kw-2">mut </span>last_region: Local&lt;<span class="prelude-ty">Option</span>&lt;u8&gt;&gt;,
+) {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(e_tile) = cursor_tile.<span class="number">0 </span>{
+        <span class="kw">let </span><span class="prelude-val">Ok</span>(region) = q_tile.get(e_tile) <span class="kw">else </span>{
+            <span class="kw">return</span>;
+        };
+        <span class="kw">let </span>region = region.<span class="number">1.0</span>;
+        <span class="kw">if </span><span class="kw-2">*</span>last_region != <span class="prelude-val">Some</span>(region) {
+            <span class="kw-2">*</span>last_region = <span class="prelude-val">Some</span>(region);
+            <span class="comment">// clear old
+            </span><span class="kw">if </span>!q_highlight.is_empty() {
+                <span class="kw">let </span>(<span class="kw">_</span>, tm_size, <span class="kw-2">mut </span>ts) = q_tm.single_mut();
+                <span class="kw-2">*</span>ts = TileStorage::empty(<span class="kw-2">*</span>tm_size);
+                <span class="kw">for </span>e <span class="kw">in </span><span class="kw-2">&amp;</span>q_highlight {
+                    commands.entity(e).despawn_recursive();
+                }
+            }
+            <span class="comment">// create new
+            </span><span class="kw">let </span>i = <span class="kw">match </span>mapdesc.topology {
+                Topology::Hex =&gt; <span class="kw">super</span>::sprite::TILES6 + <span class="kw">super</span>::sprite::TILE_CURSOR,
+                Topology::Sq =&gt; <span class="kw">super</span>::sprite::TILES4 + <span class="kw">super</span>::sprite::TILE_CURSOR,
+            };
+            <span class="kw">let </span>(e_tm, <span class="kw">_</span>, <span class="kw-2">mut </span>ts) = q_tm.single_mut();
+            <span class="kw">for </span>(tilepos, tile_region) <span class="kw">in </span><span class="kw-2">&amp;</span>q_tile {
+                <span class="kw">if </span>tile_region.<span class="number">0 </span>== region {
+                    <span class="kw">let </span>e_tile = commands.spawn((
+                        RegHighlightSprite,
+                        TileBundle {
+                            position: <span class="kw-2">*</span>tilepos,
+                            texture_index: TileTextureIndex(i <span class="kw">as </span>u32),
+                            tilemap_id: TilemapId(e_tm),
+                            visible: TileVisible(<span class="bool-val">true</span>),
+                            color: TileColor(Color::WHITE.with_a(<span class="number">0.25</span>)),
+                            ..Default::default()
+                        }
+                    )).id();
+                    ts.set(<span class="kw-2">&amp;</span>tilepos, e_tile);
+                }
+            }
+        }
+    } <span class="kw">else </span>{
+        <span class="kw">if </span>!q_highlight.is_empty() {
+            <span class="kw">let </span>(<span class="kw">_</span>, tm_size, <span class="kw-2">mut </span>ts) = q_tm.single_mut();
+            <span class="kw-2">*</span>ts = TileStorage::empty(<span class="kw-2">*</span>tm_size);
+            <span class="kw">for </span>e <span class="kw">in </span><span class="kw-2">&amp;</span>q_highlight {
+                commands.entity(e).despawn_recursive();
+            }
         }
     }
 }

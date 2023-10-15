@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["cursor_sprite","explosion_sprite_mgr","setup_cursor","setup_tilemap","tile_digit_sprite_mgr","tile_gent_sprite_mgr","tile_kind","tile_owner"],"struct":["CursorSpriteBundle","Gfx2dSpritesPlugin","TileDigitEntity","TileGentEntity"]};
+window.SIDEBAR_ITEMS = {"fn":["cursor_sprite","explosion_sprite_mgr","setup_cursor","setup_tilemap","sprites_reghighlight","tile_digit_sprite_mgr","tile_gent_sprite_mgr","tile_kind","tile_owner"],"struct":["CursorSpriteBundle","Gfx2dSpritesPlugin","TileDigitEntity","TileGentEntity"]};
