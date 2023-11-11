@@ -91,16 +91,28 @@
 <a href="#91" id="91">91</a>
 <a href="#92" id="92">92</a>
 <a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>derive_more::<span class="kw-2">*</span>;
 
 <span class="kw">use </span>std::ops::{Mul, MulAssign};
 
+<span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">super</span>::Coord;
 
 <span class="doccomment">/// Topology-agnostic (type erased) coordinate
 </span><span class="attr">#[derive(
     Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Add, AddAssign, Sub, SubAssign, Neg,
 )]
+#[derive(Serialize, Deserialize)]
+#[serde(from = <span class="string">&quot;(i8, i8)&quot;</span>, into = <span class="string">&quot;(i8, i8)&quot;</span>)]
 </span><span class="kw">pub struct </span>Pos(<span class="kw">pub </span>i8, <span class="kw">pub </span>i8);
 
 <span class="kw">impl </span>Pos {
@@ -170,6 +182,12 @@
     <span class="kw">fn </span>from(c: Pos) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(y, x): (i8, i8) = c.into();
         glam::IVec2::new(x <span class="kw">as </span>i32, y <span class="kw">as </span>i32)
+    }
+}
+
+<span class="kw">impl </span>From&lt;(i8, i8)&gt; <span class="kw">for </span>Pos {
+    <span class="kw">fn </span>from(value: (i8, i8)) -&gt; <span class="self">Self </span>{
+        Pos(value.<span class="number">0</span>, value.<span class="number">1</span>)
     }
 }
 

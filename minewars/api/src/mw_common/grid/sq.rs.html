@@ -390,11 +390,21 @@
 <a href="#390" id="390">390</a>
 <a href="#391" id="391">391</a>
 <a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>derive_more::<span class="kw-2">*</span>;
 
 <span class="kw">use </span>std::iter::FusedIterator;
 <span class="kw">use </span>std::ops::{Mul, MulAssign};
 
+<span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">super</span>::pos::Pos;
 <span class="kw">use super</span>::{Coord, OutOfBoundsError};
 
@@ -402,6 +412,8 @@
 </span><span class="attr">#[derive(
     Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Add, AddAssign, Sub, SubAssign, Neg,
 )]
+#[derive(Serialize, Deserialize)]
+#[serde(from = <span class="string">&quot;(i8, i8)&quot;</span>, into = <span class="string">&quot;(i8, i8)&quot;</span>)]
 </span><span class="kw">pub struct </span>Sq(<span class="kw">pub </span>i8, <span class="kw">pub </span>i8);
 
 <span class="kw">impl </span>From&lt;Pos&gt; <span class="kw">for </span>Sq {
@@ -595,6 +607,12 @@
     <span class="kw">fn </span>from(c: Sq) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(y, x): (i8, i8) = c.into();
         glam::IVec2::new(x <span class="kw">as </span>i32, y <span class="kw">as </span>i32)
+    }
+}
+
+<span class="kw">impl </span>From&lt;(i8, i8)&gt; <span class="kw">for </span>Sq {
+    <span class="kw">fn </span>from(value: (i8, i8)) -&gt; <span class="self">Self </span>{
+        Sq(value.<span class="number">0</span>, value.<span class="number">1</span>)
     }
 }
 

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["mouse_click","rc_accepting_game_input"],"struct":["GameInputSet","InhibitGameInput","InputPlugin","MouseClick"]};

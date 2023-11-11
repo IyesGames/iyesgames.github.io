@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/lyon_tessellation-1.0.10/src/geometry_builder.rs`."><title>geometry_builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="lyon_tessellation" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../lyon_tessellation/index.html"><img src="https://nical.github.io/lyon-doc/lyon-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/lyon_tessellation-1.0.11/src/geometry_builder.rs`."><title>geometry_builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="lyon_tessellation" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../lyon_tessellation/index.html"><img src="https://nical.github.io/lyon-doc/lyon-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -675,7 +675,7 @@
 //! }
 //!
 //! // The vertex constructor. This is the object that will be used to create the custom
-//! // verticex from the information provided by the tessellators.
+//! // vertices from the information provided by the tessellators.
 //! struct WithColor([f32; 4]);
 //!
 //! impl FillVertexConstructor&lt;MyVertex&gt; for WithColor {
@@ -1042,14 +1042,9 @@
         <span class="self">self</span>.first_index = <span class="self">self</span>.buffers.indices.len() <span class="kw">as </span>Index;
     }
 
-    <span class="kw">fn </span>abort_geometry(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="self">self</span>.buffers.vertices.truncate(<span class="self">self</span>.first_vertex <span class="kw">as </span>usize);
-        <span class="self">self</span>.buffers.indices.truncate(<span class="self">self</span>.first_index <span class="kw">as </span>usize);
-    }
-
     <span class="kw">fn </span>add_triangle(<span class="kw-2">&amp;mut </span><span class="self">self</span>, a: VertexId, b: VertexId, c: VertexId) {
         <span class="kw">if </span>a == b || a == c || b == c {
-            <span class="macro">println!</span>(<span class="string">&quot;bad triangle {:?} {:?} {:?}&quot;</span>, a, b, c);
+            <span class="macro">println!</span>(<span class="string">&quot;bad triangle {a:?} {b:?} {c:?}&quot;</span>);
         }
         <span class="macro">debug_assert!</span>(a != b);
         <span class="macro">debug_assert!</span>(a != c);
@@ -1060,6 +1055,11 @@
         <span class="self">self</span>.buffers.indices.push((a + <span class="self">self</span>.vertex_offset).into());
         <span class="self">self</span>.buffers.indices.push((b + <span class="self">self</span>.vertex_offset).into());
         <span class="self">self</span>.buffers.indices.push((c + <span class="self">self</span>.vertex_offset).into());
+    }
+
+    <span class="kw">fn </span>abort_geometry(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="self">self</span>.buffers.vertices.truncate(<span class="self">self</span>.first_vertex <span class="kw">as </span>usize);
+        <span class="self">self</span>.buffers.indices.truncate(<span class="self">self</span>.first_index <span class="kw">as </span>usize);
     }
 }
 
@@ -1130,7 +1130,7 @@
 
 <span class="kw">impl </span>FillGeometryBuilder <span class="kw">for </span>NoOutput {
     <span class="kw">fn </span>add_fill_vertex(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _vertex: FillVertex) -&gt; <span class="prelude-ty">Result</span>&lt;VertexId, GeometryBuilderError&gt; {
-        <span class="kw">if </span><span class="self">self</span>.next_vertex == std::u32::MAX {
+        <span class="kw">if </span><span class="self">self</span>.next_vertex == u32::MAX {
             <span class="kw">return </span><span class="prelude-val">Err</span>(GeometryBuilderError::TooManyVertices);
         }
         <span class="self">self</span>.next_vertex += <span class="number">1</span>;
@@ -1140,7 +1140,7 @@
 
 <span class="kw">impl </span>StrokeGeometryBuilder <span class="kw">for </span>NoOutput {
     <span class="kw">fn </span>add_stroke_vertex(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw">_</span>: StrokeVertex) -&gt; <span class="prelude-ty">Result</span>&lt;VertexId, GeometryBuilderError&gt; {
-        <span class="kw">if </span><span class="self">self</span>.next_vertex == std::u32::MAX {
+        <span class="kw">if </span><span class="self">self</span>.next_vertex == u32::MAX {
             <span class="kw">return </span><span class="prelude-val">Err</span>(GeometryBuilderError::TooManyVertices);
         }
         <span class="self">self</span>.next_vertex += <span class="number">1</span>;
@@ -1158,34 +1158,34 @@
 }
 
 <span class="kw">impl </span>MaxIndex <span class="kw">for </span>u8 {
-    <span class="kw">const </span>MAX: usize = std::u8::MAX <span class="kw">as </span>usize;
+    <span class="kw">const </span>MAX: usize = u8::MAX <span class="kw">as </span>usize;
 }
 <span class="kw">impl </span>MaxIndex <span class="kw">for </span>i8 {
-    <span class="kw">const </span>MAX: usize = std::i8::MAX <span class="kw">as </span>usize;
+    <span class="kw">const </span>MAX: usize = i8::MAX <span class="kw">as </span>usize;
 }
 <span class="kw">impl </span>MaxIndex <span class="kw">for </span>u16 {
-    <span class="kw">const </span>MAX: usize = std::u16::MAX <span class="kw">as </span>usize;
+    <span class="kw">const </span>MAX: usize = u16::MAX <span class="kw">as </span>usize;
 }
 <span class="kw">impl </span>MaxIndex <span class="kw">for </span>i16 {
-    <span class="kw">const </span>MAX: usize = std::i16::MAX <span class="kw">as </span>usize;
+    <span class="kw">const </span>MAX: usize = i16::MAX <span class="kw">as </span>usize;
 }
 <span class="kw">impl </span>MaxIndex <span class="kw">for </span>u32 {
-    <span class="kw">const </span>MAX: usize = std::u32::MAX <span class="kw">as </span>usize;
+    <span class="kw">const </span>MAX: usize = u32::MAX <span class="kw">as </span>usize;
 }
 <span class="kw">impl </span>MaxIndex <span class="kw">for </span>i32 {
-    <span class="kw">const </span>MAX: usize = std::i32::MAX <span class="kw">as </span>usize;
+    <span class="kw">const </span>MAX: usize = i32::MAX <span class="kw">as </span>usize;
 }
 <span class="comment">// The tessellators internally use u32 indices so we can&#39;t have more than u32::MAX
 </span><span class="kw">impl </span>MaxIndex <span class="kw">for </span>u64 {
-    <span class="kw">const </span>MAX: usize = std::u32::MAX <span class="kw">as </span>usize;
+    <span class="kw">const </span>MAX: usize = u32::MAX <span class="kw">as </span>usize;
 }
 <span class="kw">impl </span>MaxIndex <span class="kw">for </span>i64 {
-    <span class="kw">const </span>MAX: usize = std::u32::MAX <span class="kw">as </span>usize;
+    <span class="kw">const </span>MAX: usize = u32::MAX <span class="kw">as </span>usize;
 }
 <span class="kw">impl </span>MaxIndex <span class="kw">for </span>usize {
-    <span class="kw">const </span>MAX: usize = std::u32::MAX <span class="kw">as </span>usize;
+    <span class="kw">const </span>MAX: usize = u32::MAX <span class="kw">as </span>usize;
 }
 <span class="kw">impl </span>MaxIndex <span class="kw">for </span>isize {
-    <span class="kw">const </span>MAX: usize = std::u32::MAX <span class="kw">as </span>usize;
+    <span class="kw">const </span>MAX: usize = u32::MAX <span class="kw">as </span>usize;
 }
 </code></pre></div></section></main></body></html>

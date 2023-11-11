@@ -111,6 +111,38 @@
 <a href="#111" id="111">111</a>
 <a href="#112" id="112">112</a>
 <a href="#113" id="113">113</a>
+<a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/// Convenience, to be imported in every file in the crate
 </span><span class="kw">mod </span>prelude {
     <span class="kw">pub use </span>bevy::prelude::<span class="kw-2">*</span>;
@@ -131,7 +163,6 @@
 <span class="kw">mod </span>cli;
 <span class="kw">mod </span>game;
 <span class="kw">mod </span>gfx2d;
-<span class="kw">mod </span>input;
 <span class="kw">mod </span>locale;
 <span class="kw">mod </span>minimap;
 <span class="kw">mod </span>net;
@@ -182,7 +213,40 @@
         filter: <span class="string">&quot;info,wgpu_core=warn,wgpu_hal=warn,minewars=info&quot;</span>.into(),
         level: bevy::log::Level::INFO,
     });
-    app.add_plugins(bevy_plugins);
+    <span class="kw">let </span>compute_threads = {
+        <span class="kw">let </span>physical = num_cpus::get_physical();
+        <span class="kw">let </span>logical = num_cpus::get();
+        <span class="kw">if </span>physical &lt; <span class="number">4 </span>{
+            logical
+        } <span class="kw">else </span>{
+            physical
+        }
+    };
+    <span class="kw">let </span>bevy_plugins = bevy_plugins.set(TaskPoolPlugin {
+        task_pool_options: TaskPoolOptions {
+            min_total_threads: <span class="number">1</span>,
+            max_total_threads: std::usize::MAX,
+            io: bevy::core::TaskPoolThreadAssignmentPolicy {
+                min_threads: <span class="number">2</span>,
+                max_threads: <span class="number">4</span>,
+                percent: <span class="number">0.25</span>,
+            },
+            async_compute: bevy::core::TaskPoolThreadAssignmentPolicy {
+                min_threads: <span class="number">2</span>,
+                max_threads: <span class="number">4</span>,
+                percent: <span class="number">0.25</span>,
+            },
+            compute: bevy::core::TaskPoolThreadAssignmentPolicy {
+                min_threads: compute_threads,
+                max_threads: std::usize::MAX,
+                percent: <span class="number">1.0</span>,
+            },
+        }
+    });
+    app.add_plugins(
+        bevy_plugins.build()
+            .disable::&lt;bevy::render::pipelined_rendering::PipelinedRenderingPlugin&gt;()
+    );
 
     app.add_plugins(bevy::diagnostic::FrameTimeDiagnosticsPlugin::default());
 
@@ -196,6 +260,7 @@
         bevy_fluent::FluentPlugin,
         ProgressPlugin::new(AppState::AssetsLoading).continue_to(AppState::SplashIyes),
         iyes_ui::UiExtrasPlugin,
+        InputManagerPlugin::&lt;mw_app::input::InputAction&gt;::default(),
     ));
 
     <span class="comment">// our stuff
@@ -209,7 +274,6 @@
         <span class="kw">crate</span>::cli::CliPlugin,
         <span class="kw">crate</span>::ui::UiPlugin,
         <span class="kw">crate</span>::settings::SettingsPlugin,
-        <span class="kw">crate</span>::input::InputPlugin,
         <span class="kw">crate</span>::gfx2d::Gfx2dPlugin,
         <span class="kw">crate</span>::game::GameplayPlugin,
         <span class="kw">crate</span>::minimap::MinimapPlugin,

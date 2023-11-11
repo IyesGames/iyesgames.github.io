@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/lyon_tessellation-1.0.10/src/fill.rs`."><title>fill.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="lyon_tessellation" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../lyon_tessellation/index.html"><img src="https://nical.github.io/lyon-doc/lyon-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/lyon_tessellation-1.0.11/src/fill.rs`."><title>fill.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="lyon_tessellation" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../lyon_tessellation/index.html"><img src="https://nical.github.io/lyon-doc/lyon-logo.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -3002,7 +3002,6 @@
 <a href="#3002" id="3002">3002</a>
 <a href="#3003" id="3003">3003</a>
 <a href="#3004" id="3004">3004</a>
-<a href="#3005" id="3005">3005</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::event_queue::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::geom::LineSegment;
 <span class="kw">use </span><span class="kw">crate</span>::math::<span class="kw-2">*</span>;
@@ -3020,7 +3019,7 @@
 };
 <span class="kw">use </span>float_next_after::NextAfter;
 <span class="kw">use </span>std::cmp::Ordering;
-<span class="kw">use </span>std::f32;
+<span class="kw">use </span>std::f32::consts::FRAC_1_SQRT_2;
 <span class="kw">use </span>std::mem;
 <span class="kw">use </span>std::ops::Range;
 
@@ -3065,7 +3064,7 @@
 }
 
 <span class="kw">fn </span>slope(v: Vector) -&gt; f32 {
-    v.x / (v.y.max(std::f32::MIN))
+    v.x / (v.y.max(f32::MIN))
 }
 
 <span class="attr">#[cfg(debug_assertions)]
@@ -3831,7 +3830,7 @@
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), TessellationError&gt; {
         log_svg_preamble(<span class="self">self</span>);
 
-        <span class="kw">let </span><span class="kw-2">mut </span>_prev_position = point(std::f32::MIN, std::f32::MIN);
+        <span class="kw">let </span><span class="kw-2">mut </span>_prev_position = point(f32::MIN, f32::MIN);
         <span class="self">self</span>.current_event_id = <span class="self">self</span>.events.first_id();
         <span class="kw">while </span><span class="self">self</span>.events.valid_id(<span class="self">self</span>.current_event_id) {
             <span class="self">self</span>.initialize_events(attrib_store, output)<span class="question-mark">?</span>;
@@ -4053,7 +4052,7 @@
                 <span class="kw">continue</span>;
             }
 
-            <span class="kw">let </span>egde_is_before_current_point =
+            <span class="kw">let </span>edge_is_before_current_point =
                 <span class="kw">if </span>points_are_equal(<span class="self">self</span>.current_position, active_edge.to) {
                     <span class="comment">// We just found our first edge that connects with the current point.
                     // We might find other ones in the next iterations.
@@ -4086,7 +4085,7 @@
                     </span>}
                 };
 
-            <span class="kw">if </span>!egde_is_before_current_point {
+            <span class="kw">if </span>!edge_is_before_current_point {
                 <span class="kw">break</span>;
             }
 
@@ -4707,7 +4706,7 @@
 
         <span class="kw">if </span>!is_after(intersection_position, <span class="self">self</span>.current_position) {
             <span class="macro">tess_log!</span>(<span class="self">self</span>, <span class="string">&quot;fixup the intersection&quot;</span>);
-            intersection_position.y = <span class="self">self</span>.current_position.y.next_after(std::f32::INFINITY);
+            intersection_position.y = <span class="self">self</span>.current_position.y.next_after(f32::INFINITY);
         }
 
         <span class="macro">assert!</span>(
@@ -4742,7 +4741,7 @@
                 </span>inserted_evt = <span class="prelude-val">Some</span>(<span class="self">self</span>.events.insert_sorted(
                     intersection_position,
                     EdgeData {
-                        range: remapped_ta <span class="kw">as </span>f32..active_edge.range_end,
+                        range: remapped_ta..active_edge.range_end,
                         winding: active_edge.winding,
                         to: active_edge.to,
                         is_edge: <span class="bool-val">true</span>,
@@ -4756,7 +4755,7 @@
                 <span class="self">self</span>.events.insert_sorted(
                     active_edge.to,
                     EdgeData {
-                        range: active_edge.range_end..remapped_ta <span class="kw">as </span>f32,
+                        range: active_edge.range_end..remapped_ta,
                         winding: -active_edge.winding,
                         to: intersection_position,
                         is_edge: <span class="bool-val">true</span>,
@@ -4777,7 +4776,7 @@
 
             <span class="kw">if </span>is_after(edge_below.to, intersection_position) {
                 <span class="kw">let </span>edge_data = EdgeData {
-                    range: remapped_tb <span class="kw">as </span>f32..edge_below.range_end,
+                    range: remapped_tb..edge_below.range_end,
                     winding: edge_below.winding,
                     to: edge_below.to,
                     is_edge: <span class="bool-val">true</span>,
@@ -4800,7 +4799,7 @@
                 <span class="self">self</span>.events.insert_sorted(
                     edge_below.to,
                     EdgeData {
-                        range: edge_below.range_end..remapped_tb <span class="kw">as </span>f32,
+                        range: edge_below.range_end..remapped_tb,
                         winding: -edge_below.winding,
                         to: intersection_position,
                         is_edge: <span class="bool-val">true</span>,
@@ -4990,7 +4989,7 @@
     <span class="attr">#[cfg_attr(feature = <span class="string">&quot;profiling&quot;</span>, inline(never))]
     </span><span class="kw">fn </span>sort_edges_below(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.edges_below
-            .sort_unstable_by(|a, b| a.sort_key.partial_cmp(<span class="kw-2">&amp;</span>b.sort_key).unwrap());
+            .sort_unstable_by(|a, b| a.sort_key.partial_cmp(<span class="kw-2">&amp;</span>b.sort_key).unwrap_or(Ordering::Equal));
     }
 
     <span class="attr">#[cfg_attr(feature = <span class="string">&quot;profiling&quot;</span>, inline(never))]
@@ -5216,16 +5215,16 @@
         </span><span class="kw">match </span>first {
             VertexSource::Endpoint { id } =&gt; {
                 <span class="kw">let </span>a = store.get(id);
-                <span class="macro">assert!</span>(a.len() == num_attributes);
-                <span class="macro">assert!</span>(<span class="self">self</span>.attrib_buffer.len() == num_attributes);
+                <span class="macro">assert_eq!</span>(a.len(), num_attributes);
+                <span class="macro">assert_eq!</span>(<span class="self">self</span>.attrib_buffer.len(), num_attributes);
                 <span class="self">self</span>.attrib_buffer[..num_attributes].clone_from_slice(<span class="kw-2">&amp;</span>a[..num_attributes]);
             }
             VertexSource::Edge { from, to, t } =&gt; {
                 <span class="kw">let </span>a = store.get(from);
                 <span class="kw">let </span>b = store.get(to);
-                <span class="macro">assert!</span>(a.len() == num_attributes);
-                <span class="macro">assert!</span>(b.len() == num_attributes);
-                <span class="macro">assert!</span>(<span class="self">self</span>.attrib_buffer.len() == num_attributes);
+                <span class="macro">assert_eq!</span>(a.len(), num_attributes);
+                <span class="macro">assert_eq!</span>(b.len(), num_attributes);
+                <span class="macro">assert_eq!</span>(<span class="self">self</span>.attrib_buffer.len(), num_attributes);
                 <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..num_attributes {
                     <span class="self">self</span>.attrib_buffer[i] = a[i] * (<span class="number">1.0 </span>- t) + b[i] * t;
                 }
@@ -5237,8 +5236,8 @@
             <span class="kw">match </span>next {
                 <span class="prelude-val">Some</span>(VertexSource::Endpoint { id }) =&gt; {
                     <span class="kw">let </span>a = store.get(id);
-                    <span class="macro">assert!</span>(a.len() == num_attributes);
-                    <span class="macro">assert!</span>(<span class="self">self</span>.attrib_buffer.len() == num_attributes);
+                    <span class="macro">assert_eq!</span>(a.len(), num_attributes);
+                    <span class="macro">assert_eq!</span>(<span class="self">self</span>.attrib_buffer.len(), num_attributes);
                     <span class="kw">for </span>(i, <span class="kw-2">&amp;</span>att) <span class="kw">in </span>a.iter().enumerate() {
                         <span class="self">self</span>.attrib_buffer[i] += att;
                     }
@@ -5246,9 +5245,9 @@
                 <span class="prelude-val">Some</span>(VertexSource::Edge { from, to, t }) =&gt; {
                     <span class="kw">let </span>a = store.get(from);
                     <span class="kw">let </span>b = store.get(to);
-                    <span class="macro">assert!</span>(a.len() == num_attributes);
-                    <span class="macro">assert!</span>(b.len() == num_attributes);
-                    <span class="macro">assert!</span>(<span class="self">self</span>.attrib_buffer.len() == num_attributes);
+                    <span class="macro">assert_eq!</span>(a.len(), num_attributes);
+                    <span class="macro">assert_eq!</span>(b.len(), num_attributes);
+                    <span class="macro">assert_eq!</span>(<span class="self">self</span>.attrib_buffer.len(), num_attributes);
                     <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..num_attributes {
                         <span class="self">self</span>.attrib_buffer[i] += a[i] * (<span class="number">1.0 </span>- t) + b[i] * t;
                     }
@@ -5455,13 +5454,12 @@
         <span class="self">self</span>.reserve(<span class="number">16</span>, <span class="number">8</span>);
 
         <span class="kw">let </span>tan_pi_over_8 = <span class="number">0.41421357</span>;
-        <span class="kw">let </span>cos_pi_over_4 = f32::consts::FRAC_1_SQRT_2;
         <span class="kw">let </span>d = radius * tan_pi_over_8;
 
         <span class="kw">let </span>start = center + vector(-radius, <span class="number">0.0</span>);
         <span class="self">self</span>.begin(start, attributes);
         <span class="kw">let </span>ctrl_0 = center + vector(-radius, -d * dir);
-        <span class="kw">let </span>mid_0 = center + vector(-<span class="number">1.0</span>, -dir) * radius * cos_pi_over_4;
+        <span class="kw">let </span>mid_0 = center + vector(-<span class="number">1.0</span>, -dir) * radius * FRAC_1_SQRT_2;
         <span class="kw">let </span>ctrl_1 = center + vector(-d, -radius * dir);
         <span class="kw">let </span>mid_1 = center + vector(<span class="number">0.0</span>, -radius * dir);
         <span class="self">self</span>.quadratic_bezier_to(ctrl_0, mid_0, attributes);
@@ -5472,7 +5470,7 @@
 
         <span class="self">self</span>.begin(mid_1, attributes);
         <span class="kw">let </span>ctrl_0 = center + vector(d, -radius * dir);
-        <span class="kw">let </span>mid_2 = center + vector(<span class="number">1.0</span>, -dir) * radius * cos_pi_over_4;
+        <span class="kw">let </span>mid_2 = center + vector(<span class="number">1.0</span>, -dir) * radius * FRAC_1_SQRT_2;
         <span class="kw">let </span>ctrl_1 = center + vector(radius, -d * dir);
         <span class="kw">let </span>mid_3 = center + vector(radius, <span class="number">0.0</span>);
         <span class="self">self</span>.quadratic_bezier_to(ctrl_0, mid_2, attributes);
@@ -5483,7 +5481,7 @@
 
         <span class="self">self</span>.begin(mid_3, attributes);
         <span class="kw">let </span>ctrl_0 = center + vector(radius, d * dir);
-        <span class="kw">let </span>mid_4 = center + vector(<span class="number">1.0</span>, dir) * radius * cos_pi_over_4;
+        <span class="kw">let </span>mid_4 = center + vector(<span class="number">1.0</span>, dir) * radius * FRAC_1_SQRT_2;
         <span class="kw">let </span>ctrl_1 = center + vector(d, radius * dir);
         <span class="kw">let </span>mid_5 = center + vector(<span class="number">0.0</span>, radius * dir);
         <span class="self">self</span>.quadratic_bezier_to(ctrl_0, mid_4, attributes);
@@ -5494,7 +5492,7 @@
 
         <span class="self">self</span>.begin(mid_5, attributes);
         <span class="kw">let </span>ctrl_0 = center + vector(-d, radius * dir);
-        <span class="kw">let </span>mid_6 = center + vector(-<span class="number">1.0</span>, dir) * radius * cos_pi_over_4;
+        <span class="kw">let </span>mid_6 = center + vector(-<span class="number">1.0</span>, dir) * radius * FRAC_1_SQRT_2;
         <span class="kw">let </span>ctrl_1 = center + vector(-radius, d * dir);
         <span class="self">self</span>.quadratic_bezier_to(ctrl_0, mid_6, attributes);
         <span class="self">self</span>.end(<span class="bool-val">false</span>);
@@ -5690,8 +5688,8 @@
     }
 
     <span class="kw">impl </span>GeometryBuilder <span class="kw">for </span>CheckVertexSources {
-        <span class="kw">fn </span>abort_geometry(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {}
         <span class="kw">fn </span>add_triangle(<span class="kw-2">&amp;mut </span><span class="self">self</span>, <span class="kw">_</span>: VertexId, <span class="kw">_</span>: VertexId, <span class="kw">_</span>: VertexId) {}
+        <span class="kw">fn </span>abort_geometry(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {}
     }
 
     <span class="kw">impl </span>FillGeometryBuilder <span class="kw">for </span>CheckVertexSources {
@@ -5840,7 +5838,7 @@
                 <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..a.len() {
                     <span class="kw">let </span>are_equal = (a[i] - b[i]).abs() &lt; <span class="number">0.001</span>;
                     <span class="kw">if </span>!are_equal {
-                        <span class="macro">println!</span>(<span class="string">&quot;{:?} != {:?}&quot;</span>, a, b);
+                        <span class="macro">println!</span>(<span class="string">&quot;{a:?} != {b:?}&quot;</span>);
                     }
                     <span class="macro">assert!</span>(are_equal);
                 }

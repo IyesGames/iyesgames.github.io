@@ -512,11 +512,21 @@
 <a href="#512" id="512">512</a>
 <a href="#513" id="513">513</a>
 <a href="#514" id="514">514</a>
+<a href="#515" id="515">515</a>
+<a href="#516" id="516">516</a>
+<a href="#517" id="517">517</a>
+<a href="#518" id="518">518</a>
+<a href="#519" id="519">519</a>
+<a href="#520" id="520">520</a>
+<a href="#521" id="521">521</a>
+<a href="#522" id="522">522</a>
+<a href="#523" id="523">523</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>derive_more::<span class="kw-2">*</span>;
 
 <span class="kw">use </span>std::iter::FusedIterator;
 <span class="kw">use </span>std::ops::{Mul, MulAssign};
 
+<span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">super</span>::pos::Pos;
 <span class="kw">use super</span>::{Coord, OutOfBoundsError};
 
@@ -524,6 +534,8 @@
 </span><span class="attr">#[derive(
     Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Add, AddAssign, Sub, SubAssign, Neg,
 )]
+#[derive(Serialize, Deserialize)]
+#[serde(from = <span class="string">&quot;(i8, i8)&quot;</span>, into = <span class="string">&quot;(i8, i8)&quot;</span>)]
 </span><span class="kw">pub struct </span>Hex(<span class="kw">pub </span>i8, <span class="kw">pub </span>i8);
 
 <span class="kw">impl </span>From&lt;Pos&gt; <span class="kw">for </span>Hex {
@@ -795,6 +807,12 @@
     <span class="kw">fn </span>from(c: Hex) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(y, x): (i8, i8) = c.into();
         glam::IVec2::new(x <span class="kw">as </span>i32, y <span class="kw">as </span>i32)
+    }
+}
+
+<span class="kw">impl </span>From&lt;(i8, i8)&gt; <span class="kw">for </span>Hex {
+    <span class="kw">fn </span>from(value: (i8, i8)) -&gt; <span class="self">Self </span>{
+        Hex(value.<span class="number">0</span>, value.<span class="number">1</span>)
     }
 }
 

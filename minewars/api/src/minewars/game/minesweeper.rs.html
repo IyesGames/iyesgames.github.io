@@ -127,12 +127,9 @@
 <a href="#127" id="127">127</a>
 <a href="#128" id="128">128</a>
 <a href="#129" id="129">129</a>
-<a href="#130" id="130">130</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::input::GameInputSet;
-<span class="kw">use </span><span class="kw">crate</span>::input::MouseClick;
-<span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span>mw_app::camera::GridCursor;
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_app::settings::MapGenStyle;
+<span class="kw">use </span>mw_app::tool::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_app::view::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_app::bevyhost::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_app::player::<span class="kw-2">*</span>;
@@ -164,7 +161,7 @@
         app.add_systems(Update, (
             minesweeper_input
                 .in_set(InGameSet(<span class="prelude-val">Some</span>(GameMode::Minesweeper)))
-                .in_set(GameInputSet),
+                .in_set(ToolEventHandlerSet),
         ));
     }
 }
@@ -239,22 +236,23 @@
     world.resource_mut::&lt;NextState&lt;SessionKind&gt;&gt;().set(SessionKind::BevyHost);
 }
 
-<span class="comment">// TODO: replace this with something more elaborate?
-</span><span class="kw">fn </span>minesweeper_input(
-    crs: Res&lt;GridCursor&gt;,
-    <span class="kw-2">mut </span>evr_mouse: EventReader&lt;MouseClick&gt;,
+<span class="kw">fn </span>minesweeper_input(
+    <span class="kw-2">mut </span>evr_tool: EventReader&lt;ToolEvent&gt;,
     <span class="kw-2">mut </span>evw: EventWriter&lt;MinesweeperInputAction&gt;,
 ) {
-    <span class="kw">for </span>ev <span class="kw">in </span>evr_mouse.iter() {
-        <span class="kw">if </span>ev.<span class="number">0 </span>== MouseButton::Left {
-            evw.send(MinesweeperInputAction::ExploreTile {
-                pos: crs.<span class="number">0</span>,
-            });
-        }
-        <span class="kw">if </span>ev.<span class="number">0 </span>== MouseButton::Right {
-            evw.send(MinesweeperInputAction::ToggleFlag {
-                pos: crs.<span class="number">0</span>,
-            });
+    <span class="kw">for </span>ev <span class="kw">in </span>evr_tool.iter() {
+        <span class="kw">match </span>(ev.tool, ev.state) {
+            (Tool::Explore, ToolState::Select(pos)) =&gt; {
+                evw.send(MinesweeperInputAction::ExploreTile {
+                    pos,
+                });
+            }
+            (Tool::Flag, ToolState::Select(pos)) =&gt; {
+                evw.send(MinesweeperInputAction::ToggleFlag {
+                    pos,
+                });
+            }
+            <span class="kw">_ </span>=&gt; {}
         }
     }
 }
