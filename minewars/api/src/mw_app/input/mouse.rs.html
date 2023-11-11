@@ -22,6 +22,7 @@
 <a href="#22" id="22">22</a>
 <a href="#23" id="23">23</a>
 <a href="#24" id="24">24</a>
+<a href="#25" id="25">25</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
@@ -45,5 +46,6 @@
 
 <span class="kw">pub fn </span>add_minewars_defaults(map: <span class="kw-2">&amp;mut </span>InputMap&lt;InputAction&gt;) {
     map.insert(MouseButton::Left, InputAction::UseCurrentTool);
-}
+    <span class="comment">// map.insert(MouseButton::Right, InputAction::UseTool(Tool::Flag));
+</span>}
 </code></pre></div></section></main></body></html>
