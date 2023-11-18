@@ -107,7 +107,8 @@ var srcIndex = JSON.parse('{\
 "equivalent":["",[],["lib.rs"]],\
 "erased_serde":["",[["features_check",[],["mod.rs"]]],["any.rs","de.rs","error.rs","lib.rs","macros.rs","map.rs","private.rs","ser.rs"]],\
 "euclid":["",[],["angle.rs","approxeq.rs","approxord.rs","box2d.rs","box3d.rs","homogen.rs","length.rs","lib.rs","macros.rs","num.rs","point.rs","rect.rs","rigid.rs","rotation.rs","scale.rs","side_offsets.rs","size.rs","transform2d.rs","transform3d.rs","translation.rs","trig.rs","vector.rs"]],\
-"event_listener":["",[],["lib.rs"]],\
+"event_listener":["",[],["lib.rs","notify.rs","std.rs"]],\
+"event_listener_strategy":["",[],["lib.rs"]],\
 "fastrand":["",[],["global_rng.rs","lib.rs"]],\
 "fdeflate":["",[],["compress.rs","decompress.rs","lib.rs","tables.rs"]],\
 "filetime":["",[["unix",[],["linux.rs","mod.rs","utimes.rs"]]],["lib.rs"]],\
@@ -121,8 +122,7 @@ var srcIndex = JSON.parse('{\
 "fluent_syntax":["",[["ast",[],["helper.rs","mod.rs"]],["parser",[],["comment.rs","core.rs","errors.rs","expression.rs","helper.rs","macros.rs","mod.rs","pattern.rs","runtime.rs","slice.rs"]]],["lib.rs","unicode.rs"]],\
 "fnv":["",[],["lib.rs"]],\
 "futures_core":["",[["task",[["__internal",[],["atomic_waker.rs","mod.rs"]]],["mod.rs","poll.rs"]]],["future.rs","lib.rs","stream.rs"]],\
-"futures_io":["",[],["lib.rs"]],\
-"futures_lite":["",[],["future.rs","io.rs","lib.rs","prelude.rs","stream.rs"]],\
+"futures_lite":["",[],["future.rs","lib.rs","prelude.rs","stream.rs"]],\
 "getrandom":["",[],["error.rs","error_impls.rs","lib.rs","linux_android.rs","use_file.rs","util.rs","util_libc.rs"]],\
 "gilrs":["",[["ev",[],["filter.rs","mod.rs","state.rs"]],["ff",[],["base_effect.rs","effect_source.rs","mod.rs","server.rs","time.rs"]],["mapping",[],["mod.rs","parser.rs"]]],["constants.rs","gamepad.rs","lib.rs","utils.rs"]],\
 "gilrs_core":["",[["platform",[["linux",[],["ff.rs","gamepad.rs","ioctl.rs","mod.rs","udev.rs"]]],["mod.rs"]]],["lib.rs","utils.rs"]],\
@@ -289,7 +289,7 @@ var srcIndex = JSON.parse('{\
 "tracing":["",[],["dispatcher.rs","field.rs","instrument.rs","level_filters.rs","lib.rs","macros.rs","span.rs","stdlib.rs","subscriber.rs"]],\
 "tracing_attributes":["",[],["attr.rs","expand.rs","lib.rs"]],\
 "tracing_core":["",[],["callsite.rs","dispatcher.rs","event.rs","field.rs","lazy.rs","lib.rs","metadata.rs","parent.rs","span.rs","stdlib.rs","subscriber.rs"]],\
-"tracing_log":["",[],["lib.rs","log_tracer.rs","trace_logger.rs"]],\
+"tracing_log":["",[],["lib.rs","log_tracer.rs"]],\
 "tracing_subscriber":["",[["field",[],["debug.rs","delimited.rs","display.rs","mod.rs"]],["filter",[["env",[],["builder.rs","directive.rs","field.rs","mod.rs"]],["layer_filters",[],["combinator.rs","mod.rs"]]],["directive.rs","filter_fn.rs","level.rs","mod.rs","targets.rs"]],["fmt",[["format",[],["mod.rs","pretty.rs"]],["time",[],["datetime.rs","mod.rs"]]],["fmt_layer.rs","mod.rs","writer.rs"]],["layer",[],["context.rs","layered.rs","mod.rs"]],["registry",[],["extensions.rs","mod.rs","sharded.rs","stack.rs"]]],["lib.rs","macros.rs","prelude.rs","reload.rs","sync.rs","util.rs"]],\
 "ttf_parser":["",[["ggg",[],["chained_context.rs","context.rs","feature_variations.rs","layout_table.rs","lookup.rs","mod.rs"]],["tables",[["cff",[],["argstack.rs","cff1.rs","cff2.rs","charset.rs","charstring.rs","dict.rs","encoding.rs","index.rs","mod.rs","std_names.rs"]],["cmap",[],["format0.rs","format10.rs","format12.rs","format13.rs","format14.rs","format2.rs","format4.rs","format6.rs","mod.rs"]]],["ankr.rs","avar.rs","cbdt.rs","cblc.rs","colr.rs","cpal.rs","feat.rs","fvar.rs","gdef.rs","glyf.rs","gpos.rs","gsub.rs","gvar.rs","head.rs","hhea.rs","hmtx.rs","hvar.rs","kern.rs","kerx.rs","loca.rs","math.rs","maxp.rs","mod.rs","morx.rs","mvar.rs","name.rs","os2.rs","post.rs","sbix.rs","svg.rs","trak.rs","vhea.rs","vorg.rs"]]],["aat.rs","language.rs","lib.rs","parser.rs","var_store.rs"]],\
 "twox_hash":["",[],["lib.rs","sixty_four.rs","thirty_two.rs","xxh3.rs"]],\
@@ -303,7 +303,6 @@ var srcIndex = JSON.parse('{\
 "untrusted":["",[],["input.rs","lib.rs","no_panic.rs","reader.rs"]],\
 "uuid":["",[["external",[],["serde_support.rs"]]],["builder.rs","error.rs","external.rs","fmt.rs","lib.rs","macros.rs","parser.rs","rng.rs","sha1.rs","timestamp.rs","v4.rs","v5.rs"]],\
 "vec_map":["",[],["lib.rs"]],\
-"waker_fn":["",[],["lib.rs"]],\
 "walkdir":["",[],["dent.rs","error.rs","lib.rs","util.rs"]],\
 "wayland_client":["",[["native_lib",[],["display.rs","event_queue.rs","mod.rs","proxy.rs"]]],["display.rs","event_queue.rs","globals.rs","lib.rs","proxy.rs"]],\
 "wayland_commons":["",[],["debug.rs","filter.rs","lib.rs","map.rs","socket.rs","user_data.rs","wire.rs"]],\
