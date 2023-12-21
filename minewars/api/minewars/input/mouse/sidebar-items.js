@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["collect_actions_mousebtn"],"mod":["gfx2d"],"struct":["MouseInputPlugin"]};

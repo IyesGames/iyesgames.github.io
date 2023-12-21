@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["InputManagerSystem"],"struct":["InputManagerPlugin","ToggleActions"]};

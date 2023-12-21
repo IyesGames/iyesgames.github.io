@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["InputAction"],"fn":["new_map_with_minewars_defaults"],"struct":["CurrentTool","InhibitGameInput","InputPlugin"]};
+window.SIDEBAR_ITEMS = {"enum":["AnalogInput","InputAction"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["collect_actions_key"],"mod":["gfx2d"],"struct":["KeyboardInputPlugin"]};

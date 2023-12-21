@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["RectangleOrigin","RegularPolygonFeature"],"struct":["Circle","Ellipse","Line","Polygon","Rectangle","RegularPolygon","RoundedPolygon","SvgPathShape"]};

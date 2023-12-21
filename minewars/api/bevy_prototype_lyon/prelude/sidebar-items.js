@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["FillRule","LineCap","LineJoin","Orientation"],"struct":["FillOptions","StrokeOptions"]};

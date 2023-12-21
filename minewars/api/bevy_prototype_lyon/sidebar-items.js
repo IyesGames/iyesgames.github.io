@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["draw","entity","geometry","path","plugin","prelude","render","shapes"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"constant":["SHAPE_MATERIAL_SHADER_HANDLE"],"struct":["ShapeMaterial","ShapeMaterialPlugin"]};

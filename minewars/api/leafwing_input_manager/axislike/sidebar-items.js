@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["AxisType","MouseMotionAxisType","MouseWheelAxisType"],"struct":["AxisConversionError","DualAxis","DualAxisData","SingleAxis","VirtualAxis","VirtualDPad"]};

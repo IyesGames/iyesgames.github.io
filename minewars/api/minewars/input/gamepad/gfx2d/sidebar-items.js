@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["joystick_pancamera","rc_joystick_pancamera"],"struct":["Gfx2dGamepadInputPlugin"]};
