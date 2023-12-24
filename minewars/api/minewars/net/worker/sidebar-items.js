@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["NetWorkerControl","NetWorkerStatus"],"fn":["async_main","connect_host","host_session","main","setup"],"struct":["Channels","HostSessionConfig"]};
+window.SIDEBAR_ITEMS = {"enum":["NetWorkerControl","NetWorkerStatus"],"fn":["async_main","main","setup"],"mod":["auth","host"],"struct":["Channels"]};

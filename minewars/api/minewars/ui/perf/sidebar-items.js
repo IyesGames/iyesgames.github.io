@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["fps_text_update_system","setup_perfui"],"struct":["FpsText","PerfUiPlugin"]};
+window.SIDEBAR_ITEMS = {"fn":["fps_text_update_system","rtt_text_update_system","setup_perfui"],"struct":["FpsText","PerfUiPlugin","RttText"]};
