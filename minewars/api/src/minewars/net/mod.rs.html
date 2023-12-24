@@ -117,6 +117,8 @@
 <a href="#117" id="117">117</a>
 <a href="#118" id="118">118</a>
 <a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>mw_app::GameEventSet;
 <span class="kw">use </span>mw_common::game::event::GameEvent;
 
@@ -157,18 +159,17 @@
 <span class="attr">#[derive(Resource)]
 </span><span class="kw">pub struct </span>NetWorkerThread {
     jh: <span class="prelude-ty">Option</span>&lt;std::thread::JoinHandle&lt;()&gt;&gt;,
-    tx_shutdown: TxShutdown,
+    shutdown: CancellationToken,
 }
 
 <span class="kw">impl </span>Drop <span class="kw">for </span>NetWorkerThread {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="self">self</span>.tx_shutdown.send(()).ok();
+        <span class="self">self</span>.shutdown.cancel();
         <span class="self">self</span>.jh.take().unwrap().join().ok();
     }
 }
 
 <span class="kw">fn </span>setup_networkerthread(<span class="kw-2">mut </span>commands: Commands, settings: Res&lt;AllSettings&gt;) {
-    <span class="kw">let </span>(tx_shutdown, rx_shutdown) = tokio::sync::broadcast::channel(<span class="number">1</span>);
     <span class="kw">let </span>(tx_control, rx_control) = tokio::sync::broadcast::channel(<span class="number">2</span>);
     <span class="kw">let </span>(tx_status, rx_status) = tokio::sync::mpsc::unbounded_channel();
     <span class="kw">let </span>(tx_game_event, rx_game_event) = tokio::sync::mpsc::unbounded_channel();
@@ -181,19 +182,22 @@
         <span class="kw">return</span>;
     }
 
+    <span class="kw">let </span>rt = ManagedRuntime::new();
+    <span class="kw">let </span>shutdown = rt.token();
+
     <span class="kw">let </span>networker_channels = worker::Channels {
-        tx_shutdown: tx_shutdown.clone(), rx_shutdown, rx_control, tx_status, tx_game_event,
+        shutdown: shutdown.clone(), rx_control, tx_status, tx_game_event,
     };
 
     <span class="kw">let </span>networker_settings = settings.net.worker.clone();
 
     <span class="kw">match </span>std::thread::Builder::new()
         .name(<span class="string">&quot;minewars-net-worker&quot;</span>.into())
-        .spawn(|| worker::main(networker_settings, networker_channels))
+        .spawn(|| worker::main(rt, networker_settings, networker_channels))
     {
         <span class="prelude-val">Ok</span>(jh) =&gt; {
             commands.insert_resource(NetWorkerThread {
-                tx_shutdown,
+                shutdown,
                 jh: <span class="prelude-val">Some</span>(jh),
             });
         },

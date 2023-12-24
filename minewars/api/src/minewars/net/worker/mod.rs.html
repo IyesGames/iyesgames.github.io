@@ -177,6 +177,21 @@
 <a href="#177" id="177">177</a>
 <a href="#178" id="178">178</a>
 <a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>mw_common::net::{load_client_crypto, setup_quic_client};
 
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
@@ -221,8 +236,7 @@
 }
 
 <span class="kw">pub struct </span>Channels {
-    <span class="kw">pub </span>tx_shutdown: TxShutdown,
-    <span class="kw">pub </span>rx_shutdown: RxShutdown,
+    <span class="kw">pub </span>shutdown: CancellationToken,
     <span class="kw">pub </span>tx_game_event: TxMpscU&lt;GameEvent&gt;,
     <span class="kw">pub </span>tx_status: TxMpscU&lt;NetWorkerStatus&gt;,
     <span class="kw">pub </span>rx_control: RxBroadcast&lt;NetWorkerControl&gt;,
@@ -231,15 +245,14 @@
 <span class="kw">impl </span>Channels {
     <span class="kw">fn </span>net_disable(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.tx_status.send(NetWorkerStatus::NetDisabled).ok();
-        <span class="self">self</span>.tx_shutdown.send(()).ok();
+        <span class="self">self</span>.shutdown.cancel();
     }
 }
 
 <span class="kw">impl </span>Clone <span class="kw">for </span>Channels {
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         Channels {
-            tx_shutdown: <span class="self">self</span>.tx_shutdown.clone(),
-            rx_shutdown: <span class="self">self</span>.rx_shutdown.resubscribe(),
+            shutdown: <span class="self">self</span>.shutdown.clone(),
             tx_game_event: <span class="self">self</span>.tx_game_event.clone(),
             tx_status: <span class="self">self</span>.tx_status.clone(),
             rx_control: <span class="self">self</span>.rx_control.resubscribe(),
@@ -247,83 +260,99 @@
     }
 }
 
-<span class="kw">struct </span>HostSessionState {
-    connection: quinn::Connection,
-}
-
-<span class="kw">struct </span>NetWorkerState {
-    endpoint: quinn::Endpoint,
-}
-
-<span class="kw">async fn </span>setup(config: <span class="kw-2">&amp;</span>NetWorkerConfig) -&gt; AnyResult&lt;NetWorkerState&gt; {
+<span class="kw">async fn </span>setup(config: <span class="kw-2">&amp;</span>NetWorkerConfig) -&gt; AnyResult&lt;quinn::Endpoint&gt; {
     <span class="kw">let </span>crypto = load_client_crypto(
         <span class="kw-2">&amp;</span>config.ca_cert,
         <span class="bool-val">false</span>,
         <span class="kw-2">&amp;</span>[<span class="string">&quot;&quot;</span>], <span class="string">&quot;&quot;</span>,
     ).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="kw">let </span>endpoint = setup_quic_client(crypto, <span class="string">&quot;0.0.0.0:0&quot;</span>.parse().unwrap())<span class="question-mark">?</span>;
-    <span class="prelude-val">Ok</span>(NetWorkerState {
-        endpoint,
-    })
+    <span class="prelude-val">Ok</span>(endpoint)
 }
 
 <span class="kw">async fn </span>connect_host(
     endpoint: <span class="kw-2">&amp;</span>quinn::Endpoint,
     config: <span class="kw-2">&amp;</span>HostSessionConfig,
-) -&gt; AnyResult&lt;HostSessionState&gt; {
+) -&gt; AnyResult&lt;quinn::Connection&gt; {
     <span class="macro">info!</span>(<span class="string">&quot;Connecting to Host: {}&quot;</span>, config.addr);
     <span class="kw">let </span>connecting = endpoint.connect(config.addr, config.server_name())<span class="question-mark">?</span>;
     <span class="kw">let </span>connection = connecting.<span class="kw">await</span><span class="question-mark">?</span>;
-    <span class="prelude-val">Ok</span>(HostSessionState {
-        connection,
-    })
+    <span class="prelude-val">Ok</span>(connection)
 }
 
-<span class="kw">async fn </span>async_main(config: NetWorkerConfig, <span class="kw-2">mut </span>channels: Channels) {
-    <span class="kw">let </span><span class="kw-2">mut </span>state = <span class="kw">match </span>setup(<span class="kw-2">&amp;</span>config).<span class="kw">await  </span>{
-        <span class="prelude-val">Ok</span>(state) =&gt; state,
+<span class="kw">async fn </span>async_main(rt: ManagedRuntime, config: NetWorkerConfig, <span class="kw-2">mut </span>channels: Channels) {
+    <span class="kw">let </span><span class="kw-2">mut </span>endpoint = <span class="kw">match </span>setup(<span class="kw-2">&amp;</span>config).<span class="kw">await  </span>{
+        <span class="prelude-val">Ok</span>(endpoint) =&gt; endpoint,
         <span class="prelude-val">Err</span>(e) =&gt; {
-            <span class="macro">error!</span>(<span class="string">&quot;Could not set up networking: {}&quot;</span>, e);
+            <span class="macro">error!</span>(<span class="string">&quot;Could not set up networking: {:#}&quot;</span>, e);
             channels.tx_status.send(NetWorkerStatus::NetError(e)).ok();
             channels.net_disable();
             <span class="kw">return</span>;
         }
     };
 
+    <span class="macro">info!</span>(<span class="string">&quot;Networking started.&quot;</span>);
+
+    <span class="kw">let </span><span class="kw-2">mut </span>session_cancel = rt.child_token();
+
     <span class="kw">loop </span>{
         <span class="macro">tokio::select! </span>{
-            <span class="kw">_ </span>= channels.rx_shutdown.recv() =&gt; {
+            <span class="kw">_ </span>= rt.listen_shutdown() =&gt; {
                 <span class="kw">break</span>;
             }
             <span class="prelude-val">Ok</span>(control) = channels.rx_control.recv() =&gt; {
                 <span class="kw">match </span>control {
                     NetWorkerControl::ConnectHost(config) =&gt; {
-                        <span class="kw">match </span>connect_host(<span class="kw-2">&amp;</span>state.endpoint, <span class="kw-2">&amp;</span>config).<span class="kw">await </span>{
-                            <span class="prelude-val">Ok</span>(session) =&gt; {
-                                channels.tx_status.send(NetWorkerStatus::HostConnected).ok();
-                                <span class="macro">info!</span>(<span class="string">&quot;Connected to Host Server!&quot;</span>);
-                                host_session(<span class="kw-2">&amp;mut </span>state, channels.clone(), session).<span class="kw">await</span>;
-                            }
-                            <span class="prelude-val">Err</span>(e) =&gt; {
-                                <span class="macro">error!</span>(<span class="string">&quot;Could not connect to host: {}&quot;</span>, e);
-                                channels.tx_status.send(NetWorkerStatus::NetError(e)).ok();
-                            }
-                        }
+                        session_cancel.cancel();
+                        session_cancel = rt.child_token();
+                        rt.spawn(host_session(
+                            endpoint.clone(),
+                            config,
+                            channels.clone(),
+                            session_cancel.clone(),
+                        ));
                     }
-                    NetWorkerControl::Disconnect =&gt; {}
+                    NetWorkerControl::Disconnect =&gt; {
+                        session_cancel.cancel();
+                    }
                 }
             }
         }
     }
 }
 
-<span class="kw">async fn </span>host_session(wstate: <span class="kw-2">&amp;mut </span>NetWorkerState, <span class="kw-2">mut </span>channels: Channels, session: HostSessionState) {
+<span class="kw">async fn </span>host_session(
+    endpoint: quinn::Endpoint,
+    config: HostSessionConfig,
+    <span class="kw-2">mut </span>channels: Channels,
+    cancel: CancellationToken,
+) {
+    <span class="kw">let </span>conn = <span class="macro">tokio::select! </span>{
+        <span class="kw">_ </span>= cancel.cancelled() =&gt; {
+            <span class="kw">return</span>;
+        }
+        r = connect_host(<span class="kw-2">&amp;</span>endpoint, <span class="kw-2">&amp;</span>config) =&gt; {
+            <span class="kw">match </span>r {
+                <span class="prelude-val">Ok</span>(conn) =&gt; {
+                    <span class="macro">info!</span>(<span class="string">&quot;Connected to Host Server!&quot;</span>);
+                    channels.tx_status.send(NetWorkerStatus::HostConnected).ok();
+                    conn
+                }
+                <span class="prelude-val">Err</span>(e) =&gt; {
+                    <span class="macro">error!</span>(<span class="string">&quot;Could not connect to host: {}&quot;</span>, e);
+                    channels.tx_status.send(NetWorkerStatus::NetError(e)).ok();
+                    <span class="kw">return</span>;
+                }
+            }
+        }
+    };
+
     <span class="kw">loop </span>{
         <span class="macro">tokio::select! </span>{
-            <span class="kw">_ </span>= channels.rx_shutdown.recv() =&gt; {
+            <span class="kw">_ </span>= cancel.cancelled() =&gt; {
                 <span class="kw">break</span>;
             }
-            e = session.connection.closed() =&gt; {
+            e = conn.closed() =&gt; {
                 <span class="kw">match </span>e {
                     quinn::ConnectionError::ApplicationClosed(<span class="kw">_</span>) =&gt; {}
                     <span class="kw">_ </span>=&gt; {
@@ -341,12 +370,13 @@
             }
         }
     }
+
     <span class="macro">info!</span>(<span class="string">&quot;Disconnected from Host Server!&quot;</span>);
     channels.tx_status.send(NetWorkerStatus::HostDisconnected).ok();
 }
 
-<span class="kw">pub fn </span>main(config: NetWorkerConfig, channels: Channels) {
-    <span class="kw">let </span>rt = tokio::runtime::Builder::new_current_thread()
+<span class="kw">pub fn </span>main(rt: ManagedRuntime, config: NetWorkerConfig, channels: Channels) {
+    <span class="kw">let </span>tokrt = tokio::runtime::Builder::new_current_thread()
         .enable_all()
         .thread_name_fn(|| {
              <span class="string">&quot;minewars-net-worker&quot;</span>.into()
@@ -354,6 +384,6 @@
         .build()
         .expect(<span class="string">&quot;Cannot create tokio runtime!&quot;</span>);
 
-    rt.block_on(async_main(config, channels));
+    tokrt.block_on(async_main(rt, config, channels));
 }
 </code></pre></div></section></main></body></html>

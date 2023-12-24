@@ -1,0 +1,4 @@
+(function() {var implementors = {
+"futures_io":[],
+"tokio_util":[["impl&lt;T&gt; <a class=\"trait\" href=\"futures_io/if_std/trait.AsyncBufRead.html\" title=\"trait futures_io::if_std::AsyncBufRead\">AsyncBufRead</a> for <a class=\"struct\" href=\"tokio_util/compat/struct.Compat.html\" title=\"struct tokio_util::compat::Compat\">Compat</a>&lt;T&gt;<span class=\"where fmt-newline\">where\n    T: <a class=\"trait\" href=\"tokio/io/async_buf_read/trait.AsyncBufRead.html\" title=\"trait tokio::io::async_buf_read::AsyncBufRead\">AsyncBufRead</a>,</span>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

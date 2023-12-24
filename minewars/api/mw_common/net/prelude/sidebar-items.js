@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["RxBroadcast","RxMpsc","RxMpscU","RxOneshot","TxBroadcast","TxMpsc","TxMpscU","TxOneshot"]};
+window.SIDEBAR_ITEMS = {"struct":["CancellationToken","RxBroadcast","RxMpsc","RxMpscU","RxOneshot","TxBroadcast","TxMpsc","TxMpscU","TxOneshot"]};
