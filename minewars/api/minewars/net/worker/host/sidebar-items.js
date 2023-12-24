@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["connect_host","host_session"],"struct":["HostSessionConfig"]};
+window.SIDEBAR_ITEMS = {"fn":["connect_host","drive_host_session","host_session"],"struct":["HostSessionConfig"]};

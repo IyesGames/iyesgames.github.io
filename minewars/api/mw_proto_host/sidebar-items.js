@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["CURRENT_VERSION","HANDSHAKE_MAGIC"],"enum":["HandshakeError","ProtoMode"],"mod":["client","server"],"struct":["ConnectHandshake","HandshakeSuccess"]};

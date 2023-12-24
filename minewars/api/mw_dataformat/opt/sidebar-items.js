@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["OptimizerResult"],"fn":["optimize_mwseq_lossy"],"struct":["OptimizerState"]};

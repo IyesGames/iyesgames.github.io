@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ProtoState"],"struct":["AwaitingHandshake","HandshakeComplete","HandshakeResponding"]};
