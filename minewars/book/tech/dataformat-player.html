@@ -281,7 +281,10 @@ It is valid (though suboptimal) to play the game over a single TCP stream
 (reliable, ordered delivery of all messages). However, for optimal performance,
 a protocol like QUIC, that allows more granular control of ordering and
 reliability, should be used.</p>
-<p>There are five classes of messages: PvP, Notification, Personal, Background, Unreliable.</p>
+<p>There are five classes of messages: PvP, Notification, Personal, Background, Unreliable.
+Messages can be freely &quot;upgraded&quot; to a higher class; that is, if there is a queue/buffer
+of messages to send, which contains messages from multiple different classes, they can
+all be bundled together and sent over the highest-class stream.</p>
 <p>PvP messages are all game updates that are part of a player's interaction with
 the game world and other players. Reliable, ordered, elevated (highest)
 priority.</p>
@@ -292,7 +295,7 @@ within a player's own territory. Things that only directly affect them.
 Reliable, ordered, lower priority.</p>
 <p>Background messages are things that are not an interactive part of gameplay.
 Reliable, unordered, lowest priority.</p>
-<p>Unreliable messages are realtime things that are fine to miss. Can be sent as
+<p>Unreliable messages are realtime updates that are fine to miss. Can be sent as
 datagrams. They can also be omitted from replay files / spectation.</p>
 <h3 id="opcode-summary"><a class="header" href="#opcode-summary">Opcode Summary</a></h3>
 <p>Quick table summarizing the opcodes of all the message types. A few are left
@@ -448,10 +451,16 @@ big endian):</p>
 <p>(this encoding allows them to be easily read when inspecting a hex dump)</p>
 <p>For an odd number of tiles, the final digit is ignored (should be encoded as zero).</p>
 <h4 id="structure-gone"><a class="header" href="#structure-gone">Structure Gone</a></h4>
-<p>Something notable happened with a structure.</p>
+<p>The structure on the given tile is removed.</p>
+<p>Used when a built structure is destroyed or bulldozed.
+Used when a pending (unbuilt) structure is canceled.</p>
 <p>Assembly:</p>
 <pre><code>DECONSTRUCT y,x
 </code></pre>
+<p>(destroy existing)</p>
+<pre><code>NOCONSTRUCT y,x
+</code></pre>
+<p>(cancel pending)</p>
 <p>Encoding:</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
 <tr><td><code>00100000</code></td><td>(opcode)</td></tr>
@@ -531,7 +540,9 @@ big endian):</p>
 <h4 id="city-moneyinfo"><a class="header" href="#city-moneyinfo">City MoneyInfo</a></h4>
 <p>Reports how much money a city has.</p>
 <p>Assembly:</p>
-<pre><code>CITMONEY i money [income]
+<pre><code>CITMONEY i money
+</code></pre>
+<pre><code>CITINCOME i money income
 </code></pre>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
 <tr><td><code>00000100</code></td><td>(opcode)</td></tr>
@@ -608,7 +619,7 @@ present if this bit is <code>1</code>.</p>
 <li><code>010</code>: Mountain</li>
 <li><code>011</code>: Forest</li>
 <li><code>100</code>: Destroyed Land</li>
-<li><code>101</code>: (reserved)</li>
+<li><code>101</code>: Foundation</li>
 <li><code>110</code>: Regular Land</li>
 <li><code>111</code>: Fertile Land</li>
 </ul>
@@ -617,7 +628,7 @@ present if this bit is <code>1</code>.</p>
 <p>There is an item on the specified tile.</p>
 <p>Used both when revealing foreign items and also when acking own deployed items.</p>
 <p>Assembly:</p>
-<pre><code>ITEM y,x {none|decoy|mine|flash}
+<pre><code>ITEM y,x {none|decoy|mine|trap}
 </code></pre>
 <p>Encoding:</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
@@ -630,7 +641,7 @@ present if this bit is <code>1</code>.</p>
 <li><code>000</code>: None</li>
 <li><code>001</code>: Decoy</li>
 <li><code>010</code>: Mine</li>
-<li><code>011</code>: Flashbang</li>
+<li><code>011</code>: Trap</li>
 <li><code>1--</code>: (reserved)</li>
 </ul>
 <p>Followed by tile coordinate.</p>
