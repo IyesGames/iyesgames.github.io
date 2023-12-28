@@ -157,6 +157,16 @@
 <a href="#157" id="157">157</a>
 <a href="#158" id="158">158</a>
 <a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>enum_iterator::Sequence;
 <span class="kw">use </span>enum_map::{Enum, EnumMap};
 <span class="kw">use </span>num_derive::FromPrimitive;
@@ -179,7 +189,7 @@
     </span>Safe,
     Mine,
     Decoy,
-    Flashbang,
+    Trap,
 }
 
 <span class="doccomment">/// The base variant of a map tile
@@ -316,4 +326,14 @@
     <span class="kw">pub </span>topology: Topology,
 }
 
+<span class="doccomment">/// The basic per-tile data, as per mapgen or file
+</span><span class="attr">#[bitfield]
+#[derive(Clone, Copy, Default)]
+</span><span class="kw">pub struct </span>MapGenTileData {
+    <span class="kw">pub </span>kind: TileKind,
+    <span class="kw">pub </span>mark: bool,
+    <span class="kw">pub </span>item: ItemKind,
+    <span class="attr">#[skip] </span>__: B2,
+    <span class="kw">pub </span>region: u8,
+}
 </code></pre></div></section></main></body></html>

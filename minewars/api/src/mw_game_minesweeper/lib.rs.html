@@ -791,7 +791,7 @@
                 <span class="kw">return</span>;
             },
             <span class="comment">// minesweeper mode has no flashes, treat them as decoys
-            </span>ItemKind::Decoy | ItemKind::Flashbang =&gt; {
+            </span>ItemKind::Decoy | ItemKind::Trap =&gt; {
                 <span class="kw">if </span><span class="self">self</span>.mapdata[c].flag() != <span class="number">0 </span>{
                     <span class="self">self</span>.mapdata[c].set_flag(<span class="number">0</span>);
                     host.msg(Plids::all(<span class="bool-val">true</span>), MwEv::Map {
@@ -888,7 +888,7 @@
                     digit += <span class="number">1</span>;
                 }
                 <span class="comment">// minesweeper mode has no flashes, treat them as decoys
-                </span><span class="kw">if </span>tile.item() == ItemKind::Decoy || tile.item() == ItemKind::Flashbang {
+                </span><span class="kw">if </span>tile.item() == ItemKind::Decoy || tile.item() == ItemKind::Trap {
                     asterisk = <span class="bool-val">true</span>;
                 }
             }

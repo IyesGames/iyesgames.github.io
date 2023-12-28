@@ -142,6 +142,8 @@
 <a href="#142" id="142">142</a>
 <a href="#143" id="143">143</a>
 <a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/// Convenience, to be imported in every file in the crate
 </span><span class="kw">mod </span>prelude {
     <span class="kw">pub use </span>bevy::prelude::<span class="kw-2">*</span>;
@@ -184,7 +186,9 @@
         primary_window: <span class="prelude-val">Some</span>(Window {
             title: <span class="string">&quot;MineWars™ PRE-ALPHA&quot;</span>.into(),
             present_mode: bevy::window::PresentMode::Fifo,
-            resizable: <span class="bool-val">true</span>,
+            <span class="comment">// present_mode: bevy::window::PresentMode::Immediate,
+            // mode: bevy::window::WindowMode::Fullscreen,
+            </span>resizable: <span class="bool-val">true</span>,
             resolution: bevy::window::WindowResolution::new(<span class="number">800.0</span>, <span class="number">600.0</span>),
             resize_constraints: WindowResizeConstraints {
                 min_width: <span class="number">800.0</span>,

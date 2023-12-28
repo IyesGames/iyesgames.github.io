@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Msg","MsgItem","MsgStructureKind"]};
+window.SIDEBAR_ITEMS = {"enum":["MessageClass","Msg","MsgItem","MsgStructureKind","MsgTileKind"]};

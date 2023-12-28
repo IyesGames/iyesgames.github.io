@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["MapData"]};
+window.SIDEBAR_ITEMS = {"enum":["MapDataTopo"],"struct":["MapData"]};

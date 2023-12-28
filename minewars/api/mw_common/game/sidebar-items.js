@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["ActionKind","ItemKind","ProdState","StructureKind","TileKind"],"mod":["event"],"struct":["BalancingTable","MapDescriptor"],"type":["CitId"]};
+window.SIDEBAR_ITEMS = {"enum":["ActionKind","ItemKind","ProdState","StructureKind","TileKind"],"mod":["event"],"struct":["BalancingTable","MapDescriptor","MapGenTileData"],"type":["CitId"]};
