@@ -203,10 +203,11 @@ metadata about the game session, and the map data.</p>
 <h3 id="header"><a class="header" href="#header">Header</a></h3>
 <p>It begins with a header:</p>
 <ul>
-<li><code>u8</code>: protocol version (must be <code>0x01</code>)</li>
+<li>(<code>u8</code>,<code>u8</code>,<code>u8</code>,<code>u8</code>): protocol version (must be <code>(0, 1, 0, 0)</code>)</li>
 <li><code>u8</code>: flags</li>
 <li><code>u8</code>: map size (radius)</li>
-<li><code>u8</code>: number of players and cities/regions</li>
+<li><code>u8</code>: number of players</li>
+<li><code>u8</code>: number of cities/regions</li>
 <li><code>u16</code>: length of player names data (0 for an anonymized stream)</li>
 <li><code>u16</code>: length of compressed map data in bytes</li>
 <li><code>u16</code>: length of uncompressed map data in bytes</li>
@@ -216,12 +217,6 @@ metadata about the game session, and the map data.</p>
 <tr><td><code>----0---</code></td><td>Game uses a hexagonal grid</td></tr>
 <tr><td><code>----1---</code></td><td>Game uses a square grid</td></tr>
 <tr><td><code>xxx--xxx</code></td><td>(reserved bits)</td></tr>
-</tbody></table>
-</div>
-<p>The player/city counts are encoded as follows:</p>
-<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
-<tr><td><code>----xxxx</code></td><td>Number of cities/regions - 1</td></tr>
-<tr><td><code>xxxx----</code></td><td>Number of Players</td></tr>
 </tbody></table>
 </div>
 <h4 id="game-parameters"><a class="header" href="#game-parameters">Game Parameters</a></h4>
@@ -309,7 +304,10 @@ unused, reserved for future use.</p>
 <tr><td><code>00000101</code></td><td>City Spending</td><td>Personal</td></tr>
 <tr><td><code>00000110</code></td><td>City ResInfo</td><td>Personal</td></tr>
 <tr><td><code>00000111</code></td><td>City TradeInfo</td><td>Personal</td></tr>
-<tr><td><code>00001---</code></td><td>--</td><td></td></tr>
+<tr><td><code>000010--</code></td><td>--</td><td></td></tr>
+<tr><td><code>0000110-</code></td><td>--</td><td></td></tr>
+<tr><td><code>00001110</code></td><td>Flag</td><td>PvP</td></tr>
+<tr><td><code>00001111</code></td><td>Unflag</td><td>PvP</td></tr>
 <tr><td><code>00010---</code></td><td>--</td><td></td></tr>
 <tr><td><code>00011---</code></td><td>--</td><td></td></tr>
 <tr><td><code>00100000</code></td><td>Structure Gone</td><td>PvP, Personal (cancel pending)</td></tr>
@@ -356,8 +354,8 @@ can control a single in-game plid.</p>
 <tr><td><code>00000001</code></td><td>Ping/RTT Info</td><td>PlayerSubId</td></tr>
 <tr><td><code>00000010</code></td><td>Stunned/Killed</td><td>PlayerId</td></tr>
 <tr><td><code>00000011</code></td><td>Un-Stunned</td><td>PlayerId</td></tr>
-<tr><td><code>00000100</code></td><td>Blinded</td><td>PlayerId</td></tr>
-<tr><td><code>00000101</code></td><td>Un-Blinded</td><td>PlayerId</td></tr>
+<tr><td><code>00000100</code></td><td>(reserved)</td><td></td></tr>
+<tr><td><code>00000101</code></td><td>(reserved)</td><td></td></tr>
 <tr><td><code>00000110</code></td><td>Protected</td><td>PlayerId</td></tr>
 <tr><td><code>00000111</code></td><td>Un-Protected</td><td>PlayerId</td></tr>
 <tr><td><code>00001000</code></td><td>Eliminated</td><td>PlayerId</td></tr>
@@ -366,8 +364,10 @@ can control a single in-game plid.</p>
 <tr><td><code>00001011</code></td><td>Kicked</td><td>PlayerSubId</td></tr>
 <tr><td><code>00001100</code></td><td>Initiate Vote</td><td>PlayerSubId</td></tr>
 <tr><td><code>00001101</code></td><td>Vote</td><td>PlayerSubId</td></tr>
-<tr><td><code>00001110</code></td><td>Friendly-Chat</td><td>PlayerSubId</td></tr>
-<tr><td><code>00001111</code></td><td>All-Chat</td><td>PlayerSubId</td></tr>
+<tr><td><code>00001110</code></td><td>Vote Failed</td><td>PlayerSubId</td></tr>
+<tr><td><code>00001111</code></td><td>Vote Success</td><td>PlayerSubId</td></tr>
+<tr><td><code>00010000</code></td><td>Chat (All)</td><td>PlayerSubId</td></tr>
+<tr><td><code>00010001</code></td><td>Chat (Friendly)</td><td>PlayerSubId</td></tr>
 <tr><td>...</td><td>(reserved)</td><td></td></tr>
 </tbody></table>
 </div>
@@ -401,6 +401,28 @@ can control a single in-game plid.</p>
 <p>Encoding:</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
 <tr><td><code>00000011</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinate of the tile.</p>
+<h4 id="smoke-start-1"><a class="header" href="#smoke-start-1">Smoke Start</a></h4>
+<p>A tile was smoked.</p>
+<p>Assembly:</p>
+<pre><code>FLAG y,x
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00001110</code></td><td>(opcode)</td></tr>
+</tbody></table>
+</div>
+<p>Followed by the coordinate of the tile.</p>
+<h4 id="smoke-end-1"><a class="header" href="#smoke-end-1">Smoke End</a></h4>
+<p>A tile is no longer smoked.</p>
+<p>Assembly:</p>
+<pre><code>UNFLAG y,x
+</code></pre>
+<p>Encoding:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>00001111</code></td><td>(opcode)</td></tr>
 </tbody></table>
 </div>
 <p>Followed by the coordinate of the tile.</p>
