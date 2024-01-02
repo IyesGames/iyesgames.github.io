@@ -178,6 +178,19 @@
 <a href="#178" id="178">178</a>
 <a href="#179" id="179">179</a>
 <a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>mw_common::game::event::<span class="kw-2">*</span>;
 
 <span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, GameEventSet};
@@ -243,20 +256,29 @@
         <span class="kw">if </span>ev.plid != viewing.<span class="number">0 </span>{
             <span class="kw">continue</span>;
         }
-        <span class="kw">if let </span>MwEv::Map { pos, ev: MapEv::Owner { plid }} = ev.ev {
-            <span class="kw">let </span>e_tile = index.<span class="number">0</span>[pos.into()];
-            <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>owner) = q_tile.get_mut(e_tile) {
-                <span class="kw">if </span>owner.<span class="number">0 </span>== viewing.<span class="number">0 </span>&amp;&amp; plid != viewing.<span class="number">0 </span>{
-                    commands.entity(e_tile).insert(
-                        TileAlert(Timer::new(Duration::from_millis(<span class="number">1000</span>), TimerMode::Once))
-                    );
-                }
-                owner.<span class="number">0 </span>= plid;
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(e_cit) = cits.by_pos.get(<span class="kw-2">&amp;</span>pos) {
-                    <span class="kw">let </span><span class="kw-2">mut </span>citowner = q_cit.get_mut(<span class="kw-2">*</span>e_cit).unwrap();
-                    citowner.<span class="number">0 </span>= plid;
+        <span class="kw">match </span>ev.ev {
+            MwEv::Map { pos, ev: MapEv::Digit { .. }} =&gt; {
+                <span class="kw">let </span>e_tile = index.<span class="number">0</span>[pos.into()];
+                <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>owner) = q_tile.get_mut(e_tile) {
+                    owner.<span class="number">0 </span>= viewing.<span class="number">0</span>;
                 }
             }
+            MwEv::Map { pos, ev: MapEv::Owner { plid }} =&gt; {
+                <span class="kw">let </span>e_tile = index.<span class="number">0</span>[pos.into()];
+                <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>owner) = q_tile.get_mut(e_tile) {
+                    <span class="kw">if </span>owner.<span class="number">0 </span>== viewing.<span class="number">0 </span>&amp;&amp; plid != viewing.<span class="number">0 </span>{
+                        commands.entity(e_tile).insert(
+                            TileAlert(Timer::new(Duration::from_millis(<span class="number">1000</span>), TimerMode::Once))
+                        );
+                    }
+                    owner.<span class="number">0 </span>= plid;
+                    <span class="kw">if let </span><span class="prelude-val">Some</span>(e_cit) = cits.by_pos.get(<span class="kw-2">&amp;</span>pos) {
+                        <span class="kw">let </span><span class="kw-2">mut </span>citowner = q_cit.get_mut(<span class="kw-2">*</span>e_cit).unwrap();
+                        citowner.<span class="number">0 </span>= plid;
+                    }
+                }
+            }
+            <span class="kw">_ </span>=&gt; <span class="kw">continue</span>,
         }
     }
 }
@@ -291,6 +313,10 @@
             <span class="kw">continue</span>;
         }
         <span class="kw">let </span>(pos, gent) = <span class="kw">match </span>ev.ev {
+            | MwEv::Map { pos, ev: MapEv::Unflag }
+            | MwEv::Map { pos, ev: MapEv::Flag { plid: PlayerId::Neutral }} =&gt; {
+                (pos, TileGent::Empty)
+            }
             MwEv::Map { pos, ev: MapEv::Flag { plid }} =&gt; {
                 (pos, TileGent::Flag(plid))
             }

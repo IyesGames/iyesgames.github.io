@@ -72,6 +72,7 @@
 <a href="#72" id="72">72</a>
 <a href="#73" id="73">73</a>
 <a href="#74" id="74">74</a>
+<a href="#75" id="75">75</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>mw_common::game::event::<span class="kw-2">*</span>;
 <span class="kw">use </span>mw_common::grid::<span class="kw-2">*</span>;
 
@@ -114,6 +115,7 @@
                     tile.set_owner(u8::from(<span class="kw-2">*</span>plid));
                 },
                 MapEv::Digit { digit, asterisk } =&gt; {
+                    tile.set_owner(u8::from(plid));
                     tile.set_digit(<span class="kw-2">*</span>digit);
                     tile.set_asterisk(<span class="kw-2">*</span>asterisk);
                 },

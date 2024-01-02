@@ -162,10 +162,10 @@
 <span class="kw">mod </span>assets;
 <span class="kw">mod </span>cli;
 <span class="kw">mod </span>input;
-<span class="kw">mod </span>game;
 <span class="kw">mod </span>gfx2d;
 <span class="kw">mod </span>locale;
 <span class="kw">mod </span>minimap;
+<span class="kw">mod </span>minesweeper;
 <span class="kw">mod </span>net;
 <span class="kw">mod </span>screens {
     <span class="kw">pub mod </span>loading;
@@ -277,9 +277,9 @@
         <span class="kw">crate</span>::ui::UiPlugin,
         <span class="kw">crate</span>::settings::SettingsPlugin,
         <span class="kw">crate</span>::gfx2d::Gfx2dPlugin,
-        <span class="kw">crate</span>::game::GameplayPlugin,
         <span class="kw">crate</span>::minimap::MinimapPlugin,
         <span class="kw">crate</span>::net::NetClientPlugin,
+        <span class="kw">crate</span>::minesweeper::MinesweeperPlugin,
     ));
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;proprietary&quot;</span>)]

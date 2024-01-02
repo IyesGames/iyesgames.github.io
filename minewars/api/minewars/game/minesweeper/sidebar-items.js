@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["cli_minesweeper_playground","cli_minesweeper_singleplayer","minesweeper_input","setup_minesweeper_playground_flatmap"],"struct":["MinesweeperGameplayPlugin"]};

@@ -332,6 +332,7 @@
 <a href="#332" id="332">332</a>
 <a href="#333" id="333">333</a>
 <a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Per-Plid cache of game state
 //!
 //! A &quot;view&quot; is a compact representation of the game state of the entire map,
@@ -549,7 +550,8 @@
     <span class="kw">for </span>(pos, <span class="kw-2">mut </span>digit) <span class="kw">in </span>q_maptile.iter_mut() {
         <span class="kw">let </span>c: C = pos.<span class="number">0</span>.into();
         <span class="kw">let </span>tiledata = <span class="kw-2">&amp;</span>viewdata.<span class="number">0</span>[c];
-        digit.<span class="number">0 </span>= tiledata.digit().into();
+        digit.<span class="number">0 </span>= tiledata.digit();
+        digit.<span class="number">1 </span>= tiledata.asterisk();
     }
 }
 

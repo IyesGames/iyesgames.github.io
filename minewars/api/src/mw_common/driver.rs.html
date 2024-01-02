@@ -112,6 +112,9 @@
 <a href="#112" id="112">112</a>
 <a href="#113" id="113">113</a>
 <a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{prelude::<span class="kw-2">*</span>, plid::{PlayerId, Plids}};
 
 <span class="doccomment">/// Abstract interface through which the Game communicates with the Host
@@ -169,6 +172,9 @@
 
     <span class="doccomment">/// Process a player input
     </span><span class="kw">fn </span>input&lt;H: Host&lt;<span class="self">Self</span>&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, host: <span class="kw-2">&amp;mut </span>H, plid: PlayerId, action: <span class="self">Self</span>::InputAction);
+
+    <span class="doccomment">/// Query the game for data / status updates to put in an unreliable datagram
+    </span><span class="kw">fn </span>unreliable&lt;H: Host&lt;<span class="self">Self</span>&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _host: <span class="kw-2">&amp;mut </span>H) {}
 }
 
 <span class="doccomment">/// Abstract interface for writing multiple player streams at once.
