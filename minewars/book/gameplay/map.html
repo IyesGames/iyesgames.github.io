@@ -259,8 +259,9 @@ resources is selected for expansion.</p>
 <p>When there are multiple candidate tiles (the search frontier),
 they are prioritized as follows:</p>
 <ol>
-<li>Clusters (mountains, forests) before single tiles (land)</li>
-<li>Sorted by reverse distance from the center of the map (furthest tiles first)</li>
+<li>Any Fertile Land tiles, sorted by farthest distance from other cities</li>
+<li>Any ResClusters (Mountain/Forest), sorted by closest distance to the city</li>
+<li>Any Regular (or other) land, sorted by farthest distance from other cities</li>
 </ol>
 <p><strong>Land</strong> tiles are assigned one-at-a-time. <strong>Mountain</strong>/<strong>Forest</strong> tiles are
 assigned as a whole cluster (clusters are never split between regions).</p>

@@ -306,8 +306,8 @@ unused, reserved for future use.</p>
 <tr><td><code>00000111</code></td><td>City TradeInfo</td><td>Personal</td></tr>
 <tr><td><code>000010--</code></td><td>--</td><td></td></tr>
 <tr><td><code>0000110-</code></td><td>--</td><td></td></tr>
-<tr><td><code>00001110</code></td><td>Flag</td><td>PvP</td></tr>
-<tr><td><code>00001111</code></td><td>Unflag</td><td>PvP</td></tr>
+<tr><td><code>00001110</code></td><td>--</td><td></td></tr>
+<tr><td><code>00001111</code></td><td>Flag State</td><td>PvP</td></tr>
 <tr><td><code>00010---</code></td><td>--</td><td></td></tr>
 <tr><td><code>00011---</code></td><td>--</td><td></td></tr>
 <tr><td><code>00100000</code></td><td>Structure Gone</td><td>PvP, Personal (cancel pending)</td></tr>
@@ -404,27 +404,25 @@ can control a single in-game plid.</p>
 </tbody></table>
 </div>
 <p>Followed by the coordinate of the tile.</p>
-<h4 id="smoke-start-1"><a class="header" href="#smoke-start-1">Smoke Start</a></h4>
-<p>A tile was smoked.</p>
+<h4 id="flag-state"><a class="header" href="#flag-state">Flag State</a></h4>
+<p>Report the presence or absence of a flag on a given tile.</p>
 <p>Assembly:</p>
-<pre><code>FLAG y,x
+<pre><code>FLAG p y,x
 </code></pre>
-<p>Encoding:</p>
-<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
-<tr><td><code>00001110</code></td><td>(opcode)</td></tr>
-</tbody></table>
-</div>
-<p>Followed by the coordinate of the tile.</p>
-<h4 id="smoke-end-1"><a class="header" href="#smoke-end-1">Smoke End</a></h4>
-<p>A tile is no longer smoked.</p>
-<p>Assembly:</p>
-<pre><code>UNFLAG y,x
-</code></pre>
+<p>(p == plid, 0 == no flag)</p>
 <p>Encoding:</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
 <tr><td><code>00001111</code></td><td>(opcode)</td></tr>
 </tbody></table>
 </div>
+<p>Followed by:</p>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>0000----</code></td><td>(reserved)</td></tr>
+<tr><td><code>----pppp</code></td><td>PlayerId</td></tr>
+</tbody></table>
+</div>
+<p>Reserved bits must be zero.</p>
+<p><code>p</code> is the PlayerId that placed the flag. Zero means no flag.</p>
 <p>Followed by the coordinate of the tile.</p>
 <h4 id="construction-update"><a class="header" href="#construction-update">Construction Update</a></h4>
 <p>Update on the progress of a pending structure.</p>
