@@ -167,6 +167,10 @@
 <a href="#167" id="167">167</a>
 <a href="#168" id="168">168</a>
 <a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>enum_iterator::Sequence;
 <span class="kw">use </span>enum_map::{Enum, EnumMap};
 <span class="kw">use </span>num_derive::FromPrimitive;
@@ -199,13 +203,14 @@
 #[bits = <span class="number">3</span>]
 </span><span class="kw">pub enum </span>TileKind {
     Water,
-    Foundation,
+    Destroyed,
     <span class="attr">#[default]
     </span>Regular,
     Fertile,
+    FoundationStruct,
+    FoundationRoad,
     Forest,
     Mountain,
-    Destroyed,
 }
 
 <span class="kw">impl </span>TileKind {
@@ -220,11 +225,12 @@
         <span class="kw">match </span><span class="self">self </span>{
             TileKind::Water |
             TileKind::Forest |
-            TileKind::Mountain =&gt; <span class="bool-val">false</span>,
+            TileKind::Mountain |
+            TileKind::FoundationStruct =&gt; <span class="bool-val">false</span>,
             TileKind::Regular |
             TileKind::Fertile |
             TileKind::Destroyed |
-            TileKind::Foundation =&gt; <span class="bool-val">true</span>,
+            TileKind::FoundationRoad =&gt; <span class="bool-val">true</span>,
         }
     }
 
@@ -236,7 +242,8 @@
             TileKind::Regular |
             TileKind::Fertile |
             TileKind::Destroyed |
-            TileKind::Foundation =&gt; <span class="bool-val">false</span>,
+            TileKind::FoundationRoad |
+            TileKind::FoundationStruct=&gt; <span class="bool-val">false</span>,
         }
     }
 
@@ -244,7 +251,8 @@
         <span class="kw">match </span><span class="self">self </span>{
             TileKind::Water |
             TileKind::Destroyed |
-            TileKind::Foundation =&gt; <span class="bool-val">false</span>,
+            TileKind::FoundationRoad |
+            TileKind::FoundationStruct =&gt; <span class="bool-val">false</span>,
             TileKind::Regular |
             TileKind::Fertile |
             TileKind::Forest |

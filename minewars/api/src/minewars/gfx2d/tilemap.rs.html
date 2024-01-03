@@ -570,6 +570,7 @@
 <a href="#570" id="570">570</a>
 <a href="#571" id="571">571</a>
 <a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::assets::GameAssets;
 <span class="kw">use </span><span class="kw">crate</span>::prelude::<span class="kw-2">*</span>;
 
@@ -845,7 +846,8 @@
     <span class="kw">for </span>(<span class="kw-2">mut </span>index, <span class="kw-2">mut </span>color, kind, pos) <span class="kw">in </span><span class="kw-2">&amp;mut </span>q {
         index.<span class="number">0 </span>= (i_base + <span class="kw">match </span>kind {
             TileKind::Water =&gt; <span class="kw">super</span>::sprite::TILE_WATER,
-            TileKind::Foundation =&gt; <span class="kw">super</span>::sprite::TILE_FOUNDATION,
+            TileKind::FoundationRoad =&gt; <span class="kw">super</span>::sprite::TILE_FOUNDATION,
+            TileKind::FoundationStruct =&gt; <span class="kw">super</span>::sprite::TILE_FOUNDATION,
             TileKind::Regular =&gt; <span class="kw">super</span>::sprite::TILE_LAND,
             TileKind::Fertile =&gt; <span class="kw">super</span>::sprite::TILE_FERTILE,
             TileKind::Forest =&gt; <span class="kw">super</span>::sprite::TILE_FOREST,
