@@ -238,10 +238,10 @@ encoded as: <code>u8</code> length in bytes, followed by UTF-8 encoded data.</p>
 <tr><td><code>-xxx----</code></td><td>Item Kind</td></tr>
 </tbody></table>
 </div>
-<p>Tile Kind: same encoding as the &quot;Tile Kind Update&quot; message below.
-Item Kind: same encoding as the &quot;Reveal Item&quot; message below.</p>
+<p>Tile Kind: same encoding as the "Tile Kind Update" message below.
+Item Kind: same encoding as the "Reveal Item" message below.</p>
 <p>The Item Kind is only used for spectator streams and replay files, so that they
-don't need to start with a long sequence of &quot;Reveal Item&quot; messages at tick 0
+don't need to start with a long sequence of "Reveal Item" messages at tick 0
 for all the initial items on the map. In player streams, this field should be 0.</p>
 <p>If any starting Structures must be encoded (say for a custom game mode / scenario),
 initialize them using regular gameplay messages at tick 0.</p>
@@ -277,7 +277,7 @@ It is valid (though suboptimal) to play the game over a single TCP stream
 a protocol like QUIC, that allows more granular control of ordering and
 reliability, should be used.</p>
 <p>There are five classes of messages: PvP, Notification, Personal, Background, Unreliable.
-Messages can be freely &quot;upgraded&quot; to a higher class; that is, if there is a queue/buffer
+Messages can be freely "upgraded" to a higher class; that is, if there is a queue/buffer
 of messages to send, which contains messages from multiple different classes, they can
 all be bundled together and sent over the highest-class stream.</p>
 <p>PvP messages are all game updates that are part of a player's interaction with
@@ -347,7 +347,7 @@ bit sequences are matched first.</p>
 <p>PlayerId is the gameplay plid (view) that is affected.</p>
 <p>PlayerSubId is the individual user/client, in game modes where multiple people
 can control a single in-game plid.</p>
-<p>Some message kinds ignore PlayerSubId. See the &quot;Granularity&quot; column in the table below.</p>
+<p>Some message kinds ignore PlayerSubId. See the "Granularity" column in the table below.</p>
 <p>The next byte specifies the message kind (what happened):</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th><th>Granularity</th></tr></thead><tbody>
 <tr><td><code>00000000</code></td><td>Joined</td><td>PlayerSubId</td></tr>
@@ -502,7 +502,7 @@ Used when a pending (unbuilt) structure is canceled.</p>
 <p>Followed by the tile coordinates.</p>
 <h4 id="explosions"><a class="header" href="#explosions">Explosions</a></h4>
 <p>Explosions have occurred. Tile converts to destroyed land. Any item gone.</p>
-<p>If the client should know what item was destroyed, send a &quot;Reveal Item&quot; first.</p>
+<p>If the client should know what item was destroyed, send a "Reveal Item" first.</p>
 <p>Assembly:</p>
 <pre><code>EXPLODE y,x ...
 </code></pre>

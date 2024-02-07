@@ -177,7 +177,7 @@
 <p>The Spectator Protocol is essentially a container format that multiplexes
 multiple <a href="./dataformat-player.html">player protocol</a> streams (one for each player in
 the game, representing their view of the world) together, along with a global
-&quot;spectator view&quot; stream (also in the same format) providing a global view
+"spectator view" stream (also in the same format) providing a global view
 of the game world.</p>
 <p>This is used to give spectator clients all the data they need to simultaneously
 follow all participants in the game. This is also the file format used for
@@ -224,7 +224,7 @@ responsible for data integrity.</p>
 <h2 id="frames"><a class="header" href="#frames">Frames</a></h2>
 <p>A Frame is a collection of game updates that happen together at the same time.
 It encodes the point of view of every player in the game who is involved + a
-special global spectator view. All of these &quot;streams&quot; are stored together inside
+special global spectator view. All of these "streams" are stored together inside
 the frame.</p>
 <p>Note: it is not a requirement that <em>all</em> game update messages from the same
 timestamp are encoded together. They may be fragmented into multiple frames.
@@ -246,7 +246,7 @@ Frame. The remaining 15 bits represent the time delta since the previous frame, 
 milliseconds, and must not be all-ones (the max value is reserved for Keepalive Frames).</p>
 <p>The participation mask is a bitmask indicating which PlayerIds the frame applies to.
 Bit 0 represents the global spectator view.</p>
-<p>The size of the participation mask is determined by the &quot;max player id&quot; bit in the
+<p>The size of the participation mask is determined by the "max player id" bit in the
 Initialization Sequence.</p>
 <p>The data payload is the <a href="./dataformat-player.html#gameplay-messages">player protocol update messages</a>.
 All of the players listed in the participation mask must receive the entire identical data payload.</p>
@@ -265,7 +265,7 @@ Frame. The remaining 15 bits represent the time delta since the previous frame, 
 milliseconds, and must not be all-ones (the max value is reserved for Keepalive Frames).</p>
 <p>The participation mask is a bitmask indicating which PlayerIds the frame applies to.
 Bit 0 represents the global spectator view.</p>
-<p>The size of the participation mask is determined by the &quot;max player id&quot; bit in the
+<p>The size of the participation mask is determined by the "max player id" bit in the
 Initialization Sequence.</p>
 <p>The data payload is the global spectator view + each player's view (in the order
 of the bits in the participation mask), concatenated together.</p>
@@ -296,7 +296,7 @@ stream format, that differ from the player stream.</p>
 <p>The global spectator view is controlled using the same update message format
 as player views, but some message types are used differently:</p>
 <ul>
-<li>&quot;Digit Update&quot; and &quot;Capture + Digits&quot; must have the tile owner inferred
+<li>"Digit Update" and "Capture + Digits" must have the tile owner inferred
 from the participation mask. The mask must encode only one PlayerID
 (other than bit 0 for the spectator stream).</li>
 </ul>
