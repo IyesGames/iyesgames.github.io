@@ -193,7 +193,7 @@ to encode them in sorted order. This helps compression.</p>
 <tr><td><code>11xxxxxx</code></td><td>(<code>x</code> + 7) deciseconds</td></tr>
 </tbody></table>
 </div>
-<p><strong>PlayerId</strong>: a value between 1-6 inclusive.</p>
+<p><strong>PlayerId</strong>: a value between 1-15 inclusive.</p>
 <p>You will also need to bring a LZ4 implementation supporting <strong>raw blocks</strong>
 and dictionary data. The <code>lz4_flex</code> Rust crate is perfect. :)</p>
 <h2 id="initialization-sequence"><a class="header" href="#initialization-sequence">Initialization Sequence</a></h2>
@@ -208,9 +208,9 @@ metadata about the game session, and the map data.</p>
 <li><code>u8</code>: map size (radius)</li>
 <li><code>u8</code>: number of players</li>
 <li><code>u8</code>: number of cities/regions</li>
+<li><code>u16</code>: length of the whole Initialization Sequence / offset at which Messages will start</li>
 <li><code>u16</code>: length of player names data (0 for an anonymized stream)</li>
-<li><code>u16</code>: length of compressed map data in bytes</li>
-<li><code>u16</code>: length of uncompressed map data in bytes</li>
+<li><code>u32</code>: length of compressed map data in bytes</li>
 </ul>
 <p>The <code>flags</code> field is encoded as follows:</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
@@ -219,15 +219,6 @@ metadata about the game session, and the map data.</p>
 <tr><td><code>xxx--xxx</code></td><td>(reserved bits)</td></tr>
 </tbody></table>
 </div>
-<h4 id="game-parameters"><a class="header" href="#game-parameters">Game Parameters</a></h4>
-<p>Then follow the parameters used for the game rules, in this game.</p>
-<p>// TODO</p>
-<h3 id="data-payload"><a class="header" href="#data-payload">Data Payload</a></h3>
-<h4 id="player-names"><a class="header" href="#player-names">Player Names</a></h4>
-<p>If the file is not anonymized, then follow the display names of each player,
-encoded as: <code>u8</code> length in bytes, followed by UTF-8 encoded data.</p>
-<h4 id="city-locations"><a class="header" href="#city-locations">City Locations</a></h4>
-<p>Then follows the list of city coordinates.</p>
 <h4 id="map-data"><a class="header" href="#map-data">Map Data</a></h4>
 <p>Then follows the map data.</p>
 <p>If compressed length &lt; uncompressed length, the data is LZ4 compressed.</p>
@@ -262,6 +253,14 @@ the header have been encoded.</p>
 <p>(<code>0</code> is the starting position, assuming +X points right and +Y points up)</p>
 <p>After the map data, regions are encoded the same way: one byte per tile, in
 concentric ring order. The byte is the city/region ID for that tile.</p>
+<h3 id="city-locations"><a class="header" href="#city-locations">City Locations</a></h3>
+<p>Then follows the list of city coordinates.</p>
+<h3 id="player-names"><a class="header" href="#player-names">Player Names</a></h3>
+<p>If the file is not anonymized, then follow the display names of each player,
+encoded as: <code>u8</code> length in bytes, followed by UTF-8 encoded data.</p>
+<h3 id="game-parameters--rules"><a class="header" href="#game-parameters--rules">Game Parameters / Rules</a></h3>
+<p>Then follow the parameters used for the game rules, in this game.</p>
+<p>// TODO</p>
 <h2 id="gameplay-messages"><a class="header" href="#gameplay-messages">Gameplay Messages</a></h2>
 <p>Updates for the player are encoded as a raw uncompressed block of data
 consisting of any number of <strong>messages</strong> concatenated together. Each message

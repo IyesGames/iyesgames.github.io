@@ -194,12 +194,11 @@ replay files.</p>
 <p>The file header has the following structure:</p>
 <ul>
 <li><code>[u64; 3]</code>: checksums</li>
-<li><code>u16</code>: length of compressed frame data in bytes</li>
-<li><code>u16</code>: length of uncompressed frame data in bytes</li>
+<li><code>u32</code>: length of compressed frame data in bytes</li>
+<li><code>u32</code>: length of uncompressed frame data in bytes</li>
 </ul>
 <p>If compressed length == uncompressed length, the frames data is stored uncompressed.</p>
 <p>If compressed length &lt; uncompressed length, all the frames are compressed as a single big LZ4 block.</p>
-<p>The compression is to be done using a special dictionary, see <a href="#compression-dictionary">compression dictionary</a>.</p>
 <h2 id="checksums"><a class="header" href="#checksums">Checksums</a></h2>
 <p>Checksums are only used in the case of replay files. Network streams do
 not have checksums. In that case, the transport protocol is assumed to be
@@ -208,11 +207,11 @@ responsible for data integrity.</p>
 <p>The first checksum covers:</p>
 <ul>
 <li>the remainder of the file header, incl. the following 2 checksums</li>
-<li>the header part of the initialization sequence: everything until the city and map data</li>
+<li>the header part of the Initialization Sequence</li>
 </ul>
 <p>The second checksum covers:</p>
 <ul>
-<li>the data payload of the initialization sequence: list of cities and map data</li>
+<li>the data of the Initialization Sequence (everything after the header)</li>
 </ul>
 <p>The third checksum covers:</p>
 <ul>
@@ -308,8 +307,6 @@ frames. It is to be generated from the data in the initialization sequence.</p>
 <li>Every mountain coordinate on the map, in sorted order.</li>
 <li>Every land coordinate on the map, in sorted order.</li>
 </ul>
-<p>All permutations of a given sample pattern are to be concatenated, before
-moving onto the next pattern.</p>
 <p>This effectively pre-seeds the compression algorithm with data sequences
 likely to occur early-game.</p>
 
