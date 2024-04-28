@@ -1368,9 +1368,11 @@ metadata about the game session, and the map data.</p>
 <li><code>u8</code>: map size (radius)</li>
 <li><code>u8</code>: number of players</li>
 <li><code>u8</code>: number of cities/regions</li>
-<li><code>u16</code>: length of the whole Initialization Sequence / offset at which Messages will start</li>
-<li><code>u16</code>: length of player names data (0 for an anonymized stream)</li>
 <li><code>u32</code>: length of compressed map data in bytes</li>
+<li><code>u16</code>: length of the Rules data</li>
+<li><code>u16</code>: length of the Cits names data</li>
+<li><code>u16</code>: length of the player names data (0 for an anonymized stream)</li>
+<li><code>u16</code>: (reserved)</li>
 </ul>
 <p>The <code>flags</code> field is encoded as follows:</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
@@ -1413,8 +1415,18 @@ the header have been encoded.</p>
 <p>(<code>0</code> is the starting position, assuming +X points right and +Y points up)</p>
 <p>After the map data, regions are encoded the same way: one byte per tile, in
 concentric ring order. The byte is the city/region ID for that tile.</p>
-<h3 id="city-locations"><a class="header" href="#city-locations">City Locations</a></h3>
-<p>Then follows the list of city coordinates.</p>
+<h3 id="city-info"><a class="header" href="#city-info">City Info</a></h3>
+<p>First, locations for each city on the map:</p>
+<ul>
+<li><code>(u8, u8)</code>: (y, x) location</li>
+</ul>
+<p>Then, names for each city on the map:</p>
+<ul>
+<li><code>u8</code>: length in bytes</li>
+<li>…: phonemes</li>
+</ul>
+<p>The name uses a special Phoneme encoding (undocumented, see source code),
+which can be rendered/localized based on client language.</p>
 <h3 id="player-names"><a class="header" href="#player-names">Player Names</a></h3>
 <p>If the file is not anonymized, then follow the display names of each player,
 encoded as: <code>u8</code> length in bytes, followed by UTF-8 encoded data.</p>
