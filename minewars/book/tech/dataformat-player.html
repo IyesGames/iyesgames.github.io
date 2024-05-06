@@ -189,8 +189,8 @@ to encode them in sorted order. This helps compression.</p>
 <p>All <strong>time durations</strong> are encoded as:</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
 <tr><td><code>0xxxxxxx</code></td><td><code>x</code> milliseconds</td></tr>
-<tr><td><code>10xxxxxx</code></td><td>(<code>x</code> + 12) centiseconds</td></tr>
-<tr><td><code>11xxxxxx</code></td><td>(<code>x</code> + 7) deciseconds</td></tr>
+<tr><td><code>10xxxxxx</code></td><td>(<code>x</code> + 13) centiseconds</td></tr>
+<tr><td><code>11xxxxxx</code></td><td>(<code>x</code> + 8) deciseconds</td></tr>
 </tbody></table>
 </div>
 <p><strong>PlayerId</strong>: a value between 1-15 inclusive.</p>
@@ -312,15 +312,14 @@ unused, reserved for future use.</p>
 <tr><td><code>00000010</code></td><td>Smoke Start</td><td>PvP</td></tr>
 <tr><td><code>00000011</code></td><td>Smoke End</td><td>PvP</td></tr>
 <tr><td><code>00000100</code></td><td>City MoneyInfo</td><td>Unreliable</td></tr>
-<tr><td><code>00000101</code></td><td>City Spending</td><td>Personal</td></tr>
+<tr><td><code>00000101</code></td><td>City Transaction</td><td>Personal</td></tr>
 <tr><td><code>00000110</code></td><td>City ResInfo</td><td>Personal</td></tr>
 <tr><td><code>00000111</code></td><td>City TradeInfo</td><td>Personal</td></tr>
 <tr><td><code>000010--</code></td><td>--</td><td></td></tr>
 <tr><td><code>0000110-</code></td><td>--</td><td></td></tr>
 <tr><td><code>00001110</code></td><td>--</td><td></td></tr>
 <tr><td><code>00001111</code></td><td>Flag State</td><td>PvP</td></tr>
-<tr><td><code>00010---</code></td><td>--</td><td></td></tr>
-<tr><td><code>00011---</code></td><td>--</td><td></td></tr>
+<tr><td><code>0001----</code></td><td>Reveal Item</td><td>PvP (foreign), Personal (own)</td></tr>
 <tr><td><code>00100000</code></td><td>Structure Gone</td><td>PvP, Personal (cancel pending)</td></tr>
 <tr><td><code>0010----</code></td><td>Structure HP</td><td>PvP</td></tr>
 <tr><td><code>0011----</code></td><td>Explosions</td><td>PvP</td></tr>
@@ -329,8 +328,7 @@ unused, reserved for future use.</p>
 <tr><td><code>0101----</code></td><td>Reveal Structure</td><td>PvP</td></tr>
 <tr><td><code>01011111</code></td><td>--</td><td></td></tr>
 <tr><td><code>0110----</code></td><td>Digits (single)</td><td>PvP</td></tr>
-<tr><td><code>01110---</code></td><td>Reveal Item</td><td>PvP (foreign), Personal (own)</td></tr>
-<tr><td><code>01111---</code></td><td>Tile Kind Update</td><td>PvP</td></tr>
+<tr><td><code>0111----</code></td><td>Tile Kind Update</td><td>PvP</td></tr>
 <tr><td><code>1000----</code></td><td>Digits (multi)</td><td>PvP</td></tr>
 <tr><td><code>1-------</code></td><td>Ownership Updates</td><td>PvP</td></tr>
 </tbody></table>
@@ -342,7 +340,9 @@ bit sequences are matched first.</p>
 <h4 id="player-update"><a class="header" href="#player-update">Player Update</a></h4>
 <p>Something notable happened with a specific player.</p>
 <p>Assembly:</p>
-<pre><code>PLAYER p status
+<pre><code>PLAYER plid status ...
+</code></pre>
+<pre><code>PLAYER plid/sub status ...
 </code></pre>
 <p>Encoding:</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
@@ -358,28 +358,31 @@ bit sequences are matched first.</p>
 <p>PlayerId is the gameplay plid (view) that is affected.</p>
 <p>PlayerSubId is the individual user/client, in game modes where multiple people
 can control a single in-game plid.</p>
-<p>Some message kinds ignore PlayerSubId. See the "Granularity" column in the table below.</p>
+<p>For messages that apply to all PlayerSubIds of a given PlayerId,
+the PlayerSubId field must be all-ones.</p>
 <p>The next byte specifies the message kind (what happened):</p>
-<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th><th>Granularity</th></tr></thead><tbody>
-<tr><td><code>00000000</code></td><td>Joined</td><td>PlayerSubId</td></tr>
-<tr><td><code>00000001</code></td><td>Ping/RTT Info</td><td>PlayerSubId</td></tr>
-<tr><td><code>00000010</code></td><td>Stunned/Killed</td><td>PlayerId</td></tr>
-<tr><td><code>00000011</code></td><td>Un-Stunned</td><td>PlayerId</td></tr>
-<tr><td><code>00000100</code></td><td>(reserved)</td><td></td></tr>
-<tr><td><code>00000101</code></td><td>(reserved)</td><td></td></tr>
-<tr><td><code>00000110</code></td><td>Protected</td><td>PlayerId</td></tr>
-<tr><td><code>00000111</code></td><td>Un-Protected</td><td>PlayerId</td></tr>
-<tr><td><code>00001000</code></td><td>Eliminated</td><td>PlayerId</td></tr>
-<tr><td><code>00001001</code></td><td>Surrendered</td><td>PlayerId</td></tr>
-<tr><td><code>00001010</code></td><td>Disconnected</td><td>PlayerSubId</td></tr>
-<tr><td><code>00001011</code></td><td>Kicked</td><td>PlayerSubId</td></tr>
-<tr><td><code>00001100</code></td><td>Initiate Vote</td><td>PlayerSubId</td></tr>
-<tr><td><code>00001101</code></td><td>Vote</td><td>PlayerSubId</td></tr>
-<tr><td><code>00001110</code></td><td>Vote Failed</td><td>PlayerSubId</td></tr>
-<tr><td><code>00001111</code></td><td>Vote Success</td><td>PlayerSubId</td></tr>
-<tr><td><code>00010000</code></td><td>Chat (All)</td><td>PlayerSubId</td></tr>
-<tr><td><code>00010001</code></td><td>Chat (Friendly)</td><td>PlayerSubId</td></tr>
-<tr><td>...</td><td>(reserved)</td><td></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th><th>Granularity</th><th>Assembly</th></tr></thead><tbody>
+<tr><td><code>00000000</code></td><td>Joined</td><td>PlayerSubId</td><td><code>JOIN</code></td></tr>
+<tr><td><code>00000001</code></td><td>Ping/RTT Info</td><td>PlayerSubId</td><td><code>RTT millis</code></td></tr>
+<tr><td><code>00000010</code></td><td>Timeout</td><td>Either</td><td><code>TIMEOUT millis</code></td></tr>
+<tr><td><code>00000011</code></td><td>TimeoutDone</td><td>Either</td><td><code>RESUME</code></td></tr>
+<tr><td><code>00000100</code></td><td>Exploded</td><td>Either</td><td><code>EXPLODE y,x killer</code></td></tr>
+<tr><td><code>00000101</code></td><td>LivesRemain</td><td>Either</td><td><code>LIVES n</code></td></tr>
+<tr><td><code>00000110</code></td><td>Protected</td><td>PlayerId</td><td><code>PROTECT</code></td></tr>
+<tr><td><code>00000111</code></td><td>Un-Protected</td><td>PlayerId</td><td><code>UNPROTECT</code></td></tr>
+<tr><td><code>00001000</code></td><td>Eliminated</td><td>PlayerId</td><td><code>ELIMINATE</code></td></tr>
+<tr><td><code>00001001</code></td><td>Surrendered</td><td>PlayerId</td><td><code>SURRENDER</code></td></tr>
+<tr><td><code>00001010</code></td><td>Disconnected</td><td>PlayerSubId</td><td><code>LEAVE</code></td></tr>
+<tr><td><code>00001011</code></td><td>Kicked</td><td>PlayerSubId</td><td><code>KICK</code></td></tr>
+<tr><td><code>00001100</code></td><td>Vote No</td><td>PlayerSubId</td><td><code>VOTE N</code></td></tr>
+<tr><td><code>00001101</code></td><td>Vote Yes</td><td>PlayerSubId</td><td><code>VOTE Y</code></td></tr>
+<tr><td><code>00001110</code></td><td>Vote Failed</td><td>PlayerSubId</td><td><code>VOTEFAIL</code></td></tr>
+<tr><td><code>00001111</code></td><td>Vote Success</td><td>PlayerSubId</td><td><code>VOTEPASS</code></td></tr>
+<tr><td><code>00010000</code></td><td>Chat (All)</td><td>PlayerSubId</td><td><code>CHATALL</code></td></tr>
+<tr><td><code>00010001</code></td><td>Chat (Friendly)</td><td>PlayerSubId</td><td><code>CHAT string</code></td></tr>
+<tr><td><code>00010010</code></td><td>MatchTimeRemain</td><td>Either</td><td><code>TIMELIMIT secs</code></td></tr>
+<tr><td><code>00010011</code></td><td>Initiate Vote</td><td>PlayerSubId</td><td><code>VOTENEW string</code></td></tr>
+<tr><td>...</td><td>(reserved)</td><td></td><td></td></tr>
 </tbody></table>
 </div>
 <p>Then follows the data payload for the given message kind.</p>
@@ -470,8 +473,7 @@ DIGITS d*/y,x ...
 </tbody></table>
 </div>
 <p>Followed by the coordinates of the tiles.</p>
-<p>Followed by the digit for each tile, two digits packed into one byte (note
-big endian):</p>
+<p>Followed by the digit for each tile, two digits packed into one byte:</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
 <tr><td><code>x-------</code></td><td>asterisk N</td></tr>
 <tr><td><code>-xxx----</code></td><td>digit N</td></tr>
@@ -486,12 +488,8 @@ big endian):</p>
 <p>Used when a built structure is destroyed or bulldozed.
 Used when a pending (unbuilt) structure is canceled.</p>
 <p>Assembly:</p>
-<pre><code>DECONSTRUCT y,x
+<pre><code>NOSTRUCT y,x
 </code></pre>
-<p>(destroy existing)</p>
-<pre><code>NOCONSTRUCT y,x
-</code></pre>
-<p>(cancel pending)</p>
 <p>Encoding:</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
 <tr><td><code>00100000</code></td><td>(opcode)</td></tr>
@@ -512,7 +510,7 @@ Used when a pending (unbuilt) structure is canceled.</p>
 <p>HP must be &gt; 0.</p>
 <p>Followed by the tile coordinates.</p>
 <h4 id="explosions"><a class="header" href="#explosions">Explosions</a></h4>
-<p>Explosions have occurred. Tile converts to destroyed land. Any item gone.</p>
+<p>Explosions have occurred.</p>
 <p>If the client should know what item was destroyed, send a "Reveal Item" first.</p>
 <p>Assembly:</p>
 <pre><code>EXPLODE y,x ...
@@ -535,7 +533,7 @@ Used when a pending (unbuilt) structure is canceled.</p>
 <tr><td><code>----xxxx</code></td><td>Structure Kind</td></tr>
 </tbody></table>
 </div>
-<p>The Item Kind is:</p>
+<p>The Structure Kind is:</p>
 <ul>
 <li><code>0000</code>: Road</li>
 <li><code>0001</code>: Bridge</li>
@@ -558,7 +556,7 @@ Used when a pending (unbuilt) structure is canceled.</p>
 <tr><td><code>----xxxx</code></td><td>Structure Kind</td></tr>
 </tbody></table>
 </div>
-<p>The Item Kind is:</p>
+<p>The Structure Kind is:</p>
 <ul>
 <li><code>0000</code>: Road</li>
 <li><code>0001</code>: Bridge</li>
@@ -589,10 +587,10 @@ Used when a pending (unbuilt) structure is canceled.</p>
 income is reported too. The income field is only
 present if this bit is <code>1</code>.</p>
 <p>The remaining 31 bits are used for the money value.</p>
-<h4 id="city-spending"><a class="header" href="#city-spending">City Spending</a></h4>
-<p>Reports that a city has spent a given sum of money.</p>
+<h4 id="city-transaction"><a class="header" href="#city-transaction">City Transaction</a></h4>
+<p>Reports that a city has gained or spent a given sum of money.</p>
 <p>Assembly:</p>
-<pre><code>CITSPEND i spent
+<pre><code>CITTRANS i spent
 </code></pre>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
 <tr><td><code>00000101</code></td><td>(opcode)</td></tr>
@@ -601,7 +599,7 @@ present if this bit is <code>1</code>.</p>
 <p>Followed by:</p>
 <ul>
 <li><code>u8</code>: City ID</li>
-<li><code>u16</code>: the amount of money spent</li>
+<li><code>i16</code>: the amount of money</li>
 </ul>
 <h4 id="city-resinfo"><a class="header" href="#city-resinfo">City ResInfo</a></h4>
 <p>Update on the resources of a city.</p>
@@ -635,24 +633,25 @@ present if this bit is <code>1</code>.</p>
 <h4 id="tile-kind-update"><a class="header" href="#tile-kind-update">Tile Kind Update</a></h4>
 <p>Changes the base tile type.</p>
 <p>Assembly:</p>
-<pre><code>TILE y,x {water|regular|fertile|destroyed|mountain|forest}
+<pre><code>TILE y,x {water|regular|fertile|destroyed|foundation|mountain|forest}
 </code></pre>
 <p>Encoding:</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
-<tr><td><code>01111---</code></td><td>(opcode)</td></tr>
-<tr><td><code>-----xxx</code></td><td>Tile Kind</td></tr>
+<tr><td><code>0111----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----xxxx</code></td><td>Tile Kind</td></tr>
 </tbody></table>
 </div>
 <p>The Tile Kind is:</p>
 <ul>
-<li><code>000</code>: Water</li>
-<li><code>001</code>: (reserved)</li>
-<li><code>010</code>: Mountain</li>
-<li><code>011</code>: Forest</li>
-<li><code>100</code>: Destroyed Land</li>
-<li><code>101</code>: Foundation</li>
-<li><code>110</code>: Regular Land</li>
-<li><code>111</code>: Fertile Land</li>
+<li><code>0000</code>: Water</li>
+<li><code>0001</code>: (reserved)</li>
+<li><code>0010</code>: Mountain</li>
+<li><code>0011</code>: Forest</li>
+<li><code>0100</code>: Destroyed Land</li>
+<li><code>0101</code>: Foundation</li>
+<li><code>0110</code>: Regular Land</li>
+<li><code>0111</code>: Fertile Land</li>
+<li>...   : (reserved)</li>
 </ul>
 <p>Followed by tile coordinate.</p>
 <h4 id="reveal-item"><a class="header" href="#reveal-item">Reveal Item</a></h4>
@@ -663,17 +662,17 @@ present if this bit is <code>1</code>.</p>
 </code></pre>
 <p>Encoding:</p>
 <div class="table-wrapper"><table><thead><tr><th>Bits</th><th>Meaning</th></tr></thead><tbody>
-<tr><td><code>01110---</code></td><td>(opcode)</td></tr>
-<tr><td><code>-----xxx</code></td><td>Item Kind</td></tr>
+<tr><td><code>0001----</code></td><td>(opcode)</td></tr>
+<tr><td><code>----xxxx</code></td><td>Item Kind</td></tr>
 </tbody></table>
 </div>
 <p>The Item Kind is:</p>
 <ul>
-<li><code>000</code>: None</li>
-<li><code>001</code>: Decoy</li>
-<li><code>010</code>: Mine</li>
-<li><code>011</code>: Trap</li>
-<li><code>1--</code>: (reserved)</li>
+<li><code>0000</code>: None</li>
+<li><code>0001</code>: Decoy</li>
+<li><code>0010</code>: Mine</li>
+<li><code>0011</code>: Trap</li>
+<li>...   : (reserved)</li>
 </ul>
 <p>Followed by tile coordinate.</p>
 <h4 id="ownership-update"><a class="header" href="#ownership-update">Ownership Update</a></h4>

@@ -236,7 +236,7 @@ only encoded once and assumed to apply to all participating streams.</p>
 <p>Homogenous frames have the following structure:</p>
 <ul>
 <li><code>u16</code>: Header</li>
-<li><code>u8</code>/<code>u16</code>: participation mask</li>
+<li><code>[u8]</code>: participation mask</li>
 <li><code>u8</code>: length of data payload in bytes - 1</li>
 <li>[ ... data payload ... ]</li>
 </ul>
@@ -245,8 +245,9 @@ Frame. The remaining 15 bits represent the time delta since the previous frame, 
 milliseconds, and must not be all-ones (the max value is reserved for Keepalive Frames).</p>
 <p>The participation mask is a bitmask indicating which PlayerIds the frame applies to.
 Bit 0 represents the global spectator view.</p>
-<p>The size of the participation mask is determined by the "max player id" bit in the
-Initialization Sequence.</p>
+<p>The size of the participation mask depends on the <code>n_players</code> field in the
+Initialization Sequence. Use the minimum number of bytes to represent the
+players. It is Big Endian!</p>
 <p>The data payload is the <a href="./dataformat-player.html#gameplay-messages">player protocol update messages</a>.
 All of the players listed in the participation mask must receive the entire identical data payload.</p>
 <h3 id="heterogenous-frames"><a class="header" href="#heterogenous-frames">Heterogenous Frames</a></h3>
@@ -255,8 +256,8 @@ for each participating stream is included in the frame.</p>
 <p>Heterogenous frames have the following structure:</p>
 <ul>
 <li><code>u16</code>: Header</li>
-<li><code>u8</code>/<code>u16</code>: participation mask</li>
-<li><code>[u8]</code>: lengths of each player view's portion of the data payload (as many as specified in the participation mask)</li>
+<li><code>[u8]</code>: participation mask</li>
+<li><code>[u8]</code>: lengths of each player view's portion of the data payload - 1</li>
 <li>[ ... data payload ... ]</li>
 </ul>
 <p>The top bit (bit 15) in the Header must be <code>0</code>, indicating that this is a Heterogenous
@@ -264,8 +265,12 @@ Frame. The remaining 15 bits represent the time delta since the previous frame, 
 milliseconds, and must not be all-ones (the max value is reserved for Keepalive Frames).</p>
 <p>The participation mask is a bitmask indicating which PlayerIds the frame applies to.
 Bit 0 represents the global spectator view.</p>
-<p>The size of the participation mask is determined by the "max player id" bit in the
-Initialization Sequence.</p>
+<p>The size of the participation mask depends on the <code>n_players</code> field in the
+Initialization Sequence. Use the minimum number of bytes to represent the
+players. It is Big Endian!</p>
+<p>The size of the lengths array is equal to the number of <code>1</code> bits in the
+participation mask. Each value represents the length of the data for that
+player's view, - 1.</p>
 <p>The data payload is the global spectator view + each player's view (in the order
 of the bits in the participation mask), concatenated together.</p>
 <p>Each view's data is the <a href="./dataformat-player.html#gameplay-messages">player protocol update
