@@ -1,0 +1,338 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Runtime Management - MineWars Public Documentation</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../foss.html"><strong aria-hidden="true">2.</strong> Game Longevity and Open-Source Plans</a></li><li class="chapter-item expanded "><a href="../game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="../gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gameplay/map.html"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="../gameplay/territory.html"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="../gameplay/economy.html"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="../gameplay/pvp.html"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="../gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="../gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="../gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="../ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="../gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li></ol></li><li class="chapter-item expanded "><a href="../mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li><li class="chapter-item expanded "><a href="../achievements.html"><strong aria-hidden="true">4.3.</strong> Achievement Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/philosophy.html"><strong aria-hidden="true">4.4.</strong> Notes / Philosophy</a></li></ol></li><li class="chapter-item expanded "><a href="../server/index.html"><strong aria-hidden="true">5.</strong> Server Admin Handbook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../server/intro.html"><strong aria-hidden="true">5.1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../server/hardware.html"><strong aria-hidden="true">5.2.</strong> Hardware Requirements</a></li><li class="chapter-item expanded "><a href="../server/examples.html"><strong aria-hidden="true">5.3.</strong> Tutorial and Examples</a></li><li class="chapter-item expanded "><a href="../server/sessions.html"><strong aria-hidden="true">5.4.</strong> Session Configuration</a></li><li class="chapter-item expanded "><a href="../server/security.html"><strong aria-hidden="true">5.5.</strong> Security</a></li><li class="chapter-item expanded "><a href="../server/management.html" class="active"><strong aria-hidden="true">5.6.</strong> Runtime Management</a></li></ol></li><li class="chapter-item expanded "><a href="../dataformat/intro.html"><strong aria-hidden="true">6.</strong> MineWars DataFormat</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../dataformat/file.html"><strong aria-hidden="true">6.1.</strong> File Structure</a></li><li class="chapter-item expanded "><a href="../dataformat/is.html"><strong aria-hidden="true">6.2.</strong> Initialization Sequence (IS)</a></li><li class="chapter-item expanded "><a href="../dataformat/frames.html"><strong aria-hidden="true">6.3.</strong> Game Updates and Framing</a></li><li class="chapter-item expanded "><a href="../dataformat/msgs.html"><strong aria-hidden="true">6.4.</strong> Game Update Messages</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MineWars Public Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="runtime-management"><a class="header" href="#runtime-management">Runtime Management</a></h1>
+<p>As discussed in the <a href="./intro.html">introduction</a>, the Host server alone is more than
+enough for many use cases.</p>
+<p>If you simply want to host a LAN game, or a LAN party or tournament with
+many game sessions, or even a basic online server with preconfigured sessions
+that people can just connect to and play, you don't need anything more than
+just the Host server with an appropriate config file.</p>
+<p>This page will teach you how to grow beyond that. How to manage your server
+while it is running, to dynamically reconfigure it, set up additional
+sessions, etc.</p>
+<h2 id="rpc-vs-hostauth"><a class="header" href="#rpc-vs-hostauth">RPC vs HostAuth</a></h2>
+<p>There are two ways to manage a Host server: RPC and an Auth server (HostAuth).</p>
+<p>So, what is the difference?</p>
+<p>RPC allows external software to connect to the server to tell it what to do.</p>
+<p>HostAuth allows the server to connect to external software to be managed.</p>
+<p>So the basic difference is in who initiates the connection. This makes them
+suitable for different use cases.</p>
+<p>RPC is well-suited for performing one-off actions manually and for scripting.
+Connect to the server's RPC interface, send it some commands, done.</p>
+<p>HostAuth is well-suited for automated management. It also has additional
+capabilities, notably in terms of sending extra data, like:</p>
+<ul>
+<li>Telemetry, statistics, performance monitoring</li>
+<li>Reports for abusive players</li>
+<li>Replays of game sessions for saving</li>
+</ul>
+<h2 id="rpc"><a class="header" href="#rpc">RPC</a></h2>
+<p>To use RPC, you must enable it in the config file. There are various
+options available to secure it.</p>
+<p>Please do not expose RPC to the Internet. This is a major security
+risk! Restrict it to your LAN or localhost.</p>
+<p>The easiest way to use RPC is via the <code>mw_hostrpc</code> CLI tool. It lets you
+just send commands. It is also designed to be suitable for scripting. It
+can also just generate the message and output it to you instead of sending it.</p>
+<p>The RPC protocol itself is based on the RON format and is human-readable
+and writable. If <code>mw_hostrpc</code> doesn't do something you need, or you need
+low-level control, you <em>could</em> just write your own messages and send them
+via netcat or something. Or more likely, generate something with <code>mw_hostrpc</code>
+and then edit it.</p>
+<h2 id="the-auth-server"><a class="header" href="#the-auth-server">The Auth Server</a></h2>
+<p>The Auth Server is an optional extra server you can run to manage your Host
+server(s), specifically the sessions on them and the players connecting
+to them.</p>
+<p>It is responsible for dealing with your users <em>outside</em> of gameplay.</p>
+<p>It can offer various (optional) features to players, including:</p>
+<ul>
+<li>Listing of available sessions they can join</li>
+<li>Letting them choose what session to join</li>
+<li>Letting them see info about the players in different sessions</li>
+<li>Letting them see info about other players who have not yet joined a session.</li>
+<li>Letting them enter a session as a lobby with specific other players.</li>
+<li>Letting them create their own sessions</li>
+<li>Letting them create custom game configurations</li>
+</ul>
+<p>Basically, a pre-game lobby sort of menu interface.</p>
+<p>To you, the admin, it can also offer some compelling features:</p>
+<ul>
+<li><a href="./security.html#player-expectation">Increased security for your Host server(s)</a></li>
+<li>Monitoring of multiple Host servers</li>
+<li>Automatically selecting an appropriate Host for players, based on their ping, server load, etc.</li>
+</ul>
+<p>Basically the job of the Auth server is to have players connect to it first,
+instead of connecting directly to the Host server. It can let players decide
+how they want to play the game and who they want to play with. Then, it can
+actually set up a session for them on a Host server and redirect them to it.</p>
+<p>It also allows you to control who you allow to play on your servers.</p>
+<h3 id="miniauth"><a class="header" href="#miniauth">MiniAuth</a></h3>
+<p>Your game install comes with MiniAuth, a limited version of the Auth
+server we use for the MineWars official multiplayer. It offers all of
+the above features. However, it does not have "account services" (user
+accounts/login). It cannot support integrations and authentication with
+proprietary platforms like Steam. That is the only difference from the
+official version of the Auth server we use internally.</p>
+<h3 id="setting-up-miniauth"><a class="header" href="#setting-up-miniauth">Setting Up MiniAuth</a></h3>
+<p>Similar to the Host server, you basically need to have a config file and
+then run <code>mw_miniauth</code>. We provide example config files you can use as a
+starting point.</p>
+<pre><code class="language-sh">./mw_miniauth --config cfg/examples/auth/simple.toml
+</code></pre>
+<p>To actually use it, you need to also configure your Host server(s) to connect
+to it. The settings are in the <code>[hostauth]</code> section of the Host server
+config file.</p>
+<p>The Host server will connect to the Auth server to be managed.</p>
+<p>A Host server can be configured to connect to multiple Auth servers for
+redundancy. All of them will have equal capabilities. Any of them can create
+sessions and hand-off players to it.</p>
+<p>Now that you have an Auth server, you probably also want to change some other
+things in your Host server config:</p>
+<ul>
+<li>Disable unexpected players, to allow players to only connect via the Auth server</li>
+<li>Disable any preconfigured and automatic sessions. Put your session presets in the Auth server config instead.</li>
+</ul>
+<p>That is, unless, for whatever reason, you want to still allow players to
+connect to your Host server directly. You could have a "hybrid" setup,
+where you have a Host server with some preconfigured sessions and also have
+the Auth server set up additional sessions. If players connect to your Host
+server, they are treated as "unexpected" and join the fixed sessions. If
+they connect via the Auth server, they will be treated as "expected" and
+join the session the Auth server set up for them.</p>
+<p>Why you would want such a configuration, I don't know … :D</p>
+<h3 id="the-user-experience"><a class="header" href="#the-user-experience">The User Experience</a></h3>
+<p>Your players should connect to your Auth server instead of your Host server.
+The MineWars game client is capable of automatically detecting what kind of
+server it is connecting to. Users don't need to do anything different.</p>
+<p>From a user's perspective: if they connect to a Host server, gameplay starts
+immediately. If they connect to an Auth server, they are presented with a
+menu and lobby interface first, if any of those features are enabled on the
+Auth server. That is the difference in the user experience.</p>
+<p>If none of the special lobby / session browser servers are enabled on the Auth,
+the game client just gets automatically redirected to the Host, and gameplay
+starts immediately, just as if it had connected directly to the Host.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../server/security.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../dataformat/intro.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../server/security.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../dataformat/intro.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

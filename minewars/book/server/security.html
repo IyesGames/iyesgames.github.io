@@ -1,0 +1,362 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Security - MineWars Public Documentation</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../foss.html"><strong aria-hidden="true">2.</strong> Game Longevity and Open-Source Plans</a></li><li class="chapter-item expanded "><a href="../game-design.html"><strong aria-hidden="true">3.</strong> Game Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audience.html"><strong aria-hidden="true">3.1.</strong> Target Audience</a></li><li class="chapter-item expanded "><a href="../gameplay.html"><strong aria-hidden="true">3.2.</strong> Gameplay and Rules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gameplay/map.html"><strong aria-hidden="true">3.2.1.</strong> The Map: Cities and Geography</a></li><li class="chapter-item expanded "><a href="../gameplay/territory.html"><strong aria-hidden="true">3.2.2.</strong> Territory and Ownership</a></li><li class="chapter-item expanded "><a href="../gameplay/economy.html"><strong aria-hidden="true">3.2.3.</strong> Economy</a></li><li class="chapter-item expanded "><a href="../gameplay/pvp.html"><strong aria-hidden="true">3.2.4.</strong> PvP Combat</a></li><li class="chapter-item expanded "><a href="../gameplay/actions.html"><strong aria-hidden="true">3.2.5.</strong> All Gameplay Actions</a></li><li class="chapter-item expanded "><a href="../gameplay/items.html"><strong aria-hidden="true">3.2.6.</strong> Items</a></li><li class="chapter-item expanded "><a href="../gameplay/structures.html"><strong aria-hidden="true">3.2.7.</strong> Structures</a></li></ol></li><li class="chapter-item expanded "><a href="../ideas.html"><strong aria-hidden="true">3.3.</strong> More Ideas to Explore</a></li><li class="chapter-item expanded "><a href="../gamemodes.html"><strong aria-hidden="true">3.4.</strong> Game Modes</a></li></ol></li><li class="chapter-item expanded "><a href="../mgmt.html"><strong aria-hidden="true">4.</strong> Project Planning</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../mgmt/monetization.html"><strong aria-hidden="true">4.1.</strong> Monetization Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/settings.html"><strong aria-hidden="true">4.2.</strong> Game Settings</a></li><li class="chapter-item expanded "><a href="../achievements.html"><strong aria-hidden="true">4.3.</strong> Achievement Ideas</a></li><li class="chapter-item expanded "><a href="../mgmt/philosophy.html"><strong aria-hidden="true">4.4.</strong> Notes / Philosophy</a></li></ol></li><li class="chapter-item expanded "><a href="../server/index.html"><strong aria-hidden="true">5.</strong> Server Admin Handbook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../server/intro.html"><strong aria-hidden="true">5.1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../server/hardware.html"><strong aria-hidden="true">5.2.</strong> Hardware Requirements</a></li><li class="chapter-item expanded "><a href="../server/examples.html"><strong aria-hidden="true">5.3.</strong> Tutorial and Examples</a></li><li class="chapter-item expanded "><a href="../server/sessions.html"><strong aria-hidden="true">5.4.</strong> Session Configuration</a></li><li class="chapter-item expanded "><a href="../server/security.html" class="active"><strong aria-hidden="true">5.5.</strong> Security</a></li><li class="chapter-item expanded "><a href="../server/management.html"><strong aria-hidden="true">5.6.</strong> Runtime Management</a></li></ol></li><li class="chapter-item expanded "><a href="../dataformat/intro.html"><strong aria-hidden="true">6.</strong> MineWars DataFormat</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../dataformat/file.html"><strong aria-hidden="true">6.1.</strong> File Structure</a></li><li class="chapter-item expanded "><a href="../dataformat/is.html"><strong aria-hidden="true">6.2.</strong> Initialization Sequence (IS)</a></li><li class="chapter-item expanded "><a href="../dataformat/frames.html"><strong aria-hidden="true">6.3.</strong> Game Updates and Framing</a></li><li class="chapter-item expanded "><a href="../dataformat/msgs.html"><strong aria-hidden="true">6.4.</strong> Game Update Messages</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">MineWars Public Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="security"><a class="header" href="#security">Security</a></h1>
+<p>The Host server offers extensive security features:</p>
+<ul>
+<li>Encryption (mandatory)</li>
+<li>Client Authentication</li>
+<li>IP address control</li>
+<li>Player Expectation</li>
+<li>Protocol abuse detection
+(rate limiting, anti-cheat, etc.)</li>
+</ul>
+<h2 id="encryption"><a class="header" href="#encryption">Encryption</a></h2>
+<p>All connections to the server must be encrypted using TLS (the same kind of
+encryption used for HTTPS in browsers).</p>
+<p>If you would like to use your own certificates, you can use the <code>mw_certgen</code>
+CLI tool to generate and sign them.</p>
+<p>TODO: show examples and elaborate on different possibilities and why you
+might want to use non-default certificates.</p>
+<h2 id="client-authentication"><a class="header" href="#client-authentication">Client Authentication</a></h2>
+<p>Further, it is possible to configure the server to require clients to also
+have a certificate. This can be used to limit clients allowed to connect.</p>
+<h2 id="ip-address-control"><a class="header" href="#ip-address-control">IP Address Control</a></h2>
+<p>The Host server can use an IP List file to limit which IP addresses are allowed
+to connect. An IP List is just a plaintext file with one IP address per line.</p>
+<p>It can be set to DenyList or AllowList mode. DenyList will reject the IP
+addresses in the file and allow everyone else. AllowList will only allow
+the IP addresses listed in the file.</p>
+<p>IP Address Control only applies to unexpected players. Player Expectation
+bypasses it. Which makes sense, because with Player Expectations, you are
+effectively pre-screening your players and explicitly authorizing specific
+connections.</p>
+<h2 id="player-expectation"><a class="header" href="#player-expectation">Player Expectation</a></h2>
+<p>This is the most powerful security feature. At runtime, using RPC or an Auth
+server, the Host server can be told to expect specific incoming connections. It
+will then accept connections if they match the expectation.</p>
+<p>The expectation is registered for a specific IP address and can include
+additional restrictions:</p>
+<ul>
+<li>A specific TLS client certificate</li>
+<li>A specific "token"/password</li>
+<li>A specific Session ID to join</li>
+<li>A specific Player ID to play as</li>
+</ul>
+<p>When the server gets an incoming connection from the respective IP address,
+it will enforce all the extra criteria. The player will only be allowed to
+join if they meet all the criteria in the expectation.</p>
+<p>Further, it is possible to disable unexpected players altogether, only
+allowing clients to connect with expectations. This makes your server
+inaccessible to anyone you have not explicitly authorized.</p>
+<h3 id="player-hand-off-from-an-auth-server"><a class="header" href="#player-hand-off-from-an-auth-server">Player Hand-Off from an Auth Server</a></h3>
+<p>Player Expectation is extremely powerful with an Auth server, because the
+Auth server can automate it. This is called "player hand-off".</p>
+<p>Players connect to the Auth server for services such as user accounts, lobbies,
+matchmaking, etc. The Auth server decides what sessions to set up for them on
+the Host server, and which Host server they will play on (if there are multiple).</p>
+<p>When players are ready to play, the Auth server can automatically set up a
+new dynamic session for them on the Host server and submit expectations for
+the exact players who will play in the new session.</p>
+<p>It can also generate single-use TLS certificates and tokens for each player,
+just for that session, for additional security.</p>
+<p>The players are then redirected to the Host server. They must connect from
+the same IP address, authenticate with their newly-issued single-use
+certificate and token, and join their designated session.</p>
+<h2 id="protocol-abuse-detection"><a class="header" href="#protocol-abuse-detection">Protocol Abuse Detection</a></h2>
+<p>After a player has already connected and joined a session, you might want to
+detect and punish any abusive behavior. The Host server has an abuse-detection
+subsystem, which all player input passes through. It can apply a series of
+checks and issue verdicts.</p>
+<p>The Host server we publish with the game only offers rate limiting and
+rudimentary gameplay-specific checks (checking for gameplay patterns that
+are obvious and blatant cheating).</p>
+<p>Our official Host servers may have additional anti-cheat measures. We will
+not disclose any details of how they work.</p>
+<p>In the future, we may add support for custom plugins, allowing you to
+integrate 3rd-party anti-cheat solutions. This is not supported yet.</p>
+<p>The abuse detection subsystem can keep track of a "suspect score" for each
+player, which is accumulated based on all the checks that are performed on the
+inputs from that player. If a player is deemed suspicious enough, a punishment
+can be issued, such as an automated warning, report, kick, timeout, or ban.</p>
+<p>All of the above is configurable.</p>
+<h2 id="appendix-understanding-server-security"><a class="header" href="#appendix-understanding-server-security">Appendix: Understanding Server Security</a></h2>
+<p>To understand how to protect ourselves against attacks, we need to learn to
+think like an attacker. An attacker is not concerned with what the software
+is <em>designed</em> to do, they are concerned with what it <em>can</em> do. If they can
+find clever and creative ways to get it to do things in a way that is not
+normally intended, they could potentially use that to abuse and exploit.</p>
+<h3 id="blast-radius"><a class="header" href="#blast-radius">Blast Radius</a></h3>
+<p>The term "blast radius" refers to how many players are affected if something
+goes bad (for example, if a server crashes or is successfully attacked).</p>
+<p>MineWars Host servers, being designed to host many sessions and many players,
+can have a very large blast radius. This makes them vulnerable and lucrative
+to attackers.</p>
+<p>To reduce the blast radius, consider hosting more servers with fewer sessions
+each, instead of lots of sessions on fewer server. Of course, this is only
+feasible if you can afford it.</p>
+<h3 id="ddos-resilience"><a class="header" href="#ddos-resilience">DDoS Resilience</a></h3>
+<p>DDoS attacks are the most commonly-attempted attacks against game servers
+in general. Game servers (for any game) typically do not contain sensitive
+information. If someone has an incentive to attack a server, usually it is
+to try to take it down, or to otherwise worsen the experience for legitimate
+players. Hence, DDoS resilience is one of the most important considerations
+for game server admins and developers.</p>
+<p>Fortunately, nowadays it is quite difficult to DDoS a server by just spamming
+it with pings or other unwanted traffic. Modern computers and networks are
+too fast for that; they can just drop the packets. An attacker would need
+access to a very large amount of resources to successfully overwhelm a network.</p>
+<p>Effective DDoS attacks rely on a principle called "amplification". That is:
+finding a way to trick the server to spend a lot of resources with less
+input. Any feature of the server which could be abused in such a way is a
+DDoS risk.</p>
+<p>The first place to look is how the server handles connection attempts.
+Connecting to a MineWars server means negotiating encryption. This is an
+amplification vector. An attacker could overwhelm the server with many
+connection attempts that it does not intend to allow to actually connect,
+causing the server to spend CPU and RAM on validating certificates, only to
+have the connection closed immediately.</p>
+<p>A MineWars Host server can be made resilient to such an attack by using
+Player Expectation and disallowing unexpected players. By having players go
+through an Auth server first, the Host server is protected. The Host server
+simply ignores all connection attempts it does not expect.</p>
+<p>Another DDoS vector is automatic sessions. An attacker could connect many game
+clients, causing the server to create lots of sessions and run out of RAM. Do
+not enable this feature on Internet-facing servers! It is intended for LANs.
+Internet-facing Host servers should use either preconfigured or dynamic sessions.</p>
+<p>After a player has actually joined a session, there is not much they can abuse,
+as they cannot connect additional clients. Further, the player protocol is
+monitored and rate-limited. You can adjust the rate-limiting configuration.</p>
+<h4 id="auth-servers"><a class="header" href="#auth-servers">Auth Servers</a></h4>
+<p>The Auth server is less lucrative for DDoS attacks, because it does not affect
+gameplay and is not performance sensitive. If attacked, it might only affect
+players who have not yet joined a game, and the server operators. Players who
+are already in-game are unaffected. To protect an Auth server, consider putting
+it behind a commercial DDoS protection service, such as Cloudflare. Auth
+servers are not performance sensitive and it is okay if they are accessed
+through a slow proxy. Further, consider having multiple Auth servers for
+redundancy.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../server/sessions.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../server/management.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../server/sessions.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../server/management.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
